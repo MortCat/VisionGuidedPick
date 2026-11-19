@@ -1,0 +1,37 @@
+schema_version: 1
+storage_root: artifacts/teach_target
+server:
+  host: 127.0.0.1
+  port: 8088
+  allowed_ips: [127.0.0.1, '::1']
+images:
+  preview_max_edge_px: 1024
+  max_upload_bytes: 20971520
+training:
+  python: .teach_ml_env/bin/python
+  epochs: 40
+  seed: 42
+  batch_size: 2
+  grad_accum_steps: 2
+  lr: 0.0001
+  lr_encoder: 0.00001
+  resolution: 384
+  num_workers: 2
+  validation_fraction: 0.25
+  augmentation:
+    foreground_fractions: [0.009, 0.012, 0.015]
+
+annotation:
+  max_processing_edge_px: 1600
+  iterations: 3
+  seed_radius_px: 3
+  threads: 2
+
+  python: .teach_ml_env/bin/python
+  source: artifacts/teach_target/runtime/sam2
+  dependencies: artifacts/teach_target/runtime/deps
+  checkpoint: artifacts/teach_target/runtime/sam2.1_hiera_small.pt
+  model_config: configs/sam2.1/sam2.1_hiera_s.yaml
+  device: cuda
+  boundary_radius_px: 4
+  timeout_sec: 120

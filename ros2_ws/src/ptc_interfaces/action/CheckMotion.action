@@ -1,0 +1,19 @@
+ptc_interfaces/EventKey key
+uint64 command_id
+uint64 scene_revision
+uint64 surface_revision
+uint8 INSPECTION=0
+uint8 GRASP=1
+uint8 purpose
+geometry_msgs/PoseStamped[<=5] targets
+float64 closure_width_m
+geometry_msgs/PoseStamped[<=2] contact_patch_centers
+float64[<=2] contact_patch_radii_m
+builtin_interfaces/Duration timeout
+---
+ptc_interfaces/EventKey key
+uint64 command_id
+bool success
+string<=512 message
+---
+uint32 checked_targets

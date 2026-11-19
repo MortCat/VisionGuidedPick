@@ -1,0 +1,4709 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "VisionGuidedPick Teach Target and Observe API",
+    "version": "0.4.0",
+    "description": "Single-user product API; no login. Exact-IP and same-origin writes. Observe owns only recognition, never robot commands. See observe-api.md for runtime and quality limits."
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Same-origin single product entry"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Teach Target"
+    },
+    {
+      "name": "Observe handoff"
+    }
+  ],
+  "paths": {
+    "/api/teach/targets": {
+      "get": {
+        "operationId": "list_target_profiles",
+        "summary": "List target profiles",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "partial; API integration coverage varies",
+        "x-delivery-phase": "P1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TargetSummary"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "415": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_target_profile",
+        "summary": "Create target profile",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "partial; API integration coverage varies",
+        "x-delivery-phase": "P1",
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TargetProfile"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "415": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TargetCreateRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teach/targets/{target_id}": {
+      "get": {
+        "operationId": "get_target_profile",
+        "summary": "Read target draft and image membership",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "partial; API integration coverage varies",
+        "x-delivery-phase": "P1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TargetProfile"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "415": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "target_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ]
+      }
+    },
+    "/api/teach/targets/{target_id}/images": {
+      "post": {
+        "operationId": "import_target_image",
+        "summary": "Upload one JPEG/PNG, preserving source resolution",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "partial; API integration coverage varies",
+        "x-delivery-phase": "P1",
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageAsset"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "415": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "target_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageUploadRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teach/targets/{target_id}/images/{image_id}": {
+      "delete": {
+        "operationId": "remove_target_image",
+        "summary": "Remove image from draft; retain immutable versions",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "implemented; Training/Validation UI and revision/frozen-dataset regression coverage",
+        "x-delivery-phase": "P1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftUpdate"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "415": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "expected_revision",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "target_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "description": "Remove current draft membership with expected target draft revision. Preserve source files referenced by frozen jobs and existing models. UI refreshes dataset counts; conflict409 requires review before retry. UI confirmation is inline with explicit Remove/Cancel buttons; browser dialogs are not required."
+      }
+    },
+    "/api/teach/targets/{target_id}/images/{image_id}/content": {
+      "get": {
+        "operationId": "get_target_image",
+        "summary": "Serve raw, full-resolution normalized or preview image",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "partial; API integration coverage varies",
+        "x-delivery-phase": "P1",
+        "responses": {
+          "200": {
+            "description": "Authorized JPEG or PNG image bytes",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "415": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "variant",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "raw",
+                "full",
+                "preview"
+              ],
+              "default": "full"
+            }
+          },
+          {
+            "name": "target_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ]
+      }
+    },
+    "/api/teach/targets/{target_id}/images/{image_id}/annotation": {
+      "get": {
+        "operationId": "get_target_annotation",
+        "summary": "Get original-working-image pixel masks",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "partial; API integration coverage varies",
+        "x-delivery-phase": "P1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Annotation"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "415": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "target_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ]
+      },
+      "put": {
+        "operationId": "save_target_annotation",
+        "summary": "Save reviewed instance RLE masks; increment revisions",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "partial; API integration coverage varies",
+        "x-delivery-phase": "P1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnnotationSaveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "415": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "target_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnnotationSaveRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teach/targets/{target_id}/images/{image_id}/mask-proposals": {
+      "post": {
+        "operationId": "generate_mask_proposal",
+        "summary": "Optional local box/point-guided mask suggestion",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "implemented; GrabCut box/point suggestions",
+        "x-delivery-phase": "P1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaskProposal"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "415": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "target_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaskPrompt"
+              }
+            }
+          }
+        },
+        "description": "Requires at least one positive point or valid bbox; result is not an approved annotation. Returns503 when suggestion backend is unavailable; manual editing remains usable."
+      }
+    },
+    "/api/teach/targets/{target_id}/training-jobs": {
+      "post": {
+        "operationId": "create_training_job",
+        "summary": "Freeze data/config and start a fresh local training worker",
+        "description": "Independent of Observe and Auto Pick state. One training worker at a time. Starting training does not stop or replace the running Observe model. No hyperparameter or resume/checkpoint override accepted. Same idempotency key returns the same job; changed images/config require a new job.",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "partial; API integration coverage varies",
+        "x-delivery-phase": "P1",
+        "responses": {
+          "202": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "415": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "target_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teach/training-jobs": {
+      "get": {
+        "operationId": "list_training_jobs",
+        "summary": "Find jobs after page reload",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "partial; API integration coverage varies",
+        "x-delivery-phase": "P1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Job"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "415": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "target_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ]
+      }
+    },
+    "/api/teach/training-jobs/{job_id}": {
+      "get": {
+        "operationId": "get_training_job",
+        "summary": "Read authoritative stage/epoch/status",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "partial; API integration coverage varies",
+        "x-delivery-phase": "P1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "415": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ]
+      }
+    },
+    "/api/teach/training-jobs/{job_id}/cancel": {
+      "post": {
+        "operationId": "cancel_training_job",
+        "summary": "Cancel owned worker; do not retain incomplete model",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "partial; API integration coverage varies",
+        "x-delivery-phase": "P1",
+        "responses": {
+          "202": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "415": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          },
+          "200": {
+            "description": "Already terminal; no new cancellation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ]
+      }
+    },
+    "/api/teach/training-jobs/{job_id}/results": {
+      "get": {
+        "operationId": "get_training_results",
+        "summary": "Read completed evaluation and candidate model",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "partial; API integration coverage varies",
+        "x-delivery-phase": "P1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Evaluation"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "415": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ]
+      }
+    },
+    "/api/teach/models/{model_version}": {
+      "get": {
+        "operationId": "get_target_model",
+        "summary": "Read candidate/published model manifest",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "partial; API integration coverage varies",
+        "x-delivery-phase": "P1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelManifest"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "415": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "model_version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ]
+      }
+    },
+    "/api/teach/models/{model_version}/publish": {
+      "post": {
+        "operationId": "publish_target_model",
+        "summary": "Publish a successful candidate for Observe",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "partial; API integration coverage varies",
+        "x-delivery-phase": "P1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelManifest"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "413": {
+            "$ref": "#/components/responses/Error"
+          },
+          "415": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "model_version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ]
+      }
+    },
+    "/api/observe/model-activations": {
+      "post": {
+        "operationId": "request_model_activation",
+        "tags": [
+          "Observe handoff"
+        ],
+        "x-implementation-status": "implemented; runtime and accuracy acceptance recorded separately",
+        "responses": {
+          "202": {
+            "description": "Accepted; poll status for completion",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Activation"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivationRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/observe/model-activations/{activation_id}": {
+      "get": {
+        "operationId": "get_model_activation",
+        "tags": [
+          "Observe handoff"
+        ],
+        "x-implementation-status": "implemented; runtime and accuracy acceptance recorded separately",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Activation"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "activation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/teach/training-jobs/{job_id}/artifacts/{artifact_id}": {
+      "get": {
+        "operationId": "get_training_artifact",
+        "summary": "Serve a manifest-listed result overlay or metrics file; no checkpoint downloads",
+        "tags": [
+          "Teach Target"
+        ],
+        "x-implementation-status": "partial; API integration coverage varies",
+        "x-delivery-phase": "P1",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          },
+          {
+            "name": "artifact_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorized result file listed in this job manifest",
+            "content": {
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "operationId": "get_service_health",
+        "summary": "Service readiness/version (source-IP authorization applies)",
+        "responses": {
+          "200": {
+            "description": "Teach Target API ready",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "service": {
+                      "const": "teach_target"
+                    },
+                    "status": {
+                      "const": "ready"
+                    },
+                    "api_version": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "service",
+                    "status",
+                    "api_version"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Source IP is not authorized"
+          }
+        }
+      }
+    },
+    "/api/teach/models": {
+      "get": {
+        "operationId": "list_published_models",
+        "tags": [
+          "Observe handoff"
+        ],
+        "x-implementation-status": "implemented; runtime and accuracy acceptance recorded separately",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ModelManifest"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "target_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "published"
+              ],
+              "default": "published"
+            }
+          }
+        ],
+        "description": "Lists published models, with the installed bundled demonstration model first. Ordering does not activate inference or robot tasks."
+      }
+    },
+    "/api/observe/runs": {
+      "post": {
+        "operationId": "start_observe_run",
+        "tags": [
+          "Observe handoff"
+        ],
+        "x-implementation-status": "implemented; runtime and accuracy acceptance recorded separately",
+        "responses": {
+          "202": {
+            "description": "Accepted; poll status for completion",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObserveRun"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObserveRunRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/observe/runs/{run_id}/stop": {
+      "post": {
+        "operationId": "stop_observe_run",
+        "tags": [
+          "Observe handoff"
+        ],
+        "x-implementation-status": "implemented; runtime and accuracy acceptance recorded separately",
+        "responses": {
+          "202": {
+            "description": "Accepted; poll status for completion",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObserveRun"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          },
+          "200": {
+            "description": "Accepted; poll status for completion",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObserveRun"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObserveStopRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/observe/status": {
+      "get": {
+        "operationId": "get_observe_status",
+        "tags": [
+          "Observe handoff"
+        ],
+        "x-implementation-status": "implemented; runtime and accuracy acceptance recorded separately",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObserveStatus"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/api/observe/runs/{run_id}/snapshot": {
+      "get": {
+        "operationId": "get_observe_snapshot",
+        "tags": [
+          "Observe handoff"
+        ],
+        "x-implementation-status": "implemented; runtime and accuracy acceptance recorded separately",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ObserveSnapshot"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ObserveWaitingSnapshot"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/observe/runs/{run_id}/pick-preview": {
+      "get": {
+        "operationId": "get_observe_pick_preview",
+        "summary": "Read-only gantry pick candidates for the latest live frame",
+        "description": "Candidates are returned only when the run is current, the cached snapshot is the latest frame, source_state is live, and the display age is below each candidate's valid_for_sec. Otherwise candidates is empty. Never sends motion commands.",
+        "tags": [
+          "Observe handoff"
+        ],
+        "x-implementation-status": "implemented; runtime and accuracy acceptance recorded separately",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObservePickPreview"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/observe/frames/{frame_key}/preview": {
+      "get": {
+        "operationId": "get_observe_preview",
+        "tags": [
+          "Observe handoff"
+        ],
+        "x-implementation-status": "implemented; runtime and accuracy acceptance recorded separately",
+        "responses": {
+          "200": {
+            "description": "Only this exact frame key; no-store. RGB JPEG or RGBA mask PNG.",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "frame_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "layer",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "rgb",
+                "mask"
+              ],
+              "default": "rgb"
+            }
+          }
+        ]
+      }
+    },
+    "/api/teach/targets/{target_id}/dataset-summary": {
+      "get": {
+        "operationId": "get_dataset_summary",
+        "tags": [
+          "Teach Target"
+        ],
+        "summary": "Preview next-run split, pending reviews and source membership; does not train",
+        "parameters": [
+          {
+            "name": "target_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current draft membership from the same selector used by the training worker",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetSummary"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/api/observe/runs/{run_id}/objects": {
+      "get": {
+        "operationId": "get_observe_object_history",
+        "tags": [
+          "Observe handoff"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObserveObjectHistory"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/api/observe/runs/{run_id}/objects/{track_id}/point-cloud": {
+      "get": {
+        "operationId": "get_observe_object_point_cloud",
+        "tags": [
+          "Observe handoff"
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "track_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cloud_revision",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cached point cloud or unchanged revision",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObserveObjectPointCloud"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/api/auto-pick/status": {
+      "get": {
+        "operationId": "get_auto_pick_status",
+        "tags": [
+          "Observe handoff"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "arm",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "arm_01",
+                "arm_02"
+              ],
+              "default": "arm_01"
+            }
+          },
+          {
+            "in": "query",
+            "name": "point_cloud",
+            "required": false,
+            "description": "Include the assigned target's measured gantry surface.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "in": "query",
+            "name": "cloud_revision",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Reuse a cached gantry preview when this revision matches."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoPickStatus"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/api/auto-pick/wrist-preview": {
+      "get": {
+        "operationId": "get_auto_pick_wrist_preview",
+        "tags": [
+          "Observe handoff"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "arm",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "arm_01",
+                "arm_02"
+              ],
+              "default": "arm_01"
+            }
+          },
+          {
+            "in": "query",
+            "name": "frame",
+            "required": false,
+            "description": "Exact cached wrist_camera.frame_id. Returns 410 after eviction.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Latest wrist RGB frame",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/api/auto-pick/start": {
+      "post": {
+        "operationId": "auto_pick_start",
+        "tags": [
+          "Observe handoff"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "arm",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "arm_01",
+                "arm_02"
+              ],
+              "default": "arm_01"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "run_id"
+                ],
+                "properties": {
+                  "run_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Request received. Poll Auto Pick status for the ROS acknowledgement.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoPickCommand"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/api/auto-pick/cancel": {
+      "post": {
+        "operationId": "auto_pick_cancel",
+        "tags": [
+          "Observe handoff"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "arm",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "arm_01",
+                "arm_02"
+              ],
+              "default": "arm_01"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "run_id"
+                ],
+                "properties": {
+                  "run_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Request received. Poll Auto Pick status for the ROS acknowledgement.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoPickCommand"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/api/auto-pick/home": {
+      "post": {
+        "operationId": "auto_pick_home",
+        "tags": [
+          "Observe handoff"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "arm",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "arm_01",
+                "arm_02"
+              ],
+              "default": "arm_01"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "run_id"
+                ],
+                "properties": {
+                  "run_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Request received. Poll Auto Pick status for the ROS acknowledgement.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoPickCommand"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/api/auto-pick/clear-bin": {
+      "post": {
+        "operationId": "auto_pick_clear_bin",
+        "tags": [
+          "Observe handoff"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "arm",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "arm_01",
+                "arm_02"
+              ],
+              "default": "arm_01"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "run_id"
+                ],
+                "properties": {
+                  "run_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Request received. Poll Auto Pick status for the ROS acknowledgement.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoPickCommand"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/api/auto-pick/continuous": {
+      "post": {
+        "operationId": "auto_pick_continuous",
+        "tags": [
+          "Observe handoff"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "arm",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "arm_01",
+                "arm_02"
+              ],
+              "default": "arm_01"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "run_id"
+                ],
+                "properties": {
+                  "run_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Request received. Poll Auto Pick status for the ROS acknowledgement.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoPickCommand"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/api/auto-pick/pause": {
+      "post": {
+        "operationId": "auto_pick_pause",
+        "tags": [
+          "Observe handoff"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "arm",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "arm_01",
+                "arm_02"
+              ],
+              "default": "arm_01"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "run_id"
+                ],
+                "properties": {
+                  "run_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Request received. Poll Auto Pick status for the ROS acknowledgement.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoPickCommand"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "IdempotencyKey": {
+        "name": "Idempotency-Key",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      }
+    },
+    "responses": {
+      "Error": {
+        "description": "Structured error; see human guide for codes",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ApiError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "additionalProperties": false
+      },
+      "TargetCreateRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "TargetSummary": {
+        "type": "object",
+        "properties": {
+          "target_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "name": {
+            "type": "string"
+          },
+          "draft_revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "image_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "latest_job_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "target_id",
+          "name",
+          "draft_revision",
+          "image_count",
+          "latest_job_id"
+        ],
+        "additionalProperties": false
+      },
+      "TargetProfile": {
+        "type": "object",
+        "properties": {
+          "target_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "name": {
+            "type": "string"
+          },
+          "draft_revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageAsset"
+            }
+          },
+          "latest_job_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "target_id",
+          "name",
+          "draft_revision",
+          "images",
+          "latest_job_id"
+        ],
+        "additionalProperties": false
+      },
+      "ImageAsset": {
+        "type": "object",
+        "properties": {
+          "image_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "target_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "purpose": {
+            "enum": [
+              "teaching",
+              "validation"
+            ]
+          },
+          "raw_url": {
+            "type": "string"
+          },
+          "full_url": {
+            "type": "string"
+          },
+          "preview_url": {
+            "type": "string"
+          },
+          "annotation_revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "annotation_state": {
+            "enum": [
+              "pending",
+              "reviewed"
+            ]
+          },
+          "draft_revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "source_label": {
+            "type": "string"
+          },
+          "original_filename": {
+            "type": "string",
+            "description": "Uploaded filename basename; legacy records may omit it."
+          },
+          "instance_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "annotation_outcome": {
+            "type": "string",
+            "enum": [
+              "instances",
+              "no_target"
+            ]
+          }
+        },
+        "required": [
+          "image_id",
+          "target_id",
+          "width",
+          "height",
+          "sha256",
+          "purpose",
+          "raw_url",
+          "full_url",
+          "preview_url",
+          "annotation_revision",
+          "annotation_state",
+          "draft_revision"
+        ],
+        "additionalProperties": false
+      },
+      "ImageUploadRequest": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary"
+          },
+          "purpose": {
+            "type": "string",
+            "enum": [
+              "teaching",
+              "validation"
+            ],
+            "default": "teaching"
+          },
+          "source_label": {
+            "type": "string",
+            "maxLength": 256,
+            "default": "",
+            "description": "Optional operator-provided camera/capture-session label. Not inferred from filename."
+          }
+        },
+        "required": [
+          "file"
+        ],
+        "additionalProperties": false
+      },
+      "MaskRle": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "counts": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "size",
+          "counts"
+        ],
+        "additionalProperties": false
+      },
+      "InstanceMask": {
+        "type": "object",
+        "properties": {
+          "instance_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "mask": {
+            "$ref": "#/components/schemas/MaskRle"
+          }
+        },
+        "required": [
+          "instance_id",
+          "mask"
+        ],
+        "additionalProperties": false
+      },
+      "Annotation": {
+        "type": "object",
+        "properties": {
+          "image_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "state": {
+            "enum": [
+              "pending",
+              "reviewed"
+            ]
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "instances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InstanceMask"
+            }
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "instances",
+              "no_target"
+            ],
+            "description": "Computed from explicitly reviewed instances; never inferred from a pending empty mask."
+          }
+        },
+        "required": [
+          "image_id",
+          "revision",
+          "state",
+          "width",
+          "height",
+          "instances"
+        ],
+        "additionalProperties": false
+      },
+      "AnnotationSaveRequest": {
+        "type": "object",
+        "properties": {
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "instances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InstanceMask"
+            }
+          }
+        },
+        "required": [
+          "expected_revision",
+          "width",
+          "height",
+          "instances"
+        ],
+        "additionalProperties": false
+      },
+      "AnnotationSaveResponse": {
+        "type": "object",
+        "properties": {
+          "annotation": {
+            "$ref": "#/components/schemas/Annotation"
+          },
+          "draft_revision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "annotation",
+          "draft_revision"
+        ],
+        "additionalProperties": false
+      },
+      "MaskPrompt": {
+        "type": "object",
+        "properties": {
+          "bbox_xyxy": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": 0
+            },
+            "minItems": 4,
+            "maxItems": 4
+          },
+          "positive_points": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "negative_points": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "initial_mask": {
+            "$ref": "#/components/schemas/MaskRle"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "anyOf": [
+          {
+            "required": [
+              "bbox_xyxy"
+            ]
+          },
+          {
+            "required": [
+              "positive_points"
+            ],
+            "properties": {
+              "positive_points": {
+                "minItems": 1
+              }
+            }
+          },
+          {
+            "required": [
+              "initial_mask"
+            ]
+          }
+        ]
+      },
+      "MaskProposal": {
+        "type": "object",
+        "properties": {
+          "image_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "mask": {
+            "$ref": "#/components/schemas/MaskRle"
+          },
+          "approved": {
+            "const": false
+          },
+          "method": {
+            "type": "string",
+            "const": "sam2_grabcut"
+          },
+          "elapsed_ms": {
+            "type": "number",
+            "minimum": 0
+          },
+          "embedding_reused": {
+            "type": "boolean"
+          },
+          "sam_ms": {
+            "type": "number"
+          },
+          "refinement": {
+            "type": "string",
+            "enum": [
+              "boundary_refined",
+              "sam_only_no_boundary_samples"
+            ]
+          }
+        },
+        "required": [
+          "image_id",
+          "mask",
+          "approved"
+        ],
+        "additionalProperties": false
+      },
+      "TrainingRequest": {
+        "type": "object",
+        "properties": {
+          "draft_revision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "draft_revision"
+        ],
+        "additionalProperties": false
+      },
+      "Job": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "target_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "dataset_version": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "config_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "state": {
+            "enum": [
+              "preparing",
+              "training",
+              "evaluating",
+              "succeeded",
+              "failed",
+              "cancelling",
+              "cancelled",
+              "interrupted"
+            ]
+          },
+          "epoch": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "total_epochs": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "elapsed_sec": {
+            "type": "number",
+            "minimum": 0
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "model_version": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ErrorDetail"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "eta_sec": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Estimated remaining training time, available after the first measured epoch; excludes final evaluation."
+          },
+          "eta_updated_at": {
+            "type": "number",
+            "description": "UTC Unix seconds when ETA was measured."
+          },
+          "completed_epochs": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "job_id",
+          "target_id",
+          "dataset_version",
+          "config_sha256",
+          "state",
+          "epoch",
+          "total_epochs",
+          "elapsed_sec",
+          "updated_at",
+          "model_version",
+          "message",
+          "error"
+        ],
+        "additionalProperties": false
+      },
+      "Evaluation": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "model_version": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "metrics_source": {
+            "enum": [
+              "held_out_views",
+              "deployment_holdout",
+              "preview_only",
+              "specified_validation",
+              "automatic_holdout"
+            ]
+          },
+          "augmented_train_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Job-local synthetic training samples in addition to train_count."
+          },
+          "train_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "validation_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "metrics": {
+            "type": "object",
+            "additionalProperties": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "overlay_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "deployment_validated": {
+            "type": "boolean"
+          },
+          "training_history": {
+            "type": "object",
+            "description": "Actual Lightning CSV epoch history; missing values stay absent, not zero.",
+            "properties": {
+              "source": {
+                "type": "string"
+              },
+              "available": {
+                "type": "boolean"
+              },
+              "epochs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "epoch": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          },
+          "evaluation_threshold": {
+            "type": "number"
+          },
+          "validation_images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationImageResult"
+            }
+          },
+          "training_images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetImageSource"
+            }
+          }
+        },
+        "required": [
+          "job_id",
+          "model_version",
+          "metrics_source",
+          "train_count",
+          "validation_count",
+          "metrics",
+          "overlay_urls",
+          "deployment_validated"
+        ],
+        "additionalProperties": false
+      },
+      "ModelManifest": {
+        "type": "object",
+        "properties": {
+          "model_version": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "target_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "job_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "dataset_version": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "config_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "checkpoint_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "class_names": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "state": {
+            "enum": [
+              "candidate",
+              "published"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "evaluation_url": {
+            "type": "string"
+          },
+          "bundle_format": {
+            "const": 1,
+            "description": "Self-contained bundle. Absent on legacy manifests, which Publish and activation refuse with MODEL_BUNDLE_LEGACY until explicitly migrated."
+          },
+          "class_mapping": {
+            "type": "object",
+            "description": "Model output class index (decimal string) to label.",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "preprocessing": {
+            "type": "object",
+            "required": [
+              "architecture",
+              "resolution",
+              "color_order",
+              "input",
+              "normalization",
+              "mask_space"
+            ],
+            "properties": {
+              "architecture": {
+                "type": "string"
+              },
+              "resolution": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "color_order": {
+                "const": "RGB"
+              },
+              "input": {
+                "type": "string"
+              },
+              "normalization": {
+                "type": "string"
+              },
+              "mask_space": {
+                "const": "original_rgb_pixels"
+              }
+            },
+            "additionalProperties": false
+          },
+          "evaluation": {
+            "type": "object",
+            "description": "Held-out evaluation summary copied at bundle time; per-image overlays remain under evaluation_url while the job exists.",
+            "properties": {
+              "metrics_source": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "selected_epoch": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "evaluation_threshold": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "train_count": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "augmented_train_count": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "validation_count": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "metrics": {
+                "type": [
+                  "object",
+                  "null"
+                ]
+              },
+              "deployment_validated": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "source": {
+            "type": "object",
+            "description": "Traceability only: resolved training section and worker-recorded library versions (null when migrated from a job that did not record them).",
+            "properties": {
+              "training": {
+                "type": "object"
+              },
+              "library_versions": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "contract_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "SHA-256 of canonical JSON over model_version, checkpoint_sha256, class_names, class_mapping, preprocessing and evaluation."
+          },
+          "migrated_from_legacy": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "model_version",
+          "target_id",
+          "job_id",
+          "dataset_version",
+          "config_sha256",
+          "checkpoint_sha256",
+          "class_names",
+          "state",
+          "created_at",
+          "evaluation_url"
+        ],
+        "additionalProperties": false
+      },
+      "ObservePickPreview": {
+        "type": "object",
+        "required": [
+          "run_id",
+          "frame_key",
+          "motion_control",
+          "candidates"
+        ],
+        "properties": {
+          "run_id": {
+            "type": "string"
+          },
+          "frame_key": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "motion_control": {
+            "const": false
+          },
+          "candidates": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "track_key",
+                "confidence",
+                "position_world_m",
+                "velocity_world_mps",
+                "measurement_stamp_ns",
+                "valid_for_sec"
+              ],
+              "properties": {
+                "track_key": {
+                  "type": "string"
+                },
+                "confidence": {
+                  "type": "number"
+                },
+                "position_world_m": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "velocity_world_mps": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "measurement_stamp_ns": {
+                  "type": "string",
+                  "description": "Decimal nanoseconds."
+                },
+                "valid_for_sec": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "DraftUpdate": {
+        "type": "object",
+        "properties": {
+          "target_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "draft_revision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "target_id",
+          "draft_revision"
+        ],
+        "additionalProperties": false
+      },
+      "ActivationRequest": {
+        "type": "object",
+        "properties": {
+          "model_version": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "model_version"
+        ],
+        "additionalProperties": false
+      },
+      "Activation": {
+        "type": "object",
+        "properties": {
+          "activation_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "model_version": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "state": {
+            "enum": [
+              "loading",
+              "active",
+              "failed"
+            ]
+          },
+          "acknowledged_checkpoint_sha256": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "message": {
+            "type": "string"
+          },
+          "inference_contract": {
+            "type": "object",
+            "description": "Present after real worker ACK; input resolution/color/dtype/preprocessing and contiguous class mapping."
+          },
+          "error": {
+            "type": [
+              "object",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "activation_id",
+          "model_version",
+          "state",
+          "acknowledged_checkpoint_sha256",
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "ErrorDetail": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "ObserveRunRequest": {
+        "type": "object",
+        "properties": {
+          "activation_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "activation_id"
+        ],
+        "additionalProperties": false
+      },
+      "ObserveStopRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ObserveRun": {
+        "type": "object",
+        "properties": {
+          "run_id": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "starting",
+              "waiting_for_frame",
+              "observing",
+              "stopping",
+              "stopped",
+              "failed"
+            ]
+          },
+          "activation_id": {
+            "type": "string"
+          },
+          "selected_model_version": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "error": {
+            "type": [
+              "object",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "run_id",
+          "state",
+          "activation_id",
+          "selected_model_version",
+          "message",
+          "error"
+        ]
+      },
+      "ObserveStatus": {
+        "type": "object",
+        "properties": {
+          "run": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ObserveRun"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "active_model_version": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "activation_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "last_frame_key": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "display_age_sec": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "source_state": {
+            "type": "string"
+          },
+          "health": {
+            "type": "object"
+          },
+          "motion_control": {
+            "const": false
+          },
+          "confidence_threshold": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Current configured inference threshold, read-only."
+          },
+          "preview_hz": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Configured preview request frequency; unique rendered frames remain source/inference limited."
+          },
+          "inference_hz_limit": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Configured inference cap, not measured achieved frequency."
+          }
+        },
+        "required": [
+          "run",
+          "active_model_version",
+          "activation_id",
+          "last_frame_key",
+          "display_age_sec",
+          "source_state",
+          "health",
+          "motion_control"
+        ]
+      },
+      "ObserveObject": {
+        "type": "object",
+        "properties": {
+          "track_key": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": "number"
+          },
+          "phase": {
+            "enum": [
+              "candidate",
+              "tracking"
+            ]
+          },
+          "measurement_stamp_ns": {
+            "type": "string"
+          },
+          "bbox_xyxy": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 4,
+            "maxItems": 4
+          },
+          "position_world_m": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "velocity_world_mps": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "observed_bounds_world": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "box_edges_rgb_pixels": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 2,
+                "maxItems": 2
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "geometry_reason": {
+            "type": "string"
+          },
+          "box_estimated": {
+            "type": "boolean",
+            "description": "Dashed projection from recent accepted depth. False for current measured bounds or no box."
+          }
+        },
+        "required": [
+          "track_key",
+          "label",
+          "confidence",
+          "phase",
+          "measurement_stamp_ns",
+          "bbox_xyxy",
+          "position_world_m",
+          "velocity_world_mps",
+          "observed_bounds_world",
+          "box_edges_rgb_pixels",
+          "geometry_reason"
+        ]
+      },
+      "ObserveSnapshot": {
+        "type": "object",
+        "properties": {
+          "run_id": {
+            "type": "string"
+          },
+          "model_version": {
+            "type": "string"
+          },
+          "clock_epoch": {
+            "type": "string"
+          },
+          "frame_key": {
+            "type": "string"
+          },
+          "capture_stamp_ns": {
+            "type": "string"
+          },
+          "original_size": {
+            "type": "object",
+            "properties": {
+              "width": {
+                "type": "integer"
+              },
+              "height": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "width",
+              "height"
+            ]
+          },
+          "preview_size": {
+            "type": "object",
+            "properties": {
+              "width": {
+                "type": "integer"
+              },
+              "height": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "width",
+              "height"
+            ]
+          },
+          "rgb_url": {
+            "type": "string"
+          },
+          "mask_url": {
+            "type": "string"
+          },
+          "objects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ObserveObject"
+            }
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "model_version",
+          "clock_epoch",
+          "frame_key",
+          "capture_stamp_ns",
+          "original_size",
+          "preview_size",
+          "rgb_url",
+          "mask_url",
+          "objects",
+          "message"
+        ]
+      },
+      "ObserveWaitingSnapshot": {
+        "type": "object",
+        "properties": {
+          "run_id": {
+            "type": "string"
+          },
+          "frame_key": {
+            "type": "null"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "frame_key",
+          "message"
+        ]
+      },
+      "DatasetImageSource": {
+        "type": "object",
+        "properties": {
+          "image_id": {
+            "type": "string"
+          },
+          "original_filename": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_label": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "purpose": {
+            "enum": [
+              "teaching",
+              "validation"
+            ]
+          }
+        },
+        "required": [
+          "image_id",
+          "original_filename",
+          "source_label",
+          "purpose"
+        ]
+      },
+      "DatasetSummary": {
+        "type": "object",
+        "properties": {
+          "target_id": {
+            "type": "string"
+          },
+          "draft_revision": {
+            "type": "integer"
+          },
+          "train_count": {
+            "type": "integer"
+          },
+          "validation_count": {
+            "type": "integer"
+          },
+          "validation_mode": {
+            "enum": [
+              "specified_validation",
+              "automatic_holdout"
+            ]
+          },
+          "pending_count": {
+            "type": "integer"
+          },
+          "training_images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetImageSource"
+            }
+          },
+          "validation_images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetImageSource"
+            }
+          }
+        },
+        "required": [
+          "target_id",
+          "draft_revision",
+          "train_count",
+          "validation_count",
+          "validation_mode",
+          "pending_count",
+          "training_images",
+          "validation_images"
+        ],
+        "additionalProperties": false
+      },
+      "ValidationImageResult": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DatasetImageSource"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "ground_truth_instances": {
+                "type": "integer"
+              },
+              "predicted_instances": {
+                "type": "integer"
+              },
+              "union_iou": {
+                "type": "number"
+              },
+              "max_target_confidence": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "overlay_url": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "ObserveObjectHistory": {
+        "type": "object",
+        "required": [
+          "run_id",
+          "detected_count",
+          "outcome_counts",
+          "objects"
+        ],
+        "properties": {
+          "run_id": {
+            "type": "string"
+          },
+          "detected_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Confirmed objects in the current Observe run and clock epoch, including objects outside the recent history."
+          },
+          "outcome_counts": {
+            "type": "object",
+            "description": "Settled outcomes per confirmed object in the current Observe run and clock epoch, including evicted rows.",
+            "required": [
+              "placed",
+              "failed",
+              "unverified"
+            ],
+            "properties": {
+              "placed": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "failed": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "unverified": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "objects": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "required": [
+                "track_id",
+                "display_id",
+                "label",
+                "first_seen_ns",
+                "state",
+                "arm",
+                "epoch",
+                "cycle_id"
+              ],
+              "properties": {
+                "track_id": {
+                  "type": "string"
+                },
+                "display_id": {
+                  "type": "string",
+                  "description": "Consecutive confirmed-object sequence. A later track merge may compact the sequence."
+                },
+                "label": {
+                  "type": "string"
+                },
+                "first_seen_ns": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string",
+                  "description": "Provided when a confirmed target crosses the final pick area without an assigned arm."
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "tracked",
+                    "picking",
+                    "holding",
+                    "placing",
+                    "placed",
+                    "unverified",
+                    "failed",
+                    "canceled"
+                  ]
+                },
+                "arm": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "epoch": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "cycle_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "AutoPickTask": {
+        "type": "object",
+        "required": [
+          "epoch",
+          "cycle_id",
+          "track_id",
+          "phase",
+          "reason",
+          "home_state",
+          "home_message",
+          "continuous_operation",
+          "last_result"
+        ],
+        "properties": {
+          "epoch": {
+            "type": "string"
+          },
+          "cycle_id": {
+            "type": "string"
+          },
+          "track_id": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "integer"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "home_state": {
+            "type": "integer",
+            "enum": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ]
+          },
+          "home_message": {
+            "type": "string"
+          },
+          "continuous_operation": {
+            "type": "boolean"
+          },
+          "last_result": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "epoch",
+              "cycle_id",
+              "track_id",
+              "outcome"
+            ],
+            "properties": {
+              "epoch": {
+                "type": "string"
+              },
+              "cycle_id": {
+                "type": "string"
+              },
+              "track_id": {
+                "type": "string"
+              },
+              "outcome": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "AutoPickCommand": {
+        "type": "object",
+        "required": [
+          "request_id",
+          "command",
+          "baseline_cycle_id",
+          "pending",
+          "accepted",
+          "message"
+        ],
+        "properties": {
+          "request_id": {
+            "type": "string"
+          },
+          "command": {
+            "type": "string",
+            "enum": [
+              "pick_start",
+              "pick_cancel",
+              "pick_home",
+              "pick_clear_bin",
+              "pick_continuous",
+              "pick_pause"
+            ]
+          },
+          "baseline_cycle_id": {
+            "type": "string"
+          },
+          "pending": {
+            "type": "boolean"
+          },
+          "accepted": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "AutoPickGripper": {
+        "type": "object",
+        "required": [
+          "fresh",
+          "ready",
+          "stopped",
+          "width_m",
+          "possession"
+        ],
+        "properties": {
+          "issue": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "fresh": {
+            "type": "boolean"
+          },
+          "ready": {
+            "type": "boolean"
+          },
+          "stopped": {
+            "type": "boolean"
+          },
+          "width_m": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "possession": {
+            "type": "string",
+            "enum": [
+              "empty",
+              "holding",
+              "unknown"
+            ]
+          }
+        }
+      },
+      "AutoPickArmFeedback": {
+        "type": "object",
+        "required": [
+          "fresh",
+          "ready",
+          "command_ready",
+          "stopped"
+        ],
+        "properties": {
+          "issue": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "fresh": {
+            "type": "boolean"
+          },
+          "ready": {
+            "type": "boolean"
+          },
+          "command_ready": {
+            "type": "boolean"
+          },
+          "stopped": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AutoPickBinLoad": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "required": [
+          "contents_g",
+          "last_drop_g",
+          "overflow",
+          "clearing",
+          "clear_available"
+        ],
+        "properties": {
+          "overflow": {
+            "type": "boolean"
+          },
+          "clearing": {
+            "type": "boolean"
+          },
+          "clear_available": {
+            "type": "boolean"
+          },
+          "contents_g": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "last_drop_g": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      },
+      "ObserveObjectPointCloud": {
+        "type": "object",
+        "required": [
+          "run_id",
+          "track_id",
+          "gantry_cloud_revision",
+          "gantry_cloud"
+        ],
+        "properties": {
+          "run_id": {
+            "type": "string"
+          },
+          "track_id": {
+            "type": "string"
+          },
+          "gantry_cloud_revision": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "gantry_cloud": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "track_id",
+              "scans",
+              "latest",
+              "accumulated"
+            ],
+            "properties": {
+              "track_id": {
+                "type": "string"
+              },
+              "scans": {
+                "type": "integer"
+              },
+              "capture_stamp_ns": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "latest": {
+                "$ref": "#/components/schemas/GantryPreviewPoints"
+              },
+              "accumulated": {
+                "$ref": "#/components/schemas/GantryPreviewPoints"
+              }
+            }
+          }
+        }
+      },
+      "GantryPreviewPoints": {
+        "type": "array",
+        "maxItems": 450,
+        "items": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "AutoPickStatus": {
+        "type": "object",
+        "required": [
+          "available",
+          "task",
+          "command",
+          "outcome",
+          "gripper",
+          "arm_feedback"
+        ],
+        "properties": {
+          "available": {
+            "type": "boolean"
+          },
+          "task": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AutoPickTask"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "command": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AutoPickCommand"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "bin_load": {
+            "$ref": "#/components/schemas/AutoPickBinLoad"
+          },
+          "placement": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "epoch",
+              "cycle_id",
+              "track_id",
+              "state",
+              "reason",
+              "delta_n"
+            ],
+            "properties": {
+              "epoch": {
+                "type": "string"
+              },
+              "cycle_id": {
+                "type": "string"
+              },
+              "track_id": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "state": {
+                "enum": [
+                  "placing",
+                  "placed",
+                  "unverified"
+                ]
+              },
+              "delta_n": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "outcome": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Live task.last_result.outcome when the idle task (phase 0) has the same epoch, cycle_id and track_id; otherwise null. Not read from diagnostic files. Outcome 1 is a controller release report, not bin-load evidence."
+          },
+          "gripper": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AutoPickGripper"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "arm_feedback": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AutoPickArmFeedback"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "joint_feedback": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "fresh",
+              "issue",
+              "joints"
+            ],
+            "properties": {
+              "fresh": {
+                "type": "boolean"
+              },
+              "issue": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "joints": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "name",
+                    "type",
+                    "position",
+                    "effort"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "enum": [
+                        "revolute",
+                        "prismatic"
+                      ]
+                    },
+                    "position": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "description": "Radians for revolute joints, meters for prismatic joints."
+                    },
+                    "effort": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "description": "N·m for revolute joints, N for prismatic joints."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "gantry_cloud_revision": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "gantry_cloud": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "track_id",
+              "scans",
+              "latest",
+              "accumulated"
+            ],
+            "properties": {
+              "track_id": {
+                "type": "string"
+              },
+              "scans": {
+                "type": "integer"
+              },
+              "latest": {
+                "$ref": "#/components/schemas/GantryPreviewPoints"
+              },
+              "accumulated": {
+                "$ref": "#/components/schemas/GantryPreviewPoints"
+              }
+            }
+          },
+          "wrist_camera": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "frame_id",
+              "live",
+              "grasp"
+            ],
+            "properties": {
+              "frame_id": {
+                "type": "string"
+              },
+              "live": {
+                "type": "boolean"
+              },
+              "grasp": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "required": [
+                  "track_id",
+                  "cycle_id",
+                  "epoch",
+                  "points"
+                ],
+                "properties": {
+                  "track_id": {
+                    "type": "string"
+                  },
+                  "cycle_id": {
+                    "type": "string"
+                  },
+                  "epoch": {
+                    "type": "string"
+                  },
+                  "points": {
+                    "type": "array",
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "items": {
+                      "type": "array",
+                      "minItems": 2,
+                      "maxItems": 2,
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-implementation-status": "partial",
+  "x-source-document": "teach-target-api.md"
+}

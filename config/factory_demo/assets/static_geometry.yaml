@@ -1,0 +1,564 @@
+{
+  "objects": [
+    {
+      "id": "belt",
+      "kind": "box",
+      "position_m": [
+        0.6,
+        0,
+        0.735
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.35,
+        5.8,
+        0.03
+      ]
+    },
+    {
+      "id": "cleanroom_ConveyorSupports_End_0_0",
+      "kind": "box",
+      "position_m": [
+        0.46,
+        -2.65,
+        0.34
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.05,
+        0.05,
+        0.68
+      ]
+    },
+    {
+      "id": "cleanroom_ConveyorSupports_End_0_1",
+      "kind": "box",
+      "position_m": [
+        0.74,
+        -2.65,
+        0.34
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.05,
+        0.05,
+        0.68
+      ]
+    },
+    {
+      "id": "cleanroom_ConveyorSupports_End_1_0",
+      "kind": "box",
+      "position_m": [
+        0.46,
+        2.65,
+        0.34
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.05,
+        0.05,
+        0.68
+      ]
+    },
+    {
+      "id": "cleanroom_ConveyorSupports_End_1_1",
+      "kind": "box",
+      "position_m": [
+        0.74,
+        2.65,
+        0.34
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.05,
+        0.05,
+        0.68
+      ]
+    },
+    {
+      "id": "cleanroom_Rear_Lower",
+      "kind": "box",
+      "position_m": [
+        -2.3,
+        0.0,
+        0.55
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.1,
+        9.0,
+        1.1
+      ]
+    },
+    {
+      "id": "cleanroom_Rear_Upper",
+      "kind": "box",
+      "position_m": [
+        -2.3,
+        0.0,
+        2.8
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.1,
+        9.0,
+        0.8
+      ]
+    },
+    {
+      "id": "cleanroom_Rear_Left",
+      "kind": "box",
+      "position_m": [
+        -2.3,
+        -3.0,
+        1.75
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.1,
+        3.0,
+        1.3
+      ]
+    },
+    {
+      "id": "cleanroom_Rear_Right",
+      "kind": "box",
+      "position_m": [
+        -2.3,
+        3.0,
+        1.75
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.1,
+        3.0,
+        1.3
+      ]
+    },
+    {
+      "id": "cleanroom_Rear_ObservationWindow",
+      "kind": "box",
+      "position_m": [
+        -2.3,
+        0.0,
+        1.75
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.025,
+        3.0,
+        1.3
+      ]
+    },
+    {
+      "id": "cleanroom_Far_Wall",
+      "kind": "box",
+      "position_m": [
+        0.45,
+        4.5,
+        1.6
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        5.5,
+        0.1,
+        3.2
+      ]
+    },
+    {
+      "id": "arm_01_bin_floor",
+      "kind": "box",
+      "position_m": [
+        0.23,
+        -1.23,
+        0.76
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.3,
+        0.3,
+        0.02
+      ]
+    },
+    {
+      "id": "arm_01_bin_left",
+      "kind": "box",
+      "position_m": [
+        0.08000000000000002,
+        -1.23,
+        0.83
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.02,
+        0.32,
+        0.14
+      ]
+    },
+    {
+      "id": "arm_01_bin_right",
+      "kind": "box",
+      "position_m": [
+        0.38,
+        -1.23,
+        0.83
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.02,
+        0.32,
+        0.14
+      ]
+    },
+    {
+      "id": "arm_01_bin_front",
+      "kind": "box",
+      "position_m": [
+        0.23,
+        -1.38,
+        0.83
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.28,
+        0.02,
+        0.14
+      ]
+    },
+    {
+      "id": "arm_01_bin_back",
+      "kind": "box",
+      "position_m": [
+        0.23,
+        -1.08,
+        0.83
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.28,
+        0.02,
+        0.14
+      ]
+    },
+    {
+      "id": "arm_02_bin_floor",
+      "kind": "box",
+      "position_m": [
+        0.23,
+        0.27,
+        0.76
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.3,
+        0.3,
+        0.02
+      ]
+    },
+    {
+      "id": "arm_02_bin_left",
+      "kind": "box",
+      "position_m": [
+        0.08000000000000002,
+        0.27,
+        0.83
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.02,
+        0.32,
+        0.14
+      ]
+    },
+    {
+      "id": "arm_02_bin_right",
+      "kind": "box",
+      "position_m": [
+        0.38,
+        0.27,
+        0.83
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.02,
+        0.32,
+        0.14
+      ]
+    },
+    {
+      "id": "arm_02_bin_front",
+      "kind": "box",
+      "position_m": [
+        0.23,
+        0.12000000000000002,
+        0.83
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.28,
+        0.02,
+        0.14
+      ]
+    },
+    {
+      "id": "arm_02_bin_back",
+      "kind": "box",
+      "position_m": [
+        0.23,
+        0.42000000000000004,
+        0.83
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.28,
+        0.02,
+        0.14
+      ]
+    },
+    {
+      "id": "gantry_Left_BasePlate",
+      "kind": "box",
+      "position_m": [
+        0.0,
+        -2.12,
+        0.015
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.22,
+        0.28,
+        0.018
+      ]
+    },
+    {
+      "id": "gantry_Left_Column",
+      "kind": "box",
+      "position_m": [
+        0.0,
+        -2.12,
+        0.9319999999999999
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.06,
+        0.06,
+        1.8159999999999998
+      ]
+    },
+    {
+      "id": "gantry_Right_BasePlate",
+      "kind": "box",
+      "position_m": [
+        1.2,
+        -2.12,
+        0.015
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.22,
+        0.28,
+        0.018
+      ]
+    },
+    {
+      "id": "gantry_Right_Column",
+      "kind": "box",
+      "position_m": [
+        1.2,
+        -2.12,
+        0.9319999999999999
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.06,
+        0.06,
+        1.8159999999999998
+      ]
+    },
+    {
+      "id": "gantry_CrossBeam",
+      "kind": "box",
+      "position_m": [
+        0.6,
+        -2.12,
+        1.88
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        1.28,
+        0.08,
+        0.08
+      ]
+    },
+    {
+      "id": "gantry_camera_mount",
+      "kind": "box",
+      "position_m": [
+        0.5885,
+        -2.1343988383108297,
+        1.720437060828274
+      ],
+      "orientation_xyzw": [
+        0.3020906874342762,
+        0.0,
+        0.0,
+        0.9532791912999499
+      ],
+      "dimensions_m": [
+        0.155,
+        0.06,
+        0.05
+      ]
+    },
+    {
+      "id": "gantry_JunctionBox",
+      "kind": "box",
+      "position_m": [
+        1.226,
+        -2.2,
+        0.51
+      ],
+      "orientation_xyzw": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "dimensions_m": [
+        0.12,
+        0.1,
+        0.17
+      ]
+    }
+  ]
+}

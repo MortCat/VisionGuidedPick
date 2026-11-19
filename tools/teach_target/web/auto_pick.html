@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>VisionGuidedPick · Auto Pick</title>
+    <link rel="stylesheet" href="/style.css?v=bin-controls-2">
+    <script src="/navigation.js" defer></script>
+</head>
+<body class="app-shell">
+<nav class="app-navigation" aria-label="Workspace">
+    <button class="app-navigation-toggle" type="button" aria-label="Workspace navigation" aria-expanded="true" aria-controls="workspace-navigation-links" hidden>
+        <span aria-hidden="true"></span>
+    </button>
+    <div class="app-navigation-links" id="workspace-navigation-links">
+        <a href="/">Teach Target</a>
+        <a href="/observe">Observe</a>
+        <a href="/auto-pick" aria-current="page">Auto Pick</a>
+    </div>
+</nav>
+<main>
+<header class="page-header"><h1>Auto Pick</h1><p id="source" class="hint" role="status">Connecting to Observe…</p></header>
+<section>
+    <div id="pick-arms" class="pick-arms"></div>
+</section></main>
+<template id="pick-arm-template">
+    <article class="pick-arm">
+        <h2 data-field="title"></h2>
+        <figure class="wrist-preview">
+            <figcaption>
+                <select data-field="view" aria-label="Camera view">
+                    <option value="rgb">Wrist RGB</option>
+                    <option value="cloud">Gantry Point Cloud</option>
+                </select>
+                <span data-field="camera">Waiting for camera</span>
+            </figcaption>
+            <div class="wrist-image">
+                <img data-field="image" alt="Wrist camera" hidden>
+                <svg data-field="grasp-overlay" aria-hidden="true" hidden>
+                    <path data-field="grasp-jaws"></path>
+                    <path data-field="grasp-center"></path>
+                </svg>
+                <span data-field="grasp-label" class="grasp-label" hidden>Planned Grasp</span>
+                <canvas data-field="cloud" width="640" height="360" aria-label="Gantry point cloud" hidden></canvas>
+            </div>
+        </figure>
+        <dl>
+            <div><dt>Phase</dt><dd data-field="phase">—</dd></div>
+            <div><dt>Target ID</dt><dd data-field="track">—</dd></div>
+            <div><dt>Gripper</dt><dd data-field="gripper">Unavailable</dd></div>
+            <div><dt>Opening</dt><dd data-field="opening">—</dd></div>
+            <div><dt>Arm Feedback</dt><dd data-field="feedback">Unavailable</dd></div>
+            <div><dt>Result</dt><dd data-field="result">—</dd></div>
+        </dl>
+        <div class="tools" role="group" aria-label="Cycle Run">
+            <button class="primary" data-action="start" disabled>Start</button>
+            <button data-action="stop" disabled>Stop</button>
+            <button data-action="home" disabled>Return Home</button>
+            <span data-field="status" class="hint" role="status" aria-live="polite"></span>
+        </div>
+        <div class="joint-disclosure">
+            <button type="button" class="joint-details-toggle" data-field="details-toggle" aria-expanded="false">Details</button>
+        </div>
+        <div class="joint-details" data-field="joint-details" hidden>
+            <div class="bin-details">
+                <dl class="bin-readings">
+                    <div><dt>Bin Content</dt><dd data-field="bin-contents">Unavailable</dd></div>
+                    <div><dt>Last Drop</dt><dd data-field="last-drop">Unavailable</dd></div>
+                </dl>
+                <button type="button" data-action="clearBin" disabled>Clear Bin</button>
+                <p class="hint" data-field="bin-status" role="status"></p>
+            </div>
+            <header class="joint-details-header">
+                <h3>Joint Feedback</h3>
+                <span class="joint-status" data-field="joint-status" role="status">No feedback</span>
+            </header>
+            <div class="joint-group">
+                <h4>Arm Joints</h4>
+                <table aria-label="Arm Joints">
+                    <thead><tr><th scope="col">Joint</th><th scope="col">Angle (°)</th><th scope="col">Torque (N·m)</th></tr></thead>
+                    <tbody data-field="arm-joint-rows"></tbody>
+                </table>
+                <p class="joint-scale">Torque Bar Scale <span>−30 / 0 / +30 N·m</span></p>
+            </div>
+            <div class="joint-group">
+                <h4>Gripper Fingers</h4>
+                <table aria-label="Gripper Fingers">
+                    <thead><tr><th scope="col">Finger</th><th scope="col">Travel (mm)</th><th scope="col">Force (N)</th></tr></thead>
+                    <tbody data-field="finger-joint-rows"></tbody>
+                </table>
+            </div>
+        </div>
+    </article>
+</template>
+<script src="/gantry-cloud.js"></script>
+<script src="/auto-pick.js?v=bin-clear-1"></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+{
+  "stanford_good": {
+    "quality": "good",
+    "defect": "none",
+    "scale": 1.0,
+    "height_m": 0.07500000298023224,
+    "dimensions_m": [
+      0.0586424358189106,
+      0.07566352933645248,
+      0.07500000298023224
+    ],
+    "mass_kg": 0.055
+  },
+  "alternate_model": {
+    "quality": "defective",
+    "defect": "wrong_shape",
+    "scale": 1.0,
+    "height_m": 0.07500436156988144,
+    "dimensions_m": [
+      0.05977855250239372,
+      0.07716113328933716,
+      0.07500436156988144
+    ],
+    "mass_kg": 0.055
+  },
+  "broken_ear": {
+    "cut_triangles": 128,
+    "boundary_edges": 223,
+    "plane": {
+      "normal": [
+        0,
+        0.6,
+        1
+      ],
+      "offset_m": 0.063
+    },
+    "quality": "defective",
+    "defect": "broken_ear",
+    "scale": 1.0,
+    "height_m": 0.07214206457138062,
+    "dimensions_m": [
+      0.0586424358189106,
+      0.07566352933645248,
+      0.07214206457138062
+    ],
+    "mass_kg": 0.055
+  },
+  "body_chip": {
+    "cut_triangles": 545,
+    "boundary_edges": 223,
+    "plane": {
+      "normal": [
+        1,
+        0.45,
+        0
+      ],
+      "offset_m": 0.026
+    },
+    "quality": "defective",
+    "defect": "body_chip",
+    "scale": 1.0,
+    "height_m": 0.07500000298023224,
+    "dimensions_m": [
+      0.05679069831967354,
+      0.07566352933645248,
+      0.07500000298023224
+    ],
+    "mass_kg": 0.055
+  },
+  "dirty": {
+    "quality": "defective",
+    "defect": "surface_contamination",
+    "scale": 1.0,
+    "height_m": 0.07500000298023224,
+    "dimensions_m": [
+      0.0586424358189106,
+      0.07566352933645248,
+      0.07500000298023224
+    ],
+    "mass_kg": 0.055,
+    "procedural_dirt": {
+      "patch_count_min": 1,
+      "patch_count_max": 2,
+      "diameter_mm": [
+        3.0,
+        8.0
+      ],
+      "maximum_surface_fraction": 0.03
+    }
+  },
+  "undersize": {
+    "quality": "defective",
+    "defect": "undersize",
+    "scale": 0.85,
+    "height_m": 0.0637499988079071,
+    "dimensions_m": [
+      0.04984607174992561,
+      0.06431400030851364,
+      0.0637499988079071
+    ],
+    "mass_kg": 0.033776875
+  },
+  "oversize": {
+    "quality": "defective",
+    "defect": "oversize",
+    "scale": 1.18,
+    "height_m": 0.0885000005364418,
+    "dimensions_m": [
+      0.06919807195663452,
+      0.08928296715021133,
+      0.0885000005364418
+    ],
+    "mass_kg": 0.09036675999999999
+  }
+}

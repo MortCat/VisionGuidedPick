@@ -1,0 +1,51 @@
+{
+  "interval_sim_seconds": 12.0,
+  "good_run_min": 3,
+  "good_run_max": 4,
+  "good_variant": "stanford_good",
+  "defect_cycle": [
+    "dirty",
+    "broken_ear",
+    "body_chip",
+    "undersize",
+    "oversize",
+    "alternate_model"
+  ],
+  "assets": {
+    "stanford_good": "stanford_good_physical.usdc",
+    "alternate_model": "alternate_model_physical.usdc",
+    "broken_ear": "broken_ear_physical.usdc",
+    "body_chip": "body_chip_physical.usdc",
+    "dirty": "dirty_physical.usdc",
+    "undersize": "undersize_physical.usdc",
+    "oversize": "oversize_physical.usdc"
+  },
+  "dirt": {
+    "patch_count_min": 1,
+    "patch_count_max": 2,
+    "diameter_mm": [
+      3.0,
+      8.0
+    ],
+    "maximum_surface_fraction": 0.03
+  },
+  "placement": {
+    "edge_clearance_m": 0.035,
+    "edge_band_fraction": 0.2,
+    "edge_sampling_probability": 0.0,
+    "inlet_offset_m": 0.12,
+    "robot_center_x_range_m": [
+      0.55,
+      0.65
+    ],
+    "robot_footprint_x_range_m": [
+      0.49,
+      0.71
+    ]
+  },
+  "manifest_directory": "manifests",
+  "procedural_revision": "small_local_dirt_and_robot_work_band_v2",
+  "source_sha256": "21342eb5e5f1fed0e29539a9619b5e9b6a33d4d7ef77cbf3fcd15a106b2c9139",
+  "source_mesh_sha256": "a7c8dd408e5cafec3ffda2429c3f0036511977c5558802151cc39aba2e343ecb",
+  "inlet_layout": "L_negative_x"
+}

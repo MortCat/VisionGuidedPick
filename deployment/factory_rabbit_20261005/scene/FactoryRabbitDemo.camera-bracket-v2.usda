@@ -1,0 +1,293 @@
+#usda 1.0
+(
+    customLayerData = {
+        dictionary cameraSettings = {
+            dictionary Front = {
+                double3 position = (5, 0, 0)
+                double radius = 5
+            }
+            dictionary Perspective = {
+                double3 position = (5.8042797129860535, -7.198329788504636, 3.954906008434671)
+                double3 target = (-2.2437669233710267e-7, 0.39999997585063696, 1.0000003786415914)
+            }
+            dictionary Right = {
+                double3 position = (0, -5, 0)
+                double radius = 5
+            }
+            dictionary Top = {
+                double3 position = (0, 0, 5)
+                double radius = 5
+            }
+            string boundCamera = "/World/FactoryDemo/V2MountReviewCamera"
+        }
+        string design = "Camera bracket V2 with the final conveyor layout"
+        dictionary omni_layer = {
+            string authoring_layer = "./FactoryRabbitDemo.camera-bracket-v2.usda"
+        }
+        dictionary renderSettings = {
+        }
+        string status = "Final production scene"
+    }
+    defaultPrim = "World"
+    endTimeCode = 1000000
+    framesPerSecond = 30
+    metersPerUnit = 1
+    startTimeCode = 0
+    subLayers = [
+        @./morandi_clutter.usda@,
+        @./upstream_inspection_gantry.usda@,
+        @./camera_bracket_v2_mount.usda@,
+        @./factory_base.usda@
+    ]
+    timeCodesPerSecond = 30
+    upAxis = "Z"
+)
+
+over "World"
+{
+    over "FactoryDemo"
+    {
+        over "Stations"
+        {
+            over "arm_01"
+            {
+                over "MountPlate"
+                {
+                    over "Geometry"
+                    {
+                        rel material:binding = </World/FactoryDemo/Looks/Steel>
+                    }
+                }
+
+                def Xform "BinScaleBase" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+                )
+                {
+                    float physics:mass = 1
+                    def PhysicsFixedJoint "WorldSupport" (
+                        prepend apiSchemas = ["PhysicsArticulationRootAPI"]
+                    )
+                    {
+                        rel physics:body1 = </World/FactoryDemo/Stations/arm_01/BinScaleBase>
+                    }
+                }
+
+                def Xform "Bin" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "PhysicsFilteredPairsAPI"]
+                )
+                {
+                    float physics:mass = 1
+                    point3f physics:centerOfMass = (0.23, -1.23, 0.78)
+                    rel physics:filteredPairs = </World/FactoryDemo/Stations/arm_01/TableTop/Geometry>
+                }
+
+                def PhysicsFixedJoint "BinLoadCell"
+                {
+                    rel physics:body0 = </World/FactoryDemo/Stations/arm_01/BinScaleBase>
+                    rel physics:body1 = </World/FactoryDemo/Stations/arm_01/Bin>
+                    point3f physics:localPos0 = (0.23, -1.23, 0.75)
+                    point3f physics:localPos1 = (0.23, -1.23, 0.75)
+                }
+            }
+            over "arm_02"
+            {
+                over "MountPlate"
+                {
+                    over "Geometry"
+                    {
+                        rel material:binding = </World/FactoryDemo/Looks/Steel>
+                    }
+                }
+
+                def Xform "BinScaleBase" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+                )
+                {
+                    float physics:mass = 1
+                    def PhysicsFixedJoint "WorldSupport" (
+                        prepend apiSchemas = ["PhysicsArticulationRootAPI"]
+                    )
+                    {
+                        rel physics:body1 = </World/FactoryDemo/Stations/arm_02/BinScaleBase>
+                    }
+                }
+
+                def Xform "Bin" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "PhysicsFilteredPairsAPI"]
+                )
+                {
+                    float physics:mass = 1
+                    point3f physics:centerOfMass = (0.23, 0.27, 0.78)
+                    rel physics:filteredPairs = </World/FactoryDemo/Stations/arm_02/TableTop/Geometry>
+                }
+
+                def PhysicsFixedJoint "BinLoadCell"
+                {
+                    rel physics:body0 = </World/FactoryDemo/Stations/arm_02/BinScaleBase>
+                    rel physics:body1 = </World/FactoryDemo/Stations/arm_02/Bin>
+                    point3f physics:localPos0 = (0.23, 0.27, 0.75)
+                    point3f physics:localPos1 = (0.23, 0.27, 0.75)
+                }
+            }
+        }
+
+        over "Version2"
+        {
+            over "QualitySamples" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Version3"
+        {
+            over "DirtSamples" (
+                active = false
+            )
+            {
+            }
+        }
+
+        def Camera "V2MountReviewCamera" (
+            prepend apiSchemas = ["OmniRtxCameraAutoExposureAPI_1", "OmniRtxCameraExposureAPI_1"]
+            customData = {
+                string role = "Static model review only; not a perception sensor"
+            }
+        )
+        {
+            float2 clippingRange = (0.001, 100)
+            float exposure:fStop = 5
+            float exposure:responsivity = 1.1026709
+            float exposure:time = 0.02
+            float focalLength = 30
+            custom uniform vector3d omni:kit:centerOfInterest = (0, 0, -4.5562946360945356)
+            matrix4d xformOp:transform = ( (0.6231493512656131, 0.7821026153858153, 0.0006205029524572574, 0), (-0.2030494068923139, 0.1610157002171798, 0.9658389527474301, 0), (0.7552852602678851, -0.6019879095880909, 0.25914230131693156, 0), (3.9376041728881734, -2.723370563454789, 2.3656318793923234, 1.0000000000000002) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+
+    }
+}
+
+over "Render"
+{
+    over "OmniverseKit"
+    {
+        over "HydraTextures"
+        {
+            over "omni_kit_widget_viewport_ViewportTexture_0"
+            {
+                rel camera = </World/FactoryDemo/V2MountReviewCamera>
+                bool omni:rtx:material:db:syncLoads = 1
+                bool omni:rtx:rt:ecoMode:enabled
+                bool omni:rtx:scene:hydra:materialSyncLoads = 1
+                rel orderedVars = </Render/Vars/LdrColor>
+                custom bool overrideClipRange = 0
+                uniform int2 resolution = (1280, 720)
+            }
+        }
+    }
+}
+
+over "OmniverseKit_Persp" (
+    prepend apiSchemas = ["OmniRtxCameraAutoExposureAPI_1", "OmniRtxCameraExposureAPI_1"]
+    customData = {
+        dictionary omni = {
+            dictionary kit = {
+                bool hide_in_stage_window = 1
+                bool no_delete = 1
+            }
+        }
+    }
+    hide_in_stage_window = true
+    kind = "component"
+    no_delete = true
+)
+{
+    float2 clippingRange = (0.01, 10000000)
+    float exposure:fStop = 5
+    float exposure:responsivity = 1.1026709
+    float exposure:time = 0.02
+    float focalLength = 18.147562
+    float focusDistance = 400
+    custom uniform vector3d omni:kit:centerOfInterest = (-2.050377943390082e-16, 0, -10.007784374183016)
+    float3 xformOp:rotateXYZ = (72.82683, 6.3611094e-15, 37.37581)
+    float3 xformOp:scale = (1, 1, 1)
+    double3 xformOp:translate = (5.8042797129860535, -7.198329788504636, 3.954906008434671)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+}
+
+over "OmniverseKit_Front" (
+    customData = {
+        dictionary omni = {
+            dictionary kit = {
+                bool hide_in_stage_window = 1
+                bool no_delete = 1
+            }
+        }
+    }
+    hide_in_stage_window = true
+    kind = "component"
+    no_delete = true
+)
+{
+    float2 clippingRange = (1, 10000000)
+    float horizontalAperture = 50
+    custom uniform vector3d omni:kit:centerOfInterest = (0, 0, -5)
+    token projection = "orthographic"
+    float verticalAperture = 50
+    float3 xformOp:rotateXYZ = (90, -1.2722219e-14, 90)
+    float3 xformOp:scale = (1, 1, 1)
+    double3 xformOp:translate = (5, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+}
+
+over "OmniverseKit_Right" (
+    customData = {
+        dictionary omni = {
+            dictionary kit = {
+                bool hide_in_stage_window = 1
+                bool no_delete = 1
+            }
+        }
+    }
+    hide_in_stage_window = true
+    kind = "component"
+    no_delete = true
+)
+{
+    float2 clippingRange = (1, 10000000)
+    float horizontalAperture = 50
+    custom uniform vector3d omni:kit:centerOfInterest = (0, 0, -5)
+    token projection = "orthographic"
+    float verticalAperture = 50
+    float3 xformOp:rotateXYZ = (90, -1.41245e-30, 1.2722219e-14)
+    float3 xformOp:scale = (1, 1, 1)
+    double3 xformOp:translate = (0, -5, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+}
+
+over "OmniverseKit_Top" (
+    customData = {
+        dictionary omni = {
+            dictionary kit = {
+                bool hide_in_stage_window = 1
+                bool no_delete = 1
+            }
+        }
+    }
+    hide_in_stage_window = true
+    kind = "component"
+    no_delete = true
+)
+{
+    float2 clippingRange = (1, 10000000)
+    float horizontalAperture = 50
+    custom uniform vector3d omni:kit:centerOfInterest = (0, 0, -5)
+    token projection = "orthographic"
+    float verticalAperture = 50
+    float3 xformOp:rotateXYZ = (-1.2722219e-14, -7.016709e-15, -90)
+    float3 xformOp:scale = (1, 1, 1)
+    double3 xformOp:translate = (0, 0, 5)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+}

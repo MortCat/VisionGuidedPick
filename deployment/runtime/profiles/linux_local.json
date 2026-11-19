@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "profile_id": "linux_local",
+  "ros": { "distro": "jazzy", "rmw_implementation": "rmw_fastrtps_cpp", "domain_id": 0 },
+  "dds": { "transport": "udp_v4", "profile_path": "../fastdds_udp.xml" },
+  "simulator": { "host_os": "linux", "ros_library_source": "native_jazzy", "bridge_extension": "isaacsim.ros2.bridge" },
+  "application": { "host_environment": "linux" },
+  "network": {}
+}

@@ -1,0 +1,314 @@
+schema_version: 2
+configuration_state: ready
+runtime:
+  namespace: arm_01
+  use_sim_time: true
+  motion_backend: moveit
+  operation_mode: assumed_ng_demo
+ros:
+  endpoints:
+    rgb: camera/color/image_raw
+    depth: camera/depth/image_raw
+    rgb_intrinsics: camera/color/camera_info
+    depth_intrinsics: camera/depth/camera_info
+    joint_states: joint_states
+    tracks: vision/tracks
+    frame: vision/frame
+    detections: inference/detections
+    object_cloud_preview: vision/object_cloud_preview
+    vision_status: vision/status
+    inference_status: inference/status
+    capture_grasp_surface: vision/capture_grasp_surface
+    arm_move: arm/move_to_pose
+    motion_check: arm/check_motion
+    grasp_evaluate: arm/evaluate_grasp_candidates
+    arm_follow: arm/follow_target
+    arm_target: arm/target_update
+    arm_stop: arm/stop
+    arm_status: arm/status
+    scene_sync: arm/sync_scene
+    gripper_command: gripper/command
+    gripper_status: gripper/status
+    controller_trajectory: arm_controller/follow_joint_trajectory
+    controller_gripper: gripper_controller/gripper_cmd
+    servo_twist: servo/twist_command
+    servo_pause: servo/pause_servo
+    servo_command_type: servo/switch_command_type
+    servo_status: servo/status
+    task_command: task/command
+    task_status: task/status
+frames:
+  world: world
+  robot_base: arm_01/panda_link0
+  tcp: arm_01/tcp
+  color_optical: arm_01/camera_color_optical_frame
+  depth_optical: arm_01/camera_depth_optical_frame
+calibration:
+  robot_description_path: assets/arm_01.urdf
+  expected_calibration_id: arm_01_d455_cad_v2_20261026
+  hand_eye_path: assets/arm_01_hand_eye.yaml
+time:
+  sensor_future_tolerance_sec: 0.03
+vision:
+  rgb_depth_sync_tolerance_sec: 0.08
+  frame_max_age_sec: 0.7
+  tf_lookup_timeout_sec: 0.15
+  max_buffered_frames: 32
+  roi_margin_ratio: 0.1
+  depth_min_m: 0.01
+  depth_max_m: 2.0
+  depth_registration: required
+  min_valid_depth_points: 24
+  min_laplacian_variance: 1.0
+  min_brightness: 3.0
+  max_brightness: 253.0
+  max_frame_megabytes: 8.0
+  foreground:
+    source: depth_workspace
+    bounds_min_m:
+    - 0.45
+    - -1.3
+    - 0.75
+    bounds_max_m:
+    - 0.775
+    - 1.3
+    - 1.1
+    support_plane_z_m: 0.75
+    min_height_m: 0.008
+    max_height_m: 0.35
+    cell_size_m: 0.008
+    min_span_m: 0.02
+    max_span_m: 0.14
+    min_points: 24
+    max_objects: 8
+  tracking_camera:
+    role: disabled
+tracking:
+  min_confirmed_observations: 3
+  observation_max_age_sec: 0.7
+  temporary_loss_timeout_sec: 3.5
+  max_prediction_horizon_sec: 3.0
+  association_distance_m: 0.075
+  max_position_stddev_m: 0.015
+  max_tracked_objects: 32
+  velocity_min_samples: 3
+  velocity_max_samples: 16
+  velocity_window_sec: 1.2
+  velocity_min_span_sec: 0.25
+  max_velocity_fit_residual_m: 0.02
+  max_velocity_uncertainty_mps: 0.08
+  max_yaw_stddev_rad: 0.4
+  yaw_ambiguity_margin_m: 0.0002
+task:
+  target_selection_roi:
+    bounds_min_m:
+    - 0.45
+    - -1.1
+    - 0.75
+    bounds_max_m:
+    - 0.775
+    - -0.8
+    - 1.1
+  cycle_timeout_sec: 90.0
+  preparing_pick_timeout_sec: 8.0
+  transport_timeout_sec: 8.0
+  place_timeout_sec: 5.0
+  recovery_timeout_sec: 7.5
+  max_cycle_retries: 0
+  candidate_retry_interval_sec: 0.75
+  max_candidate_admission_attempts_per_observation: 2
+inspection:
+  acquisition_timeout_sec: 50.0
+  evaluation_timeout_sec: 4.0
+  view_target_position_tolerance_m: 0.03
+  view_target_orientation_tolerance_rad: 0.35
+  inference:
+    backend: assumed_ng
+    model_path: null
+    model_version: assumed_ng_demo_v1
+    request_timeout_sec: 0.4
+    max_pending_requests: 5
+    model_class_names:
+    - bunny
+    object_class_ids:
+    - bunny
+    defect_class_ids: []
+    object_confidence_threshold: 0.5
+    candidate_confidence_threshold: 0.5
+    device: cpu
+    rf_detr:
+      defect_confidence_threshold: null
+      min_positive_frames: null
+    efficient_ad:
+      anomaly_score_threshold: null
+      min_positive_frames: null
+  geometry:
+    enabled: true
+    healthy_reference_path: ../../assets/stanford_good.ply
+    registration_max_error_m: 0.012
+    defect_distance_threshold_m: 0.003
+    yaw_search_step_rad: 0.5235987755982988
+    registration:
+      coarse_voxel_size_m: 0.003
+      fine_voxel_size_m: 0.0015
+      max_points: 800
+      max_iterations: 12
+      max_correspondence_distance_m: 0.018
+      min_inlier_fraction: 0.45
+      convergence_translation_m: 0.0003
+      convergence_yaw_rad: 0.005
+      local_translation_limit_m: 0.05
+      local_yaw_limit_rad: 0.3
+    fusion:
+      evidence_voxel_size_m: 0.001
+      max_points: 24000
+    min_registration_points: 24
+    min_defect_points: 8
+    defect_merge_distance_m: 0.004
+    min_observed_reference_fraction: 0.15
+  report:
+    output_dir: ../../../../artifacts/camera_bracket_v2/inspections/arm_01
+    save_timeout_sec: 4.0
+    max_frames: 24
+    max_detections_per_frame: 32
+    max_total_megabytes: 2048.0
+motion:
+  observation_stream:
+    update_period_sec: 0.05
+    preview_horizon_sec: 0.2
+  moveit:
+    planning_group: panda_arm
+    srdf_path: assets/arm_01.srdf
+    moveit_config_path: ../../assets/arm_01_moveit.yaml
+    gripper_joint: panda_finger_joint1
+    touch_links:
+    - arm_01/panda_leftfinger
+    - arm_01/panda_rightfinger
+    servo_position_gain: 4.0
+    servo_orientation_gain: 4.0
+    joint_stop_velocity: 0.1
+    joint_position_tolerance_rad: 0.015
+    gripper_width_factor: 2.0
+  joint_state_max_age_sec: 0.25
+  tcp_state_max_age_sec: 0.25
+  planning_timeout_sec: 3.0
+  execution_timeout_sec: 8.0
+  stop_confirmation_timeout_sec: 1.5
+  target_update_timeout_sec: 1.5
+  max_velocity_scale: 1.0
+  max_acceleration_scale: 1.0
+  position_tolerance_m: 0.008
+  orientation_tolerance_rad: 0.04
+  max_follow_linear_speed_mps: 1.0
+  max_follow_angular_speed_radps: 4.0
+  workspace:
+    bounds_min_m:
+    - -0.2
+    - -1.4
+    - 0.7
+    bounds_max_m:
+    - 0.83
+    - -0.09999999999999998
+    - 1.5
+  observation_pose:
+    position_m:
+    - 0.355
+    - -0.2115
+    - 0.45
+    orientation_xyzw:
+    - 1
+    - 0
+    - 0
+    - 0
+grasp:
+  moving_intercept: true
+  closing_axis_tcp:
+  - 0
+  - 1
+  - 0
+  finger_center_tcp_m:
+  - 0
+  - 0
+  - -0.0049999990755
+  intercept_lead_sec: 0.1
+  contact_band_fraction: 0.45
+  min_contact_points: 12
+  verification_probe_m: 0.04
+  pregrasp_clearance_m: 0.04
+  pad_contact_size_m: [0.038, 0.022]
+  finger_effort_thresholds_n: [1.0, 3.0] # per finger: empty maximum, holding minimum
+  minimum_holding_width_m: 0.003 # total jaw opening
+  fingertip_box_tcp:
+    bounds_min_m:
+    - -0.02
+    - -0.066346
+    - -0.044867
+    bounds_max_m:
+    - 0.02
+    - 0.066346
+    - 0.0089
+  support_plane_clearance_m: 0.01
+  approach_timeout_sec: 5.0
+  close_timeout_sec: 1.5
+  verification_timeout_sec: 3.5
+  release_timeout_sec: 1.5
+  max_relative_linear_speed_mps: 0.05
+  descent_speed_mps: 0.10
+  probe_lift_speed_mps: 0.2
+  approach_tcp_in_object:
+    position_m:
+    - 0
+    - 0
+    - 0.035
+    orientation_xyzw:
+    - 0.9659258262890683
+    - 0
+    - -0.25881904510252074
+    - 0
+  gripper:
+    open_width_m: 0.08
+    close_width_m: 0.0
+    max_effort_n: 0.0
+  verification:
+    method: joint_and_visual
+    min_confirmations: 1
+  lift_distance_m: 0.04
+  bin_height:
+    bounds_min_m: [-0.055, -0.615, 0.115]
+    bounds_max_m: [0.215, -0.345, 0.65]
+    release_clearance_m: 0.04
+  bin_approach_pose:
+    position_m:
+    - 0.08
+    - -0.48
+    - 0.45
+    orientation_xyzw:
+    - 1
+    - 0
+    - 0
+    - 0
+  bin_release_pose:
+    position_m:
+    - 0.08
+    - -0.48
+    - 0.31
+    orientation_xyzw:
+    - 1
+    - 0
+    - 0
+    - 0
+scene:
+  static_geometry_path: ../../assets/static_geometry.yaml
+  dynamic_object_max_age_sec: 0.7
+  object_cloud:
+    enabled: false
+    voxel_size_m: null
+    max_points_per_object: null
+  occupancy_map:
+    enabled: false
+    resolution_m: null
+diagnostics:
+  event_queue_capacity: 256
+  transition_history_capacity: 512
+  record_rgbd: false
+  recording_output_dir: ../../../../artifacts/camera_bracket_v2/recordings/arm_01

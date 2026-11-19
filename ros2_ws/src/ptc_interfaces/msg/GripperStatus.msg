@@ -1,0 +1,9 @@
+ptc_interfaces/EventKey key
+std_msgs/Header header
+float64 width_m
+bool ready
+bool stopped
+bool empty_confirmed
+bool contact_confirmed
+bool visual_follow_confirmed
+uint64 evidence_sequence

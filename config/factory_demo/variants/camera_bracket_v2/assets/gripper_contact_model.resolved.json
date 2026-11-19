@@ -1,0 +1,64 @@
+{
+  "arm_01": {
+    "finger_center_tcp_m": [
+      0.0,
+      0.0,
+      -0.0049999990754953025
+    ],
+    "contacts": [
+      {
+        "link": "arm_01/panda_leftfinger",
+        "mesh": "../../../assets/meshes/collision/finger_pad_a.stl",
+        "sha256": "313649c59763658409e0c3ad66481dacafc742e0837adc658a4b130cca8c6b7f",
+        "center_tcp_m": [
+          1.0996933067969155e-17,
+          -1.4969191097088417e-16,
+          -0.0049999990754953025
+        ]
+      },
+      {
+        "link": "arm_01/panda_rightfinger",
+        "mesh": "../../../assets/meshes/collision/finger_pad_a.stl",
+        "sha256": "313649c59763658409e0c3ad66481dacafc742e0837adc658a4b130cca8c6b7f",
+        "center_tcp_m": [
+          1.083115156494956e-17,
+          -1.496919109708842e-16,
+          -0.0049999990754953025
+        ]
+      }
+    ],
+    "urdf_sha256": "c81d013f6a567fb01812cbfe85307cd2345d441a022db74bceedd88c98c823d2",
+    "tcp_link": "arm_01/tcp"
+  },
+  "arm_02": {
+    "finger_center_tcp_m": [
+      0.0,
+      0.0,
+      -0.004999999075495483
+    ],
+    "contacts": [
+      {
+        "link": "arm_02/panda_leftfinger",
+        "mesh": "../../../assets/meshes/collision/finger_pad_a.stl",
+        "sha256": "313649c59763658409e0c3ad66481dacafc742e0837adc658a4b130cca8c6b7f",
+        "center_tcp_m": [
+          6.650808429922698e-17,
+          -1.4969191097088417e-16,
+          -0.004999999075495483
+        ]
+      },
+      {
+        "link": "arm_02/panda_rightfinger",
+        "mesh": "../../../assets/meshes/collision/finger_pad_a.stl",
+        "sha256": "313649c59763658409e0c3ad66481dacafc742e0837adc658a4b130cca8c6b7f",
+        "center_tcp_m": [
+          6.634230279620739e-17,
+          -1.496919109708842e-16,
+          -0.004999999075495483
+        ]
+      }
+    ],
+    "urdf_sha256": "6e121897243d08f11a8c876b3f8e7c8ef2daf9dd998da44095b2793867f21d68",
+    "tcp_link": "arm_02/tcp"
+  }
+}

@@ -1,0 +1,16 @@
+# Product overrides for the shared Gantry Observe tracker.
+ros:
+  endpoints:
+    detections: vision/semantic_detections
+vision:
+  tracking_camera:
+    role: external
+  foreground:
+    source: model
+inspection:
+  geometry:
+    healthy_reference_path: null
+task:
+  target_selection_roi:
+    bounds_min_m: [0.45, 0.3, 0.745]
+    bounds_max_m: [0.775, 0.73, 1.1]

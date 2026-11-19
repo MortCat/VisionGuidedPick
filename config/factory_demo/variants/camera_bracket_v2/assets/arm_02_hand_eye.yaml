@@ -1,0 +1,18 @@
+{
+  "calibration_id": "arm_02_d455_cad_v2_20261026",
+  "tcp_frame": "arm_02/tcp",
+  "optical_frame": "arm_02/camera_color_optical_frame",
+  "camera_in_tcp": {
+    "position_m": [
+      0.10500000000000005,
+      -0.011500000000000177,
+      -0.09340000000000016
+    ],
+    "orientation_xyzw": [
+      -0.09229595564125731,
+      0.0922958621197072,
+      0.7010573846499779,
+      -0.7010570356228014
+    ]
+  }
+}

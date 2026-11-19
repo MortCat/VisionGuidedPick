@@ -1,0 +1,20 @@
+ptc_interfaces/EventKey key
+uint64 command_id
+string<=128 view_id
+geometry_msgs/PoseStamped requested_camera_world
+builtin_interfaces/Duration timeout
+---
+ptc_interfaces/EventKey key
+uint64 command_id
+bool success
+ptc_interfaces/RgbdFrame frame
+ptc_interfaces/TrackedObject object_at_capture
+# Measured masked surface in object_at_capture local coordinates; no template points.
+sensor_msgs/PointCloud2 object_cloud
+# Downsampled non-target offsets in world axes from the captured object position.
+# Same capture stamp and identity as object_cloud; empty means no obstacle evidence.
+geometry_msgs/Point32[<=384] neighbor_offsets_world
+float32 neighbor_capture_ms
+string<=512 message
+---
+bool waiting_for_valid_frame

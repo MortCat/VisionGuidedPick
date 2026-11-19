@@ -1,0 +1,122 @@
+# ROS 2 / colcon
+build/
+install/
+log/
+
+# CMake and MSVC
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.pdb
+*.obj
+*.ilk
+*.exe
+*.dll
+*.lib
+
+# Python training and inference
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.venv-rabbit-seg/
+venv/
+
+# Model and experiment outputs
+artifacts/
+runs/
+checkpoints/
+
+# IDE and OS
+.vs/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local environment
+.env
+.env.*
+!.env.example
+/deployment/runtime/local/
+/ros2_ws/src/ptc_monitor/web/node_modules/
+# pixi environments
+.pixi/*
+!.pixi/config.toml
+
+# Local project delivery archives; sources/assets are committed separately.
+/deployment/PickTurnCheck_factory_*.zip
+
+/deployment/PickTurnCheck_full_project_*.zip
+
+# Optional read-only monitor build/install, separate from application owners.
+/monitor_build/
+/monitor_install/
+/monitor_log/
+
+# Optional monitor contract verification overlays and source backups
+ui_contract_build/
+ui_contract_install/
+ui_contract_log/
+ui_contract_sources/
+ui_source_backup_*/
+ui_interface_build/
+ui_interface_install/
+ui_interface_log/
+
+/native_build/
+/native_install/
+/native_log/
+/runtime_source_backups/
+/deployment/linux/runtime/*_report.json
+/deployment/linux/runtime/servo_rejection.json
+/deployment/linux/runtime/*_description.urdf
+
+# Duplicate annotation upload archive; curated images and manifests are tracked.
+/datasets/gantry_rgb_for_annotation_20261015.zip
+
+# Bulky historical raw grasp trials remain local; curated checkpoint evidence is tracked.
+/logs/grasp_pose_tests_20261019/
+
+# Generated checkpoint delivery archives and SHA manifests.
+/deployment/PickTurnCheck_factory_*.zip
+/deployment/PickTurnCheck_delivery_*.manifest.json
+
+# Generated annotation delivery archive; source images and manifests remain reviewable.
+/datasets/bunny_normal_multiview_20261029.zip
+
+# Rebuild dataset ROI derivatives from originals and manifest.
+/datasets/bunny_normal_multiview_20261029/object_crops/
+/datasets/bunny_normal_multiview_20261029/object_crop_masks/
+/tools/datasets/__pycache__/
+
+# Local CAD backups and Python bytecode from asset/training checks.
+/assets/design/teddy_bear/*.blend1
+/assets/design/teddy_bear/*.FCStd1
+/tools/modeling/__pycache__/
+/tools/training/rabbit_segmentation/__pycache__/
+
+# Teach Target local environment and generated files
+/.teach_api_env/
+/.teach_ml_env/
+/artifacts/teach_target/
+/tools/teach_target/__pycache__/
+
+/deployment/runtime/local/teaching_access_code
+
+# Acquired/vendor assets and generated files are never part of this source export.
+/deployment/factory_rabbit_20261005/assets/official/
+/logs/
+/datasets/
+/recordings/
+/.teach_api_env/
+/.teach_ml_env/
+/.public-export/
+/export-source.json
+
+/artifacts/default-model-cache/
+/config/factory_demo/variants/*/*.semantic.yaml

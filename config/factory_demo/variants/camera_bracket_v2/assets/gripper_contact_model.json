@@ -1,0 +1,24 @@
+{
+  "contact_meshes": [
+    {
+      "mesh": "../../../assets/meshes/collision/finger_pad_a.stl",
+      "inward_normal_mesh": [
+        0,
+        -1,
+        0
+      ]
+    }
+  ],
+  "arms": {
+    "arm_01": {
+      "settings": "arm_01.yaml",
+      "urdf": "assets/arm_01.urdf",
+      "tcp_link": "arm_01/tcp"
+    },
+    "arm_02": {
+      "settings": "arm_02.yaml",
+      "urdf": "assets/arm_02.urdf",
+      "tcp_link": "arm_02/tcp"
+    }
+  }
+}

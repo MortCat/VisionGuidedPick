@@ -1,0 +1,163 @@
+{
+  "kind": "robot_description",
+  "id": "arm_01_d455_cad_v2_20261026",
+  "sha256": "c81d013f6a567fb01812cbfe85307cd2345d441a022db74bceedd88c98c823d2",
+  "dependencies": [
+    {
+      "path": "../../../assets/meshes/collision/finger.stl",
+      "sha256": "2d07a740392f3b9b0816f65d64fff9927d3d57c897870fc4b6ff9c56fff3a0c8"
+    },
+    {
+      "path": "../../../assets/meshes/collision/finger_pad_a.stl",
+      "sha256": "313649c59763658409e0c3ad66481dacafc742e0837adc658a4b130cca8c6b7f"
+    },
+    {
+      "path": "../../../assets/meshes/collision/hand.stl",
+      "sha256": "94493e94f30fe940f2c8ca2f155c3bbe67bbff406d3edf5e261670d2f0f6e2ed"
+    },
+    {
+      "path": "../../../assets/meshes/collision/link0.stl",
+      "sha256": "dfc6d94330de8ddb005b311bfdba9f3b8e1aa7c256b71592ee7ff32cb9a9a5aa"
+    },
+    {
+      "path": "../../../assets/meshes/collision/link1.stl",
+      "sha256": "e41a39a94108fcf56aacff603fc91ec80541f4c1af17b51a0de5617f5566e6d2"
+    },
+    {
+      "path": "../../../assets/meshes/collision/link2.stl",
+      "sha256": "370f7605a0fae3529db169ded50f52f171024aa792d4d773bc84197301f6a039"
+    },
+    {
+      "path": "../../../assets/meshes/collision/link3.stl",
+      "sha256": "0a8d638b9349c6c0eefc4e888636ac4838c4b27170f18a51699321118af709c1"
+    },
+    {
+      "path": "../../../assets/meshes/collision/link4.stl",
+      "sha256": "0180ebb5772ec9840cb049750cffb29a9ddc90311752a16ea34757782ef9e48d"
+    },
+    {
+      "path": "../../../assets/meshes/collision/link5.stl",
+      "sha256": "dd17e688c7870e722283525879643d53a74c0024d328b0e14b034b54c8b6c31a"
+    },
+    {
+      "path": "../../../assets/meshes/collision/link6.stl",
+      "sha256": "20b768e99a0e0440b5754dcca108016434e57937cc356acd9c352ccd3cb27f77"
+    },
+    {
+      "path": "../../../assets/meshes/collision/link7.stl",
+      "sha256": "92ac6afcf7574c034d3170d8a68e95ac9048ab9d0dd5bbd8311b86e551b9ab1c"
+    },
+    {
+      "path": "../../../assets/meshes/visual/finger.dae",
+      "sha256": "e7a447a9943ed4b0385b228de49409b71fe603ebff7c12bcbc0ea6e16206ff62"
+    },
+    {
+      "path": "../../../assets/meshes/visual/hand.dae",
+      "sha256": "01259e1c53b158db0e304b5da131a9fd1f5205f273d5e2300aec839375e671de"
+    },
+    {
+      "path": "../../../assets/meshes/visual/link0.dae",
+      "sha256": "8520232d4fc2cff0a5d4e360c9bf1be10b3be6bb4327cfb26356e1051b5d2e10"
+    },
+    {
+      "path": "../../../assets/meshes/visual/link1.dae",
+      "sha256": "07c4a0a53d77d9a459e347355db0c3fe4c64c64fb7448ecdd398620da49c1df1"
+    },
+    {
+      "path": "../../../assets/meshes/visual/link2.dae",
+      "sha256": "18180c0fc3c4cc9aeec7d4f8f266a3c7e8c9b00c562fb5008cab3ff875a07427"
+    },
+    {
+      "path": "../../../assets/meshes/visual/link3.dae",
+      "sha256": "314601331761991c75109837ad06fa1291e42e29add1f589c438b6fa81500a2d"
+    },
+    {
+      "path": "../../../assets/meshes/visual/link4.dae",
+      "sha256": "df5dc2ea4fe209b7cc11324d8f6d194c081e4e94ac57d325eec1c1f623a70bf7"
+    },
+    {
+      "path": "../../../assets/meshes/visual/link5.dae",
+      "sha256": "9007e8599469877eeccfa2bbe730c453105bef311f513f037471aaaa9e718635"
+    },
+    {
+      "path": "../../../assets/meshes/visual/link6.dae",
+      "sha256": "b5030713277545b6e1c839fc4f6c50d53c29645d89df69ea3d5b4602dda2913f"
+    },
+    {
+      "path": "../../../assets/meshes/visual/link7.dae",
+      "sha256": "71740e23b6bb12cc5a535905b516fe27ec401616704c7869c1d607255f778b67"
+    },
+    {
+      "path": "camera_bracket_v2/collision_base_m.stl",
+      "sha256": "ba44020f8e7fadc4224d88081d8da329313fbdd5d347b071ebfe781cdd160085"
+    },
+    {
+      "path": "camera_bracket_v2/collision_camera_neck_m.stl",
+      "sha256": "cae1f0c1088a5ec6cf1a9d9c1b9b974a20028902d5638fc9f407db79067c5cc3"
+    },
+    {
+      "path": "camera_bracket_v2/collision_camera_pivot_m.stl",
+      "sha256": "4a447d68b54739f6cd72040ec24e2badda287ae80322e507cde1ec37daa93b28"
+    },
+    {
+      "path": "camera_bracket_v2/collision_camera_plate_m.stl",
+      "sha256": "113ff292a3bd9ed3bac3d17abe7f31239cf876207f2edf537358f02b76a07496"
+    },
+    {
+      "path": "camera_bracket_v2/collision_left_elbow_m.stl",
+      "sha256": "32772b478e0f87dd2d74f9ceec9465b935fe5d00a32cfeea269525f7e8a0ff99"
+    },
+    {
+      "path": "camera_bracket_v2/collision_left_eye_m.stl",
+      "sha256": "48ee6a6e191b7a2d749941f9fda1a7c7aada81fae468b4f7f8ed59d3f272c1bc"
+    },
+    {
+      "path": "camera_bracket_v2/collision_left_rib_0_m.stl",
+      "sha256": "9e38fd054511a40f8dd83d7a48c52047b2c329e19cc2280cc5ee597cea0eb27e"
+    },
+    {
+      "path": "camera_bracket_v2/collision_left_rib_1_m.stl",
+      "sha256": "4d0c528f6716516518f37f069b9bdced4d349aa32b41048cd8b9ddd39017a7e4"
+    },
+    {
+      "path": "camera_bracket_v2/collision_right_elbow_m.stl",
+      "sha256": "f43ca033d04bbd8b6fc9af55d437273f158bb6c8122af48273ca0100ad52a9b3"
+    },
+    {
+      "path": "camera_bracket_v2/collision_right_eye_m.stl",
+      "sha256": "b03a7396166eb1d24e2b953d1dab39825a12002da4d76cfb7dd3dc764979fd16"
+    },
+    {
+      "path": "camera_bracket_v2/collision_right_rib_0_m.stl",
+      "sha256": "4dd65c5a87ada4dc6178b030f10899dc90370b98290aa8c18de888f9c627faa7"
+    },
+    {
+      "path": "camera_bracket_v2/collision_right_rib_1_m.stl",
+      "sha256": "89fb9c18992386cfce3dc30a07d31e75d10e0556964077e836f3d79dccaeae55"
+    },
+    {
+      "path": "camera_bracket_v2/collision_spacer_left_m.stl",
+      "sha256": "cd558b445dba6f65b310279d9be8ecfd60f2bb51fcdf427c85c3c5de3953747d"
+    },
+    {
+      "path": "camera_bracket_v2/collision_spacer_right_m.stl",
+      "sha256": "c0c88834c1c9711f6cece38ab8e9945cd58f6db36d89149c83c015ce586668ae"
+    },
+    {
+      "path": "camera_bracket_v2/visual_camera_rear_plate_and_pivot_m.stl",
+      "sha256": "3ba0d79d8756f02de2284400adc4ddd192a9f72f735df5b299f5049589fed982"
+    },
+    {
+      "path": "camera_bracket_v2/visual_pivot_spacer_left_m.stl",
+      "sha256": "62ab57954aa1e19ba5c6b3ec2bd09315e3a56c8ed8281b0d622edd4559860bc2"
+    },
+    {
+      "path": "camera_bracket_v2/visual_pivot_spacer_right_m.stl",
+      "sha256": "4787bda7f28d544a63d28436b7441874ee4ae3c8a9b1fb9f09b71252a269232d"
+    },
+    {
+      "path": "camera_bracket_v2/visual_support_frame_PROVISIONAL_HOLES_m.stl",
+      "sha256": "2341cf3e423aa6311686d9bf4c83dbb69b808f2efdd563ed30c5ce5cf006c969"
+    }
+  ]
+}

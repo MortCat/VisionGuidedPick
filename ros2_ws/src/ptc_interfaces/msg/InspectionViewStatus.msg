@@ -1,0 +1,20 @@
+# Task-owned diagnostics only. Does not grant control or certify image evidence.
+uint8 IDLE=0
+uint8 PLANNING=1
+uint8 MOVING=2
+uint8 FOLLOWING=3
+uint8 CAPTURING=4
+uint8 ANALYZING=5
+uint8 WAITING=6
+std_msgs/Header header
+ptc_interfaces/EventKey key
+string<=128 binding_revision
+string<=64 operation_mode
+uint8 view_phase
+string<=128 requested_view_id
+string<=128 last_valid_view_id
+uint64 last_valid_frame_id
+builtin_interfaces/Time last_valid_stamp
+string<=128[<=5] required_view_ids
+uint32 pending_analysis
+string<=512 reason

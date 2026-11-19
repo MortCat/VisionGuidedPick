@@ -1,0 +1,17 @@
+#usda 1.0
+
+over "World"
+{
+    over "FactoryDemo"
+    {
+        custom asset clutter:asset = @./clutter/morandi_blocks.usda@
+        custom bool clutter:enabled = 1
+        custom double clutter:intervalSeconds = 1
+        custom double2 clutter:sizeRangeMeters = (0.028, 0.042)
+        custom bool feeder:alternateBear = 1
+        custom asset feeder:bearAsset = @./clutter/teddy_bear.usdc@
+        custom double feeder:intervalSeconds = 4
+        custom string feeder:policy = "rabbit_bear_alternating"
+    }
+}
+

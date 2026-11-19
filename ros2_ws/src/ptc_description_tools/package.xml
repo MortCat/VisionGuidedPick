@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>ptc_description_tools</name><version>0.1.0</version>
+  <description>Optional offline composed USD rigid hand-eye exporter.</description>
+  <maintainer email="mortcj0@gmail.com">MortCat</maintainer><license>MIT</license>
+  <buildtool_depend>ament_cmake</buildtool_depend><depend>ptc_app</depend>
+  <depend>openusd</depend>
+  <depend>yaml-cpp</depend>
+  <export><build_type>ament_cmake</build_type></export>
+</package>

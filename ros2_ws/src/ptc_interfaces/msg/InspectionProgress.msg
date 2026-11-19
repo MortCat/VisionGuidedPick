@@ -1,0 +1,15 @@
+ptc_interfaces/EventKey key
+uint8 NOT_STARTED=0
+uint8 ACQUIRING=1
+uint8 EVALUATING=2
+uint8 DEFECTIVE=3
+uint8 NO_DEFECT_OBSERVED=4
+uint8 INCONCLUSIVE=5
+uint8 FINALIZING=6
+uint8 phase
+string<=128[<=5] view_ids
+uint32[<=5] valid_frames
+uint32 pending_requests
+bool geometry_complete
+bool report_saved
+string<=512 reason

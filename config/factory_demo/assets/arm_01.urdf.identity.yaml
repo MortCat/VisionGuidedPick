@@ -1,0 +1,91 @@
+{
+  "kind": "robot_description",
+  "id": "arm_01_d455_phase1_20261005",
+  "sha256": "9d254b54f91b5a6146e959e0fc5dee63dd4ea67f2bd863df559d622e63c15199",
+  "dependencies": [
+    {
+      "path": "meshes/collision/finger.stl",
+      "sha256": "2d07a740392f3b9b0816f65d64fff9927d3d57c897870fc4b6ff9c56fff3a0c8"
+    },
+    {
+      "path": "meshes/collision/hand.stl",
+      "sha256": "94493e94f30fe940f2c8ca2f155c3bbe67bbff406d3edf5e261670d2f0f6e2ed"
+    },
+    {
+      "path": "meshes/collision/link0.stl",
+      "sha256": "dfc6d94330de8ddb005b311bfdba9f3b8e1aa7c256b71592ee7ff32cb9a9a5aa"
+    },
+    {
+      "path": "meshes/collision/link1.stl",
+      "sha256": "e41a39a94108fcf56aacff603fc91ec80541f4c1af17b51a0de5617f5566e6d2"
+    },
+    {
+      "path": "meshes/collision/link2.stl",
+      "sha256": "370f7605a0fae3529db169ded50f52f171024aa792d4d773bc84197301f6a039"
+    },
+    {
+      "path": "meshes/collision/link3.stl",
+      "sha256": "0a8d638b9349c6c0eefc4e888636ac4838c4b27170f18a51699321118af709c1"
+    },
+    {
+      "path": "meshes/collision/link4.stl",
+      "sha256": "0180ebb5772ec9840cb049750cffb29a9ddc90311752a16ea34757782ef9e48d"
+    },
+    {
+      "path": "meshes/collision/link5.stl",
+      "sha256": "dd17e688c7870e722283525879643d53a74c0024d328b0e14b034b54c8b6c31a"
+    },
+    {
+      "path": "meshes/collision/link6.stl",
+      "sha256": "20b768e99a0e0440b5754dcca108016434e57937cc356acd9c352ccd3cb27f77"
+    },
+    {
+      "path": "meshes/collision/link7.stl",
+      "sha256": "92ac6afcf7574c034d3170d8a68e95ac9048ab9d0dd5bbd8311b86e551b9ab1c"
+    },
+    {
+      "path": "meshes/visual/finger.dae",
+      "sha256": "e7a447a9943ed4b0385b228de49409b71fe603ebff7c12bcbc0ea6e16206ff62"
+    },
+    {
+      "path": "meshes/visual/hand.dae",
+      "sha256": "01259e1c53b158db0e304b5da131a9fd1f5205f273d5e2300aec839375e671de"
+    },
+    {
+      "path": "meshes/visual/link0.dae",
+      "sha256": "8520232d4fc2cff0a5d4e360c9bf1be10b3be6bb4327cfb26356e1051b5d2e10"
+    },
+    {
+      "path": "meshes/visual/link1.dae",
+      "sha256": "07c4a0a53d77d9a459e347355db0c3fe4c64c64fb7448ecdd398620da49c1df1"
+    },
+    {
+      "path": "meshes/visual/link2.dae",
+      "sha256": "18180c0fc3c4cc9aeec7d4f8f266a3c7e8c9b00c562fb5008cab3ff875a07427"
+    },
+    {
+      "path": "meshes/visual/link3.dae",
+      "sha256": "314601331761991c75109837ad06fa1291e42e29add1f589c438b6fa81500a2d"
+    },
+    {
+      "path": "meshes/visual/link4.dae",
+      "sha256": "df5dc2ea4fe209b7cc11324d8f6d194c081e4e94ac57d325eec1c1f623a70bf7"
+    },
+    {
+      "path": "meshes/visual/link5.dae",
+      "sha256": "9007e8599469877eeccfa2bbe730c453105bef311f513f037471aaaa9e718635"
+    },
+    {
+      "path": "meshes/visual/link6.dae",
+      "sha256": "b5030713277545b6e1c839fc4f6c50d53c29645d89df69ea3d5b4602dda2913f"
+    },
+    {
+      "path": "meshes/visual/link7.dae",
+      "sha256": "71740e23b6bb12cc5a535905b516fe27ec401616704c7869c1d607255f778b67"
+    },
+    {
+      "path": "meshes/collision/finger_pad_a.stl",
+      "sha256": "313649c59763658409e0c3ad66481dacafc742e0837adc658a4b130cca8c6b7f"
+    }
+  ]
+}

@@ -1,0 +1,2251 @@
+#usda 1.0
+(
+    defaultPrim = "LInlet"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "LInlet"
+{
+    custom int conveyor:curveSegments = 32
+    custom float conveyor:speed = 0.06
+
+    def "Looks"
+    {
+        def Material "BrushedSteel"
+        {
+            token outputs:surface.connect = </LInlet/Looks/BrushedSteel/Surface.outputs:surface>
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.48, 0.52, 0.55)
+                float inputs:metallic = 0.45
+                float inputs:roughness = 0.4
+                token outputs:surface
+            }
+        }
+
+        def Material "RubberBelt"
+        {
+            token outputs:surface.connect = </LInlet/Looks/RubberBelt/Surface.outputs:surface>
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.028, 0.033, 0.037)
+                float inputs:metallic = 0
+                float inputs:roughness = 0.88
+                token outputs:surface
+            }
+        }
+
+        def Material "SafetyYellow"
+        {
+            token outputs:surface.connect = </LInlet/Looks/SafetyYellow/Surface.outputs:surface>
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.95, 0.62, 0.04)
+                float inputs:metallic = 0
+                float inputs:roughness = 0.5
+                token outputs:surface
+            }
+        }
+
+        def Material "Contact" (
+            prepend apiSchemas = ["PhysicsMaterialAPI"]
+        )
+        {
+            float physics:dynamicFriction = 0.75
+            float physics:restitution = 0
+            float physics:staticFriction = 0.9
+        }
+    }
+
+    def "Straight"
+    {
+        def Cube "Belt" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.06, 0, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            double size = 1
+            float3 xformOp:scale = (1.75, 0.35, 0.03)
+            double3 xformOp:translate = (2.175, -3.6, 0.735)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Frame_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (1.75, 0.03, 0.12)
+            double3 xformOp:translate = (2.175, -3.795, 0.68)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Guide_0" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            double size = 1
+            float3 xformOp:scale = (1.75, 0.016, 0.08)
+            double3 xformOp:translate = (2.175, -3.783, 0.79)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Frame_2" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (1.75, 0.03, 0.12)
+            double3 xformOp:translate = (2.175, -3.4050000000000002, 0.68)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Guide_2" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            double size = 1
+            float3 xformOp:scale = (1.75, 0.016, 0.08)
+            double3 xformOp:translate = (2.175, -3.4170000000000003, 0.79)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+    }
+
+    def "Supports"
+    {
+        def Cube "Leg_0_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (0.035, 0.035, 0.65)
+            double3 xformOp:translate = (1.43, -3.7350000000000003, 0.325)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Foot_0_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            double size = 1
+            float3 xformOp:scale = (0.09, 0.09, 0.032)
+            double3 xformOp:translate = (1.43, -3.7350000000000003, 0.018)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Leg_0_2" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (0.035, 0.035, 0.65)
+            double3 xformOp:translate = (1.43, -3.465, 0.325)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Foot_0_2" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            double size = 1
+            float3 xformOp:scale = (0.09, 0.09, 0.032)
+            double3 xformOp:translate = (1.43, -3.465, 0.018)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Crossbar_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (0.035, 0.31, 0.035)
+            double3 xformOp:translate = (1.43, -3.6, 0.2)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Leg_1_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (0.035, 0.035, 0.65)
+            double3 xformOp:translate = (2.2, -3.7350000000000003, 0.325)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Foot_1_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            double size = 1
+            float3 xformOp:scale = (0.09, 0.09, 0.032)
+            double3 xformOp:translate = (2.2, -3.7350000000000003, 0.018)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Leg_1_2" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (0.035, 0.035, 0.65)
+            double3 xformOp:translate = (2.2, -3.465, 0.325)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Foot_1_2" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            double size = 1
+            float3 xformOp:scale = (0.09, 0.09, 0.032)
+            double3 xformOp:translate = (2.2, -3.465, 0.018)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Crossbar_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (0.035, 0.31, 0.035)
+            double3 xformOp:translate = (2.2, -3.6, 0.2)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Leg_2_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (0.035, 0.035, 0.65)
+            double3 xformOp:translate = (2.94, -3.7350000000000003, 0.325)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Foot_2_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            double size = 1
+            float3 xformOp:scale = (0.09, 0.09, 0.032)
+            double3 xformOp:translate = (2.94, -3.7350000000000003, 0.018)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Leg_2_2" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (0.035, 0.035, 0.65)
+            double3 xformOp:translate = (2.94, -3.465, 0.325)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Foot_2_2" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            double size = 1
+            float3 xformOp:scale = (0.09, 0.09, 0.032)
+            double3 xformOp:translate = (2.94, -3.465, 0.018)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Crossbar_2" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (0.035, 0.31, 0.035)
+            double3 xformOp:translate = (2.94, -3.6, 0.2)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "CurveLeg_0_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (0.035, 0.035, 0.65)
+            double3 xformOp:translate = (1.3, -3.46, 0.325)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "CurveFoot_0_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            double size = 1
+            float3 xformOp:scale = (0.09, 0.09, 0.032)
+            double3 xformOp:translate = (1.3, -3.46, 0.018)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "CurveLeg_0_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (0.035, 0.035, 0.65)
+            double3 xformOp:translate = (1.3, -3.7399999999999998, 0.325)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "CurveFoot_0_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            double size = 1
+            float3 xformOp:scale = (0.09, 0.09, 0.032)
+            double3 xformOp:translate = (1.3, -3.7399999999999998, 0.018)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "CurveLeg_1_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (0.035, 0.035, 0.65)
+            double3 xformOp:translate = (0.9040202025355335, -3.2959797974644665, 0.325)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "CurveFoot_1_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            double size = 1
+            float3 xformOp:scale = (0.09, 0.09, 0.032)
+            double3 xformOp:translate = (0.9040202025355335, -3.2959797974644665, 0.018)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "CurveLeg_1_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (0.035, 0.035, 0.65)
+            double3 xformOp:translate = (0.7060303038033002, -3.4939696961966997, 0.325)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "CurveFoot_1_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            double size = 1
+            float3 xformOp:scale = (0.09, 0.09, 0.032)
+            double3 xformOp:translate = (0.7060303038033002, -3.4939696961966997, 0.018)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "CurveLeg_2_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (0.035, 0.035, 0.65)
+            double3 xformOp:translate = (0.74, -2.9, 0.325)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "CurveFoot_2_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            double size = 1
+            float3 xformOp:scale = (0.09, 0.09, 0.032)
+            double3 xformOp:translate = (0.74, -2.9, 0.018)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "CurveLeg_2_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (0.035, 0.035, 0.65)
+            double3 xformOp:translate = (0.4600000000000001, -2.9, 0.325)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "CurveFoot_2_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            double size = 1
+            float3 xformOp:scale = (0.09, 0.09, 0.032)
+            double3 xformOp:translate = (0.4600000000000001, -2.9, 0.018)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+    }
+
+    def "Curve"
+    {
+        def Mesh "Belt_00" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.059981927, 0.0014724737, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(1.3, -3.425, 0.72), (1.3, -3.775, 0.72), (1.2570658, -3.773946, 0.72), (1.2742394, -3.4243677, 0.72), (1.3, -3.425, 0.75), (1.3, -3.775, 0.75), (1.2570658, -3.773946, 0.75), (1.2742394, -3.4243677, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_00" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.3, -3.405, 0.73), (1.3, -3.421, 0.73), (1.2744358, -3.4203725, 0.73), (1.2752209, -3.4043918, 0.73), (1.3, -3.405, 0.83), (1.3, -3.421, 0.83), (1.2744358, -3.4203725, 0.83), (1.2752209, -3.4043918, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_00" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.3, -3.779, 0.73), (1.3, -3.795, 0.73), (1.2560844, -3.793922, 0.73), (1.2568696, -3.7779412, 0.73), (1.3, -3.779, 0.83), (1.3, -3.795, 0.83), (1.2560844, -3.793922, 0.83), (1.2568696, -3.7779412, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_00" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.3, -3.425, 0.655), (1.3, -3.775, 0.655), (1.2570658, -3.773946, 0.655), (1.2742394, -3.4243677, 0.655), (1.3, -3.425, 0.69), (1.3, -3.775, 0.69), (1.2570658, -3.773946, 0.69), (1.2742394, -3.4243677, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_01" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.059837427, 0.004413874, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(1.2742394, -3.4243677, 0.72), (1.2570658, -3.773946, 0.72), (1.214235, -3.7707865, 0.72), (1.248541, -3.422472, 0.72), (1.2742394, -3.4243677, 0.75), (1.2570658, -3.773946, 0.75), (1.214235, -3.7707865, 0.75), (1.248541, -3.422472, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_01" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.2752209, -3.4043918, 0.73), (1.2744358, -3.4203725, 0.73), (1.2489331, -3.4184911, 0.73), (1.2505014, -3.4025683, 0.73), (1.2752209, -3.4043918, 0.83), (1.2744358, -3.4203725, 0.83), (1.2489331, -3.4184911, 0.83), (1.2505014, -3.4025683, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_01" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.2568696, -3.7779412, 0.73), (1.2560844, -3.793922, 0.73), (1.2122747, -3.7906904, 0.73), (1.213843, -3.7747674, 0.73), (1.2568696, -3.7779412, 0.83), (1.2560844, -3.793922, 0.83), (1.2122747, -3.7906904, 0.83), (1.213843, -3.7747674, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_01" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.2742394, -3.4243677, 0.655), (1.2570658, -3.773946, 0.655), (1.214235, -3.7707865, 0.655), (1.248541, -3.422472, 0.655), (1.2742394, -3.4243677, 0.69), (1.2570658, -3.773946, 0.69), (1.214235, -3.7707865, 0.69), (1.248541, -3.422472, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_02" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.059548773, 0.0073446403, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(1.248541, -3.422472, 0.72), (1.214235, -3.7707865, 0.72), (1.1716108, -3.7655294, 0.72), (1.2229666, -3.4193177, 0.72), (1.248541, -3.422472, 0.75), (1.214235, -3.7707865, 0.75), (1.1716108, -3.7655294, 0.75), (1.2229666, -3.4193177, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_02" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.2505014, -3.4025683, 0.73), (1.2489331, -3.4184911, 0.73), (1.2235534, -3.415361, 0.73), (1.2259011, -3.3995342, 0.73), (1.2505014, -3.4025683, 0.83), (1.2489331, -3.4184911, 0.83), (1.2235534, -3.415361, 0.83), (1.2259011, -3.3995342, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_02" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.213843, -3.7747674, 0.73), (1.2122747, -3.7906904, 0.73), (1.1686763, -3.785313, 0.73), (1.171024, -3.7694862, 0.73), (1.213843, -3.7747674, 0.83), (1.2122747, -3.7906904, 0.83), (1.1686763, -3.785313, 0.83), (1.171024, -3.7694862, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_02" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.248541, -3.422472, 0.655), (1.214235, -3.7707865, 0.655), (1.1716108, -3.7655294, 0.655), (1.2229666, -3.4193177, 0.655), (1.248541, -3.422472, 0.69), (1.214235, -3.7707865, 0.69), (1.1716108, -3.7655294, 0.69), (1.2229666, -3.4193177, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_03" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.059116658, 0.0102577135, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(1.2229666, -3.4193177, 0.72), (1.1716108, -3.7655294, 0.72), (1.129296, -3.758187, 0.72), (1.1975776, -3.4149122, 0.72), (1.2229666, -3.4193177, 0.75), (1.1716108, -3.7655294, 0.75), (1.129296, -3.758187, 0.75), (1.1975776, -3.4149122, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_03" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.2259011, -3.3995342, 0.73), (1.2235534, -3.415361, 0.73), (1.1983579, -3.410989, 0.73), (1.2014794, -3.3952966, 0.73), (1.2259011, -3.3995342, 0.83), (1.2235534, -3.415361, 0.83), (1.1983579, -3.410989, 0.83), (1.2014794, -3.3952966, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_03" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.171024, -3.7694862, 0.73), (1.1686763, -3.785313, 0.73), (1.1253941, -3.777803, 0.73), (1.1285156, -3.7621102, 0.73), (1.171024, -3.7694862, 0.83), (1.1686763, -3.785313, 0.83), (1.1253941, -3.777803, 0.83), (1.1285156, -3.7621102, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_03" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.2229666, -3.4193177, 0.655), (1.1716108, -3.7655294, 0.655), (1.129296, -3.758187, 0.655), (1.1975776, -3.4149122, 0.655), (1.2229666, -3.4193177, 0.69), (1.1716108, -3.7655294, 0.69), (1.129296, -3.758187, 0.69), (1.1975776, -3.4149122, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_04" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.05854213, 0.0131460745, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(1.1975776, -3.4149122, 0.72), (1.129296, -3.758187, 0.72), (1.0873923, -3.7487774, 0.72), (1.1724354, -3.4092665, 0.72), (1.1975776, -3.4149122, 0.75), (1.129296, -3.758187, 0.75), (1.0873923, -3.7487774, 0.75), (1.1724354, -3.4092665, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_04" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.2014794, -3.3952966, 0.73), (1.1983579, -3.410989, 0.73), (1.1734073, -3.4053862, 0.73), (1.177295, -3.3898659, 0.73), (1.2014794, -3.3952966, 0.83), (1.1983579, -3.410989, 0.83), (1.1734073, -3.4053862, 0.83), (1.177295, -3.3898659, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_04" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.1285156, -3.7621102, 0.73), (1.1253941, -3.777803, 0.73), (1.0825328, -3.768178, 0.73), (1.0864204, -3.7526574, 0.73), (1.1285156, -3.7621102, 0.83), (1.1253941, -3.777803, 0.83), (1.0825328, -3.768178, 0.83), (1.0864204, -3.7526574, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_04" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.1975776, -3.4149122, 0.655), (1.129296, -3.758187, 0.655), (1.0873923, -3.7487774, 0.655), (1.1724354, -3.4092665, 0.655), (1.1975776, -3.4149122, 0.69), (1.129296, -3.758187, 0.69), (1.0873923, -3.7487774, 0.69), (1.1724354, -3.4092665, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_05" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.057826564, 0.016002765, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(1.1724354, -3.4092665, 0.72), (1.0873923, -3.7487774, 0.72), (1.046001, -3.7373228, 0.72), (1.1476005, -3.4023936, 0.72), (1.1724354, -3.4092665, 0.75), (1.0873923, -3.7487774, 0.75), (1.046001, -3.7373228, 0.75), (1.1476005, -3.4023936, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_05" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.177295, -3.3898659, 0.73), (1.1734073, -3.4053862, 0.73), (1.1487616, -3.398566, 0.73), (1.1534063, -3.3832548, 0.73), (1.177295, -3.3898659, 0.83), (1.1734073, -3.4053862, 0.83), (1.1487616, -3.398566, 0.83), (1.1534063, -3.3832548, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_05" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.0864204, -3.7526574, 0.73), (1.0825328, -3.768178, 0.73), (1.0401952, -3.7564616, 0.73), (1.0448397, -3.7411506, 0.73), (1.0864204, -3.7526574, 0.83), (1.0825328, -3.768178, 0.83), (1.0401952, -3.7564616, 0.83), (1.0448397, -3.7411506, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_05" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.1724354, -3.4092665, 0.655), (1.0873923, -3.7487774, 0.655), (1.046001, -3.7373228, 0.655), (1.1476005, -3.4023936, 0.655), (1.1724354, -3.4092665, 0.69), (1.0873923, -3.7487774, 0.69), (1.046001, -3.7373228, 0.69), (1.1476005, -3.4023936, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_06" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.05697169, 0.018820904, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(1.1476005, -3.4023936, 0.72), (1.046001, -3.7373228, 0.72), (1.0052214, -3.723851, 0.72), (1.1231328, -3.3943107, 0.72), (1.1476005, -3.4023936, 0.75), (1.046001, -3.7373228, 0.75), (1.0052214, -3.723851, 0.75), (1.1231328, -3.3943107, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_06" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.1534063, -3.3832548, 0.73), (1.1487616, -3.398566, 0.73), (1.1244804, -3.3905444, 0.73), (1.1298707, -3.3754797, 0.73), (1.1534063, -3.3832548, 0.83), (1.1487616, -3.398566, 0.83), (1.1244804, -3.3905444, 0.83), (1.1298707, -3.3754797, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_06" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.0448397, -3.7411506, 0.73), (1.0401952, -3.7564616, 0.73), (0.9984836, -3.742682, 0.73), (1.0038738, -3.7276173, 0.73), (1.0448397, -3.7411506, 0.83), (1.0401952, -3.7564616, 0.83), (0.9984836, -3.742682, 0.83), (1.0038738, -3.7276173, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_06" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.1476005, -3.4023936, 0.655), (1.046001, -3.7373228, 0.655), (1.0052214, -3.723851, 0.655), (1.1231328, -3.3943107, 0.655), (1.1476005, -3.4023936, 0.69), (1.046001, -3.7373228, 0.69), (1.0052214, -3.723851, 0.69), (1.1231328, -3.3943107, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_07" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.05597957, 0.021593703, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(1.1231328, -3.3943107, 0.72), (1.0052214, -3.723851, 0.72), (0.965152, -3.7083945, 0.72), (1.0990912, -3.3850367, 0.72), (1.1231328, -3.3943107, 0.75), (1.0052214, -3.723851, 0.75), (0.965152, -3.7083945, 0.75), (1.0990912, -3.3850367, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_07" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.1298707, -3.3754797, 0.73), (1.1244804, -3.3905444, 0.73), (1.1006219, -3.3813412, 0.73), (1.1067449, -3.3665593, 0.73), (1.1298707, -3.3754797, 0.83), (1.1244804, -3.3905444, 0.83), (1.1006219, -3.3813412, 0.83), (1.1067449, -3.3665593, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_07" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.0038738, -3.7276173, 0.73), (0.9984836, -3.742682, 0.73), (0.9574983, -3.7268722, 0.73), (0.96362126, -3.71209, 0.73), (1.0038738, -3.7276173, 0.83), (0.9984836, -3.742682, 0.83), (0.9574983, -3.7268722, 0.83), (0.96362126, -3.71209, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_07" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.1231328, -3.3943107, 0.655), (1.0052214, -3.723851, 0.655), (0.965152, -3.7083945, 0.655), (1.0990912, -3.3850367, 0.655), (1.1231328, -3.3943107, 0.69), (1.0052214, -3.723851, 0.69), (0.965152, -3.7083945, 0.69), (1.0990912, -3.3850367, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_08" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.054852586, 0.024314478, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(1.0990912, -3.3850367, 0.72), (0.965152, -3.7083945, 0.72), (0.9258893, -3.6909907, 0.72), (1.0755336, -3.3745944, 0.72), (1.0990912, -3.3850367, 0.75), (0.965152, -3.7083945, 0.75), (0.9258893, -3.6909907, 0.75), (1.0755336, -3.3745944, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_08" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.1067449, -3.3665593, 0.73), (1.1006219, -3.3813412, 0.73), (1.0772438, -3.3709784, 0.73), (1.0840846, -3.3565147, 0.73), (1.1067449, -3.3665593, 0.83), (1.1006219, -3.3813412, 0.83), (1.0772438, -3.3709784, 0.83), (1.0840846, -3.3565147, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_08" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.96362126, -3.71209, 0.73), (0.9574983, -3.7268722, 0.73), (0.9173382, -3.7090704, 0.73), (0.9241791, -3.6946065, 0.73), (0.96362126, -3.71209, 0.83), (0.9574983, -3.7268722, 0.83), (0.9173382, -3.7090704, 0.83), (0.9241791, -3.6946065, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_08" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.0990912, -3.3850367, 0.655), (0.965152, -3.7083945, 0.655), (0.9258893, -3.6909907, 0.655), (1.0755336, -3.3745944, 0.655), (1.0990912, -3.3850367, 0.69), (0.965152, -3.7083945, 0.69), (0.9258893, -3.6909907, 0.69), (1.0755336, -3.3745944, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_09" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.053593457, 0.02697668, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(1.0755336, -3.3745944, 0.72), (0.9258893, -3.6909907, 0.72), (0.8875279, -3.6716812, 0.72), (1.0525167, -3.3630087, 0.72), (1.0755336, -3.3745944, 0.75), (0.9258893, -3.6909907, 0.75), (0.8875279, -3.6716812, 0.75), (1.0525167, -3.3630087, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_09" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.0840846, -3.3565147, 0.73), (1.0772438, -3.3709784, 0.73), (1.0544024, -3.359481, 0.73), (1.0619446, -3.3453703, 0.73), (1.0840846, -3.3565147, 0.83), (1.0772438, -3.3709784, 0.83), (1.0544024, -3.359481, 0.83), (1.0619446, -3.3453703, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_09" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.9241791, -3.6946065, 0.73), (0.9173382, -3.7090704, 0.73), (0.8780999, -3.6893196, 0.73), (0.8856423, -3.6752088, 0.73), (0.9241791, -3.6946065, 0.83), (0.9173382, -3.7090704, 0.83), (0.8780999, -3.6893196, 0.83), (0.8856423, -3.6752088, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_09" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.0755336, -3.3745944, 0.655), (0.9258893, -3.6909907, 0.655), (0.8875279, -3.6716812, 0.655), (1.0525167, -3.3630087, 0.655), (1.0755336, -3.3745944, 0.69), (0.9258893, -3.6909907, 0.69), (0.8875279, -3.6716812, 0.69), (1.0525167, -3.3630087, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_10" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.05220522, 0.029573891, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(1.0525167, -3.3630087, 0.72), (0.8875279, -3.6716812, 0.72), (0.8501601, -3.6505125, 0.72), (1.030096, -3.3503075, 0.72), (1.0525167, -3.3630087, 0.75), (0.8875279, -3.6716812, 0.75), (0.8501601, -3.6505125, 0.75), (1.030096, -3.3503075, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_10" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.0619446, -3.3453703, 0.73), (1.0544024, -3.359481, 0.73), (1.0321524, -3.3468766, 0.73), (1.0403781, -3.333153, 0.73), (1.0619446, -3.3453703, 0.83), (1.0544024, -3.359481, 0.83), (1.0321524, -3.3468766, 0.83), (1.0403781, -3.333153, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_10" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.8856423, -3.6752088, 0.73), (0.8780999, -3.6893196, 0.73), (0.839878, -3.6676672, 0.73), (0.8481037, -3.6539435, 0.73), (0.8856423, -3.6752088, 0.83), (0.8780999, -3.6893196, 0.83), (0.839878, -3.6676672, 0.83), (0.8481037, -3.6539435, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_10" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.0525167, -3.3630087, 0.655), (0.8875279, -3.6716812, 0.655), (0.8501601, -3.6505125, 0.655), (1.030096, -3.3503075, 0.655), (1.0525167, -3.3630087, 0.69), (0.8875279, -3.6716812, 0.69), (0.8501601, -3.6505125, 0.69), (1.030096, -3.3503075, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_11" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.050691213, 0.032099858, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(1.030096, -3.3503075, 0.72), (0.8501601, -3.6505125, 0.72), (0.81387603, -3.6275358, 0.72), (1.0083256, -3.3365216, 0.72), (1.030096, -3.3503075, 0.75), (0.8501601, -3.6505125, 0.75), (0.81387603, -3.6275358, 0.75), (1.0083256, -3.3365216, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_11" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.0403781, -3.333153, 0.73), (1.0321524, -3.3468766, 0.73), (1.0105479, -3.3331957, 0.73), (1.0194371, -3.3198922, 0.73), (1.0403781, -3.333153, 0.83), (1.0321524, -3.3468766, 0.83), (1.0105479, -3.3331957, 0.83), (1.0194371, -3.3198922, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_11" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.8481037, -3.6539435, 0.73), (0.839878, -3.6676672, 0.73), (0.80276465, -3.6441653, 0.73), (0.8116538, -3.6308618, 0.73), (0.8481037, -3.6539435, 0.83), (0.839878, -3.6676672, 0.83), (0.80276465, -3.6441653, 0.83), (0.8116538, -3.6308618, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_11" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.030096, -3.3503075, 0.655), (0.8501601, -3.6505125, 0.655), (0.81387603, -3.6275358, 0.655), (1.0083256, -3.3365216, 0.655), (1.030096, -3.3503075, 0.69), (0.8501601, -3.6505125, 0.69), (0.81387603, -3.6275358, 0.69), (1.0083256, -3.3365216, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_12" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.04905509, 0.03454849, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(1.0083256, -3.3365216, 0.72), (0.81387603, -3.6275358, 0.72), (0.7787631, -3.6028066, 0.72), (0.98725784, -3.321684, 0.72), (1.0083256, -3.3365216, 0.75), (0.81387603, -3.6275358, 0.75), (0.7787631, -3.6028066, 0.75), (0.98725784, -3.321684, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_12" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.0194371, -3.3198922, 0.73), (1.0105479, -3.3331957, 0.73), (0.98964065, -3.3184712, 0.73), (0.99917185, -3.3056197, 0.73), (1.0194371, -3.3198922, 0.83), (1.0105479, -3.3331957, 0.83), (0.98964065, -3.3184712, 0.83), (0.99917185, -3.3056197, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_12" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.8116538, -3.6308618, 0.73), (0.80276465, -3.6441653, 0.73), (0.7668491, -3.6188707, 0.73), (0.7763803, -3.6060195, 0.73), (0.8116538, -3.6308618, 0.83), (0.80276465, -3.6441653, 0.83), (0.7668491, -3.6188707, 0.83), (0.7763803, -3.6060195, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_12" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(1.0083256, -3.3365216, 0.655), (0.81387603, -3.6275358, 0.655), (0.7787631, -3.6028066, 0.655), (0.98725784, -3.321684, 0.655), (1.0083256, -3.3365216, 0.69), (0.81387603, -3.6275358, 0.69), (0.7787631, -3.6028066, 0.69), (0.98725784, -3.321684, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_13" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.047300786, 0.036913894, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.98725784, -3.321684, 0.72), (0.7787631, -3.6028066, 0.72), (0.7449059, -3.576384, 0.72), (0.9669435, -3.3058305, 0.72), (0.98725784, -3.321684, 0.75), (0.7787631, -3.6028066, 0.75), (0.7449059, -3.576384, 0.75), (0.9669435, -3.3058305, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_13" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.99917185, -3.3056197, 0.73), (0.98964065, -3.3184712, 0.73), (0.9694811, -3.3027384, 0.73), (0.97963136, -3.2903702, 0.73), (0.99917185, -3.3056197, 0.83), (0.98964065, -3.3184712, 0.83), (0.9694811, -3.3027384, 0.83), (0.97963136, -3.2903702, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_13" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.7763803, -3.6060195, 0.73), (0.7668491, -3.6188707, 0.73), (0.732218, -3.5918443, 0.73), (0.7423683, -3.579476, 0.73), (0.7763803, -3.6060195, 0.83), (0.7668491, -3.6188707, 0.83), (0.732218, -3.5918443, 0.83), (0.7423683, -3.579476, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_13" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.98725784, -3.321684, 0.655), (0.7787631, -3.6028066, 0.655), (0.7449059, -3.576384, 0.655), (0.9669435, -3.3058305, 0.655), (0.98725784, -3.321684, 0.69), (0.7787631, -3.6028066, 0.69), (0.7449059, -3.576384, 0.69), (0.9669435, -3.3058305, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_14" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.04543253, 0.03919037, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.9669435, -3.3058305, 0.72), (0.7449059, -3.576384, 0.72), (0.7123859, -3.5483322, 0.72), (0.94743156, -3.2889993, 0.72), (0.9669435, -3.3058305, 0.75), (0.7449059, -3.576384, 0.75), (0.7123859, -3.5483322, 0.75), (0.94743156, -3.2889993, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_14" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.97963136, -3.2903702, 0.73), (0.9694811, -3.3027384, 0.73), (0.95011777, -3.2860355, 0.73), (0.96086276, -3.2741804, 0.73), (0.97963136, -3.2903702, 0.83), (0.9694811, -3.3027384, 0.83), (0.95011777, -3.2860355, 0.83), (0.96086276, -3.2741804, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_14" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.7423683, -3.579476, 0.73), (0.732218, -3.5918443, 0.73), (0.69895476, -3.5631514, 0.73), (0.7096997, -3.551296, 0.73), (0.7423683, -3.579476, 0.83), (0.732218, -3.5918443, 0.83), (0.69895476, -3.5631514, 0.83), (0.7096997, -3.551296, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_14" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.9669435, -3.3058305, 0.655), (0.7449059, -3.576384, 0.655), (0.7123859, -3.5483322, 0.655), (0.94743156, -3.2889993, 0.655), (0.9669435, -3.3058305, 0.69), (0.7449059, -3.576384, 0.69), (0.7123859, -3.5483322, 0.69), (0.94743156, -3.2889993, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_15" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.043454826, 0.041372433, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.94743156, -3.2889993, 0.72), (0.7123859, -3.5483322, 0.72), (0.68128157, -3.5187185, 0.72), (0.92876893, -3.2712312, 0.72), (0.94743156, -3.2889993, 0.75), (0.7123859, -3.5483322, 0.75), (0.68128157, -3.5187185, 0.75), (0.92876893, -3.2712312, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_15" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.96086276, -3.2741804, 0.73), (0.95011777, -3.2860355, 0.73), (0.93159735, -3.2684026, 0.73), (0.9429111, -3.257089, 0.73), (0.96086276, -3.2741804, 0.83), (0.95011777, -3.2860355, 0.83), (0.93159735, -3.2684026, 0.83), (0.9429111, -3.257089, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_15" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.7096997, -3.551296, 0.73), (0.69895476, -3.5631514, 0.73), (0.6671394, -3.5328605, 0.73), (0.67845315, -3.5215468, 0.73), (0.7096997, -3.551296, 0.83), (0.69895476, -3.5631514, 0.83), (0.6671394, -3.5328605, 0.83), (0.67845315, -3.5215468, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_15" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.94743156, -3.2889993, 0.655), (0.7123859, -3.5483322, 0.655), (0.68128157, -3.5187185, 0.655), (0.92876893, -3.2712312, 0.655), (0.94743156, -3.2889993, 0.69), (0.7123859, -3.5483322, 0.69), (0.68128157, -3.5187185, 0.69), (0.92876893, -3.2712312, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_16" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.041372433, 0.043454826, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.92876893, -3.2712312, 0.72), (0.68128157, -3.5187185, 0.72), (0.6516678, -3.4876142, 0.72), (0.91100067, -3.2525685, 0.72), (0.92876893, -3.2712312, 0.75), (0.68128157, -3.5187185, 0.75), (0.6516678, -3.4876142, 0.75), (0.91100067, -3.2525685, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_16" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.9429111, -3.257089, 0.73), (0.93159735, -3.2684026, 0.73), (0.91396445, -3.2498822, 0.73), (0.9258197, -3.2391372, 0.73), (0.9429111, -3.257089, 0.83), (0.93159735, -3.2684026, 0.83), (0.91396445, -3.2498822, 0.83), (0.9258197, -3.2391372, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_16" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.67845315, -3.5215468, 0.73), (0.6671394, -3.5328605, 0.73), (0.63684875, -3.5010452, 0.73), (0.64870393, -3.4903004, 0.73), (0.67845315, -3.5215468, 0.83), (0.6671394, -3.5328605, 0.83), (0.63684875, -3.5010452, 0.83), (0.64870393, -3.4903004, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_16" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.92876893, -3.2712312, 0.655), (0.68128157, -3.5187185, 0.655), (0.6516678, -3.4876142, 0.655), (0.91100067, -3.2525685, 0.655), (0.92876893, -3.2712312, 0.69), (0.68128157, -3.5187185, 0.69), (0.6516678, -3.4876142, 0.69), (0.91100067, -3.2525685, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_17" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.03919037, 0.04543253, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.91100067, -3.2525685, 0.72), (0.6516678, -3.4876142, 0.72), (0.62361586, -3.455094, 0.72), (0.8941695, -3.2330565, 0.72), (0.91100067, -3.2525685, 0.75), (0.6516678, -3.4876142, 0.75), (0.62361586, -3.455094, 0.75), (0.8941695, -3.2330565, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_17" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.9258197, -3.2391372, 0.73), (0.91396445, -3.2498822, 0.73), (0.89726156, -3.2305188, 0.73), (0.9096297, -3.2203686, 0.73), (0.9258197, -3.2391372, 0.83), (0.91396445, -3.2498822, 0.83), (0.89726156, -3.2305188, 0.83), (0.9096297, -3.2203686, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_17" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.64870393, -3.4903004, 0.73), (0.63684875, -3.5010452, 0.73), (0.60815567, -3.467782, 0.73), (0.6205238, -3.4576316, 0.73), (0.64870393, -3.4903004, 0.83), (0.63684875, -3.5010452, 0.83), (0.60815567, -3.467782, 0.83), (0.6205238, -3.4576316, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_17" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.91100067, -3.2525685, 0.655), (0.6516678, -3.4876142, 0.655), (0.62361586, -3.455094, 0.655), (0.8941695, -3.2330565, 0.655), (0.91100067, -3.2525685, 0.69), (0.6516678, -3.4876142, 0.69), (0.62361586, -3.455094, 0.69), (0.8941695, -3.2330565, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_18" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.036913894, 0.047300786, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.8941695, -3.2330565, 0.72), (0.62361586, -3.455094, 0.72), (0.5971934, -3.421237, 0.72), (0.87831604, -3.212742, 0.72), (0.8941695, -3.2330565, 0.75), (0.62361586, -3.455094, 0.75), (0.5971934, -3.421237, 0.75), (0.87831604, -3.212742, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_18" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.9096297, -3.2203686, 0.73), (0.89726156, -3.2305188, 0.73), (0.88152885, -3.2103593, 0.73), (0.8943802, -3.200828, 0.73), (0.9096297, -3.2203686, 0.83), (0.89726156, -3.2305188, 0.83), (0.88152885, -3.2103593, 0.83), (0.8943802, -3.200828, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_18" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.6205238, -3.4576316, 0.73), (0.60815567, -3.467782, 0.73), (0.58112925, -3.4331508, 0.73), (0.59398055, -3.4236197, 0.73), (0.6205238, -3.4576316, 0.83), (0.60815567, -3.467782, 0.83), (0.58112925, -3.4331508, 0.83), (0.59398055, -3.4236197, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_18" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.8941695, -3.2330565, 0.655), (0.62361586, -3.455094, 0.655), (0.5971934, -3.421237, 0.655), (0.87831604, -3.212742, 0.655), (0.8941695, -3.2330565, 0.69), (0.62361586, -3.455094, 0.69), (0.5971934, -3.421237, 0.69), (0.87831604, -3.212742, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_19" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.03454849, 0.04905509, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.87831604, -3.212742, 0.72), (0.5971934, -3.421237, 0.72), (0.5724641, -3.386124, 0.72), (0.8634785, -3.1916745, 0.72), (0.87831604, -3.212742, 0.75), (0.5971934, -3.421237, 0.75), (0.5724641, -3.386124, 0.75), (0.8634785, -3.1916745, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_19" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.8943802, -3.200828, 0.73), (0.88152885, -3.2103593, 0.73), (0.86680436, -3.1894522, 0.73), (0.8801078, -3.180563, 0.73), (0.8943802, -3.200828, 0.83), (0.88152885, -3.2103593, 0.83), (0.86680436, -3.1894522, 0.83), (0.8801078, -3.180563, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_19" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.59398055, -3.4236197, 0.73), (0.58112925, -3.4331508, 0.73), (0.5558347, -3.3972354, 0.73), (0.5691382, -3.3883462, 0.73), (0.59398055, -3.4236197, 0.83), (0.58112925, -3.4331508, 0.83), (0.5558347, -3.3972354, 0.83), (0.5691382, -3.3883462, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_19" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.87831604, -3.212742, 0.655), (0.5971934, -3.421237, 0.655), (0.5724641, -3.386124, 0.655), (0.8634785, -3.1916745, 0.655), (0.87831604, -3.212742, 0.69), (0.5971934, -3.421237, 0.69), (0.5724641, -3.386124, 0.69), (0.8634785, -3.1916745, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_20" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.032099858, 0.050691213, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.8634785, -3.1916745, 0.72), (0.5724641, -3.386124, 0.72), (0.5494875, -3.34984, 0.72), (0.84969246, -3.169904, 0.72), (0.8634785, -3.1916745, 0.75), (0.5724641, -3.386124, 0.75), (0.5494875, -3.34984, 0.75), (0.84969246, -3.169904, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_20" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.8801078, -3.180563, 0.73), (0.86680436, -3.1894522, 0.73), (0.85312337, -3.1678476, 0.73), (0.86684704, -3.159622, 0.73), (0.8801078, -3.180563, 0.83), (0.86680436, -3.1894522, 0.83), (0.85312337, -3.1678476, 0.83), (0.86684704, -3.159622, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_20" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.5691382, -3.3883462, 0.73), (0.5558347, -3.3972354, 0.73), (0.5323329, -3.360122, 0.73), (0.54605657, -3.3518963, 0.73), (0.5691382, -3.3883462, 0.83), (0.5558347, -3.3972354, 0.83), (0.5323329, -3.360122, 0.83), (0.54605657, -3.3518963, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_20" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.8634785, -3.1916745, 0.655), (0.5724641, -3.386124, 0.655), (0.5494875, -3.34984, 0.655), (0.84969246, -3.169904, 0.655), (0.8634785, -3.1916745, 0.69), (0.5724641, -3.386124, 0.69), (0.5494875, -3.34984, 0.69), (0.84969246, -3.169904, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_21" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.029573891, 0.05220522, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.84969246, -3.169904, 0.72), (0.5494875, -3.34984, 0.72), (0.5283189, -3.312472, 0.72), (0.8369913, -3.1474833, 0.72), (0.84969246, -3.169904, 0.75), (0.5494875, -3.34984, 0.75), (0.5283189, -3.312472, 0.75), (0.8369913, -3.1474833, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_21" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.86684704, -3.159622, 0.73), (0.85312337, -3.1678476, 0.73), (0.840519, -3.1455977, 0.73), (0.85462976, -3.1380553, 0.73), (0.86684704, -3.159622, 0.83), (0.85312337, -3.1678476, 0.83), (0.840519, -3.1455977, 0.83), (0.85462976, -3.1380553, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_21" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.54605657, -3.3518963, 0.73), (0.5323329, -3.360122, 0.73), (0.5106805, -3.3219001, 0.73), (0.5247912, -3.3143578, 0.73), (0.54605657, -3.3518963, 0.83), (0.5323329, -3.360122, 0.83), (0.5106805, -3.3219001, 0.83), (0.5247912, -3.3143578, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_21" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.84969246, -3.169904, 0.655), (0.5494875, -3.34984, 0.655), (0.5283189, -3.312472, 0.655), (0.8369913, -3.1474833, 0.655), (0.84969246, -3.169904, 0.69), (0.5494875, -3.34984, 0.69), (0.5283189, -3.312472, 0.69), (0.8369913, -3.1474833, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_22" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.02697668, 0.053593457, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.8369913, -3.1474833, 0.72), (0.5283189, -3.312472, 0.72), (0.50900936, -3.2741108, 0.72), (0.8254056, -3.1244664, 0.72), (0.8369913, -3.1474833, 0.75), (0.5283189, -3.312472, 0.75), (0.50900936, -3.2741108, 0.75), (0.8254056, -3.1244664, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_22" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.85462976, -3.1380553, 0.73), (0.840519, -3.1455977, 0.73), (0.8290216, -3.1227562, 0.73), (0.8434854, -3.1159153, 0.73), (0.85462976, -3.1380553, 0.83), (0.840519, -3.1455977, 0.83), (0.8290216, -3.1227562, 0.83), (0.8434854, -3.1159153, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_22" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.5247912, -3.3143578, 0.73), (0.5106805, -3.3219001, 0.73), (0.49092957, -3.282662, 0.73), (0.5053934, -3.275821, 0.73), (0.5247912, -3.3143578, 0.83), (0.5106805, -3.3219001, 0.83), (0.49092957, -3.282662, 0.83), (0.5053934, -3.275821, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_22" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.8369913, -3.1474833, 0.655), (0.5283189, -3.312472, 0.655), (0.50900936, -3.2741108, 0.655), (0.8254056, -3.1244664, 0.655), (0.8369913, -3.1474833, 0.69), (0.5283189, -3.312472, 0.69), (0.50900936, -3.2741108, 0.69), (0.8254056, -3.1244664, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_23" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.024314478, 0.054852586, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.8254056, -3.1244664, 0.72), (0.50900936, -3.2741108, 0.72), (0.4916054, -3.234848, 0.72), (0.8149632, -3.1009088, 0.72), (0.8254056, -3.1244664, 0.75), (0.50900936, -3.2741108, 0.75), (0.4916054, -3.234848, 0.75), (0.8149632, -3.1009088, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_23" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.8434854, -3.1159153, 0.73), (0.8290216, -3.1227562, 0.73), (0.81865877, -3.099378, 0.73), (0.83344084, -3.093255, 0.73), (0.8434854, -3.1159153, 0.83), (0.8290216, -3.1227562, 0.83), (0.81865877, -3.099378, 0.83), (0.83344084, -3.093255, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_23" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.5053934, -3.275821, 0.73), (0.49092957, -3.282662, 0.73), (0.4731278, -3.2425017, 0.73), (0.48790988, -3.2363787, 0.73), (0.5053934, -3.275821, 0.83), (0.49092957, -3.282662, 0.83), (0.4731278, -3.2425017, 0.83), (0.48790988, -3.2363787, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_23" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.8254056, -3.1244664, 0.655), (0.50900936, -3.2741108, 0.655), (0.4916054, -3.234848, 0.655), (0.8149632, -3.1009088, 0.655), (0.8254056, -3.1244664, 0.69), (0.50900936, -3.2741108, 0.69), (0.4916054, -3.234848, 0.69), (0.8149632, -3.1009088, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_24" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.021593703, 0.05597957, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.8149632, -3.1009088, 0.72), (0.4916054, -3.234848, 0.72), (0.47614893, -3.1947787, 0.72), (0.8056894, -3.076867, 0.72), (0.8149632, -3.1009088, 0.75), (0.4916054, -3.234848, 0.75), (0.47614893, -3.1947787, 0.75), (0.8056894, -3.076867, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_24" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.83344084, -3.093255, 0.73), (0.81865877, -3.099378, 0.73), (0.8094555, -3.0755196, 0.73), (0.82452023, -3.0701294, 0.73), (0.83344084, -3.093255, 0.83), (0.81865877, -3.099378, 0.83), (0.8094555, -3.0755196, 0.83), (0.82452023, -3.0701294, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_24" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.48790988, -3.2363787, 0.73), (0.4731278, -3.2425017, 0.73), (0.45731807, -3.2015164, 0.73), (0.47238275, -3.1961262, 0.73), (0.48790988, -3.2363787, 0.83), (0.4731278, -3.2425017, 0.83), (0.45731807, -3.2015164, 0.83), (0.47238275, -3.1961262, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_24" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.8149632, -3.1009088, 0.655), (0.4916054, -3.234848, 0.655), (0.47614893, -3.1947787, 0.655), (0.8056894, -3.076867, 0.655), (0.8149632, -3.1009088, 0.69), (0.4916054, -3.234848, 0.69), (0.47614893, -3.1947787, 0.69), (0.8056894, -3.076867, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_25" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.018820904, 0.05697169, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.8056894, -3.076867, 0.72), (0.47614893, -3.1947787, 0.72), (0.4626772, -3.153999, 0.72), (0.79760635, -3.0523994, 0.72), (0.8056894, -3.076867, 0.75), (0.47614893, -3.1947787, 0.75), (0.4626772, -3.153999, 0.75), (0.79760635, -3.0523994, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_25" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.82452023, -3.0701294, 0.73), (0.8094555, -3.0755196, 0.73), (0.8014341, -3.0512383, 0.73), (0.8167451, -3.0465937, 0.73), (0.82452023, -3.0701294, 0.83), (0.8094555, -3.0755196, 0.83), (0.8014341, -3.0512383, 0.83), (0.8167451, -3.0465937, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_25" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.47238275, -3.1961262, 0.73), (0.45731807, -3.2015164, 0.73), (0.4435384, -3.1598048, 0.73), (0.45884943, -3.1551602, 0.73), (0.47238275, -3.1961262, 0.83), (0.45731807, -3.2015164, 0.83), (0.4435384, -3.1598048, 0.83), (0.45884943, -3.1551602, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_25" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.8056894, -3.076867, 0.655), (0.47614893, -3.1947787, 0.655), (0.4626772, -3.153999, 0.655), (0.79760635, -3.0523994, 0.655), (0.8056894, -3.076867, 0.69), (0.47614893, -3.1947787, 0.69), (0.4626772, -3.153999, 0.69), (0.79760635, -3.0523994, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_26" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.016002765, 0.057826564, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.79760635, -3.0523994, 0.72), (0.4626772, -3.153999, 0.72), (0.45122266, -3.1126077, 0.72), (0.7907336, -3.0275645, 0.72), (0.79760635, -3.0523994, 0.75), (0.4626772, -3.153999, 0.75), (0.45122266, -3.1126077, 0.75), (0.7907336, -3.0275645, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_26" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.8167451, -3.0465937, 0.73), (0.8014341, -3.0512383, 0.73), (0.7946137, -3.0265927, 0.73), (0.81013423, -3.022705, 0.73), (0.8167451, -3.0465937, 0.83), (0.8014341, -3.0512383, 0.83), (0.7946137, -3.0265927, 0.83), (0.81013423, -3.022705, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_26" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.45884943, -3.1551602, 0.73), (0.4435384, -3.1598048, 0.73), (0.43182203, -3.1174672, 0.73), (0.44734251, -3.1135795, 0.73), (0.45884943, -3.1551602, 0.83), (0.4435384, -3.1598048, 0.83), (0.43182203, -3.1174672, 0.83), (0.44734251, -3.1135795, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_26" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.79760635, -3.0523994, 0.655), (0.4626772, -3.153999, 0.655), (0.45122266, -3.1126077, 0.655), (0.7907336, -3.0275645, 0.655), (0.79760635, -3.0523994, 0.69), (0.4626772, -3.153999, 0.69), (0.45122266, -3.1126077, 0.69), (0.7907336, -3.0275645, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_27" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.0131460745, 0.05854213, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.7907336, -3.0275645, 0.72), (0.45122266, -3.1126077, 0.72), (0.44181287, -3.070704, 0.72), (0.7850877, -3.0024223, 0.72), (0.7907336, -3.0275645, 0.75), (0.45122266, -3.1126077, 0.75), (0.44181287, -3.070704, 0.75), (0.7850877, -3.0024223, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_27" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.81013423, -3.022705, 0.73), (0.7946137, -3.0265927, 0.73), (0.7890109, -3.001642, 0.73), (0.8047034, -2.9985206, 0.73), (0.81013423, -3.022705, 0.83), (0.7946137, -3.0265927, 0.83), (0.7890109, -3.001642, 0.83), (0.8047034, -2.9985206, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_27" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.44734251, -3.1135795, 0.73), (0.43182203, -3.1174672, 0.73), (0.42219716, -3.074606, 0.73), (0.43788972, -3.0714843, 0.73), (0.44734251, -3.1135795, 0.83), (0.43182203, -3.1174672, 0.83), (0.42219716, -3.074606, 0.83), (0.43788972, -3.0714843, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_27" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.7907336, -3.0275645, 0.655), (0.45122266, -3.1126077, 0.655), (0.44181287, -3.070704, 0.655), (0.7850877, -3.0024223, 0.655), (0.7907336, -3.0275645, 0.69), (0.45122266, -3.1126077, 0.69), (0.44181287, -3.070704, 0.69), (0.7850877, -3.0024223, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_28" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.0102577135, 0.059116658, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.7850877, -3.0024223, 0.72), (0.44181287, -3.070704, 0.72), (0.43447056, -3.0283892, 0.72), (0.7806823, -2.9770336, 0.72), (0.7850877, -3.0024223, 0.75), (0.44181287, -3.070704, 0.75), (0.43447056, -3.0283892, 0.75), (0.7806823, -2.9770336, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_28" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.8047034, -2.9985206, 0.73), (0.7890109, -3.001642, 0.73), (0.78463906, -2.9764466, 0.73), (0.8004659, -2.974099, 0.73), (0.8047034, -2.9985206, 0.83), (0.7890109, -3.001642, 0.83), (0.78463906, -2.9764466, 0.83), (0.8004659, -2.974099, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_28" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.43788972, -3.0714843, 0.73), (0.42219716, -3.074606, 0.73), (0.41468704, -3.0313237, 0.73), (0.43051386, -3.0289762, 0.73), (0.43788972, -3.0714843, 0.83), (0.42219716, -3.074606, 0.83), (0.41468704, -3.0313237, 0.83), (0.43051386, -3.0289762, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_28" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.7850877, -3.0024223, 0.655), (0.44181287, -3.070704, 0.655), (0.43447056, -3.0283892, 0.655), (0.7806823, -2.9770336, 0.655), (0.7850877, -3.0024223, 0.69), (0.44181287, -3.070704, 0.69), (0.43447056, -3.0283892, 0.69), (0.7806823, -2.9770336, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_29" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.0073446403, 0.059548773, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.7806823, -2.9770336, 0.72), (0.43447056, -3.0283892, 0.72), (0.42921337, -2.985765, 0.72), (0.77752805, -2.951459, 0.72), (0.7806823, -2.9770336, 0.75), (0.43447056, -3.0283892, 0.75), (0.42921337, -2.985765, 0.75), (0.77752805, -2.951459, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_29" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.8004659, -2.974099, 0.73), (0.78463906, -2.9764466, 0.73), (0.78150874, -2.951067, 0.73), (0.7974317, -2.9494987, 0.73), (0.8004659, -2.974099, 0.83), (0.78463906, -2.9764466, 0.83), (0.78150874, -2.951067, 0.83), (0.7974317, -2.9494987, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_29" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.43051386, -3.0289762, 0.73), (0.41468704, -3.0313237, 0.73), (0.40930966, -2.9877253, 0.73), (0.42523262, -2.9861572, 0.73), (0.43051386, -3.0289762, 0.83), (0.41468704, -3.0313237, 0.83), (0.40930966, -2.9877253, 0.83), (0.42523262, -2.9861572, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_29" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.7806823, -2.9770336, 0.655), (0.43447056, -3.0283892, 0.655), (0.42921337, -2.985765, 0.655), (0.77752805, -2.951459, 0.655), (0.7806823, -2.9770336, 0.69), (0.43447056, -3.0283892, 0.69), (0.42921337, -2.985765, 0.69), (0.77752805, -2.951459, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_30" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.004413874, 0.059837427, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.77752805, -2.951459, 0.72), (0.42921337, -2.985765, 0.72), (0.42605397, -2.9429343, 0.72), (0.7756324, -2.9257605, 0.72), (0.77752805, -2.951459, 0.75), (0.42921337, -2.985765, 0.75), (0.42605397, -2.9429343, 0.75), (0.7756324, -2.9257605, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_30" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.7974317, -2.9494987, 0.73), (0.78150874, -2.951067, 0.73), (0.77962756, -2.9255643, 0.73), (0.7956083, -2.9247792, 0.73), (0.7974317, -2.9494987, 0.83), (0.78150874, -2.951067, 0.83), (0.77962756, -2.9255643, 0.83), (0.7956083, -2.9247792, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_30" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.42523262, -2.9861572, 0.73), (0.40930966, -2.9877253, 0.73), (0.40607807, -2.9439156, 0.73), (0.4220588, -2.9431305, 0.73), (0.42523262, -2.9861572, 0.83), (0.40930966, -2.9877253, 0.83), (0.40607807, -2.9439156, 0.83), (0.4220588, -2.9431305, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_30" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.77752805, -2.951459, 0.655), (0.42921337, -2.985765, 0.655), (0.42605397, -2.9429343, 0.655), (0.7756324, -2.9257605, 0.655), (0.77752805, -2.951459, 0.69), (0.42921337, -2.985765, 0.69), (0.42605397, -2.9429343, 0.69), (0.7756324, -2.9257605, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Belt_31" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysxSurfaceVelocityAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/RubberBelt>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            bool physics:kinematicEnabled = 1
+            vector3f physxSurfaceVelocity:surfaceVelocity = (-0.0014724737, 0.059981927, 0)
+            bool physxSurfaceVelocity:surfaceVelocityEnabled = 1
+            bool physxSurfaceVelocity:surfaceVelocityLocalSpace = 0
+            point3f[] points = [(0.7756324, -2.9257605, 0.72), (0.42605397, -2.9429343, 0.72), (0.425, -2.9, 0.72), (0.775, -2.9, 0.72), (0.7756324, -2.9257605, 0.75), (0.42605397, -2.9429343, 0.75), (0.425, -2.9, 0.75), (0.775, -2.9, 0.75)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "InnerGuide_31" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.7956083, -2.9247792, 0.73), (0.77962756, -2.9255643, 0.73), (0.779, -2.9, 0.73), (0.795, -2.9, 0.73), (0.7956083, -2.9247792, 0.83), (0.77962756, -2.9255643, 0.83), (0.779, -2.9, 0.83), (0.795, -2.9, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "OuterGuide_31" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.4220588, -2.9431305, 0.73), (0.40607807, -2.9439156, 0.73), (0.405, -2.9, 0.73), (0.421, -2.9, 0.73), (0.4220588, -2.9431305, 0.83), (0.40607807, -2.9439156, 0.83), (0.405, -2.9, 0.83), (0.421, -2.9, 0.83)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Frame_31" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 2, 3, 7, 6, 5, 4, 4, 5, 1, 0, 5, 6, 2, 1, 6, 7, 3, 2, 7, 4, 0, 3]
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            rel material:binding:physics = </LInlet/Looks/Contact>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(0.7756324, -2.9257605, 0.655), (0.42605397, -2.9429343, 0.655), (0.425, -2.9, 0.655), (0.775, -2.9, 0.655), (0.7756324, -2.9257605, 0.69), (0.42605397, -2.9429343, 0.69), (0.425, -2.9, 0.69), (0.775, -2.9, 0.69)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def "Drive"
+    {
+        def Cube "Housing" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/BrushedSteel>
+            double size = 1
+            float3 xformOp:scale = (0.26, 0.18, 0.18)
+            double3 xformOp:translate = (2.82, -3.87, 0.59)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "Guard" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </LInlet/Looks/SafetyYellow>
+            double size = 1
+            float3 xformOp:scale = (0.12, 0.08, 0.09)
+            double3 xformOp:translate = (2.98, -3.83, 0.7)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+    }
+}

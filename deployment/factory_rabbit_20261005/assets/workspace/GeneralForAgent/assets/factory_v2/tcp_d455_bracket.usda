@@ -1,0 +1,167 @@
+#usda 1.0
+(
+    defaultPrim = "Bracket"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "Bracket"
+{
+    def "Looks"
+    {
+        def Material "Steel"
+        {
+            token outputs:mdl:surface.connect = </Bracket/Looks/Steel/MDL.outputs:out>
+            token outputs:surface.connect = </Bracket/Looks/Steel/Preview.outputs:surface>
+
+            def Shader "MDL"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (0.29, 0.34, 0.38)
+                float inputs:metallic_constant = 0.9
+                float inputs:reflection_roughness_constant = 0.28
+                token outputs:out
+            }
+
+            def Shader "Preview"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.29, 0.34, 0.38)
+                float inputs:metallic = 0.9
+                float inputs:roughness = 0.28
+                token outputs:surface
+            }
+        }
+
+        def Material "Seal"
+        {
+            token outputs:mdl:surface.connect = </Bracket/Looks/Seal/MDL.outputs:out>
+            token outputs:surface.connect = </Bracket/Looks/Seal/Preview.outputs:surface>
+
+            def Shader "MDL"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (0.025, 0.031, 0.04)
+                float inputs:metallic_constant = 0
+                float inputs:reflection_roughness_constant = 0.72
+                token outputs:out
+            }
+
+            def Shader "Preview"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.025, 0.031, 0.04)
+                float inputs:metallic = 0
+                float inputs:roughness = 0.72
+                token outputs:surface
+            }
+        }
+    }
+
+    def Cube "HandClamp" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Bracket/Looks/Steel>
+        double size = 1
+        float3 xformOp:scale = (0.012, 0.055, 0.042)
+        double3 xformOp:translate = (0.034, 0, 0.022)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cube "Cantilever" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Bracket/Looks/Steel>
+        double size = 1
+        float3 xformOp:scale = (0.056, 0.036, 0.008)
+        double3 xformOp:translate = (0.064, 0, 0.026)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cube "Riser" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Bracket/Looks/Steel>
+        double size = 1
+        float3 xformOp:scale = (0.008, 0.036, 0.032)
+        double3 xformOp:translate = (0.084, 0, 0.042)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cube "CameraBackplate" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Bracket/Looks/Steel>
+        double size = 1
+        float3 xformOp:scale = (0.034, 0.105, 0.008)
+        double3 xformOp:translate = (0.095, 0, 0.057)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cube "VibrationPad" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Bracket/Looks/Seal>
+        double size = 1
+        float3 xformOp:scale = (0.031, 0.099, 0.002)
+        double3 xformOp:translate = (0.095, 0, 0.062)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cylinder "Bolt_ClampA" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "X"
+        double height = 0.003
+        rel material:binding = </Bracket/Looks/Seal>
+        double radius = 0.0035
+        double3 xformOp:translate = (0.041, -0.018, 0.015)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Bolt_ClampB" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "X"
+        double height = 0.003
+        rel material:binding = </Bracket/Looks/Seal>
+        double radius = 0.0035
+        double3 xformOp:translate = (0.041, 0.018, 0.015)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Bolt_CameraA" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.003
+        rel material:binding = </Bracket/Looks/Seal>
+        double radius = 0.0035
+        double3 xformOp:translate = (0.095, -0.037, 0.057)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Bolt_CameraB" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.003
+        rel material:binding = </Bracket/Looks/Seal>
+        double radius = 0.0035
+        double3 xformOp:translate = (0.095, 0.037, 0.057)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+}

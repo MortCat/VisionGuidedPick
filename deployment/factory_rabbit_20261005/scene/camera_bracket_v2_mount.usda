@@ -1,0 +1,143 @@
+#usda 1.0
+
+def "World"
+{
+    def "FactoryDemo"
+    {
+        def "Robots"
+        {
+            def "arm_01"
+            {
+                over "WristD455"
+                {
+                    matrix4d xformOp:transform = ( (0.2596339763109178, -2.1550688881172347e-7, 0.9657070975947809, 0), (0.000001549639121925946, 0.9999999999987808, -1.9346660983072564e-7, 0), (-0.9657070975935614, 0.0000015467280039481744, 0.2596339763109352, 0), (0.5066290492460795, -1.646507802322006e-7, 0.5255144536804838, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform"]
+
+                    over "RSD455"
+                    {
+                        matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+                        uniform token[] xformOpOrder = ["xformOp:transform"]
+                    }
+                }
+
+                def PhysicsFixedJoint "WristD455MountJoint"
+                {
+                    point3f physics:localPos0 = (0.105, 0, 0.01)
+                    point3f physics:localPos1 = (0, 0, 0)
+                    quatf physics:localRot0 = (-6.579498e-17, 0.7933533, 1.5730897e-16, -0.6087614)
+                    quatf physics:localRot1 = (1, 0, 0, 0)
+                }
+
+                def "panda_hand"
+                {
+                    over "TCPCameraBracket" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    def Xform "CameraBracketV2" (
+                        prepend references = @./camera_bracket_v2_geometry.usda@
+                    )
+                    {
+                        over "Visual" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </World/FactoryDemo/Robots/arm_01/panda_link1/geometry/Looks/PlasticWhite>
+                        }
+                    }
+                }
+            }
+
+            def "arm_02"
+            {
+                over "WristD455"
+                {
+                    matrix4d xformOp:transform = ( (0.2596339763109178, -2.1550688881172347e-7, 0.9657070975947809, 0), (0.000001549639121925946, 0.9999999999987808, -1.9346660983072564e-7, 0), (-0.9657070975935614, 0.0000015467280039481744, 0.2596339763109352, 0), (0.5066290492460795, -1.646507802322006e-7, 0.5255144536804838, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform"]
+
+                    over "RSD455"
+                    {
+                        matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+                        uniform token[] xformOpOrder = ["xformOp:transform"]
+                    }
+                }
+
+                def PhysicsFixedJoint "WristD455MountJoint"
+                {
+                    point3f physics:localPos0 = (0.105, 0, 0.01)
+                    point3f physics:localPos1 = (0, 0, 0)
+                    quatf physics:localRot0 = (-6.579498e-17, 0.7933533, 1.5730897e-16, -0.6087614)
+                    quatf physics:localRot1 = (1, 0, 0, 0)
+                }
+
+                def "panda_hand"
+                {
+                    over "TCPCameraBracket" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    def Xform "CameraBracketV2" (
+                        prepend references = @./camera_bracket_v2_geometry.usda@
+                    )
+                    {
+                        over "Visual" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </World/FactoryDemo/Robots/arm_02/panda_link1/geometry/Looks/PlasticWhite>
+                        }
+                    }
+                }
+            }
+        }
+
+        over "ROS"
+        {
+            over "arm_01_camera"
+            {
+                over "MountTF"
+                {
+                    custom quatd inputs:rotation = (-6.57949780447348e-17, 0.793353340291235, 1.573089767533442e-16, -0.6087614290087208)
+                    custom vector3d inputs:translation = (0.105, 0, 0.01)
+                }
+
+                over "ColorTF"
+                {
+                    custom quatd inputs:rotation = (0.5000000000000001, -0.4999999999999998, -0.4999994933605194, 0.5000000000000001)
+                    custom vector3d inputs:translation = (2.220446049250313e-16, 0.011500000000000177, 0)
+                }
+
+                over "DepthTF"
+                {
+                    custom quatd inputs:rotation = (0.5000000000000001, -0.4999996125698088, -0.5000003576278685, 0.5000000000000007)
+                    custom vector3d inputs:translation = (0, -0.047499999999999876, 1.1102230246251565e-16)
+                }
+            }
+
+            over "arm_02_camera"
+            {
+                over "MountTF"
+                {
+                    custom quatd inputs:rotation = (-6.57949780447348e-17, 0.793353340291235, 1.573089767533442e-16, -0.6087614290087208)
+                    custom vector3d inputs:translation = (0.105, 0, 0.01)
+                }
+
+                over "ColorTF"
+                {
+                    custom quatd inputs:rotation = (0.5000000000000001, -0.4999999999999998, -0.4999994933605194, 0.5000000000000001)
+                    custom vector3d inputs:translation = (2.220446049250313e-16, 0.011500000000000177, 0)
+                }
+
+                over "DepthTF"
+                {
+                    custom quatd inputs:rotation = (0.5000000000000001, -0.4999996125698088, -0.5000003576278685, 0.5000000000000007)
+                    custom vector3d inputs:translation = (0, -0.047499999999999876, 1.1102230246251565e-16)
+                }
+            }
+        }
+    }
+}

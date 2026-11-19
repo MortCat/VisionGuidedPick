@@ -1,0 +1,53 @@
+# Move the configured tool center point to a target pose.
+# target_pose.header.frame_id must be non-empty and resolvable through TF.
+# A zero timestamp requests the latest transform when the goal is accepted.
+geometry_msgs/PoseStamped target_pose
+
+# Both scales must be finite and in the range (0.0, 1.0].
+float64 max_velocity_scale
+float64 max_acceleration_scale
+
+# Covers goal validation, planning, and execution. Must be greater than zero.
+builtin_interfaces/Duration timeout
+
+# Optional bounded translation. Zero horizon retains fixed-pose M1 semantics.
+# Velocity is expressed in target_pose.header.frame_id. The pose is evaluated
+# at its source stamp; the horizon is remaining visual validity, not a timeout.
+geometry_msgs/Vector3 target_linear_velocity
+builtin_interfaces/Duration prediction_horizon
+# Optional identity of the existing visual target for bounded moving prediction.
+# Zero retains anonymous/static M1 behavior. Nonzero requires a positive horizon
+# and the same tracked obstacle in the acknowledged scene; it creates no track.
+uint64 target_track_id
+---
+int32 SUCCESS=0
+int32 INVALID_GOAL=1
+int32 NOT_READY=2
+int32 BUSY=3
+int32 TF_UNAVAILABLE=4
+int32 PLANNING_FAILED=5
+int32 EXECUTION_FAILED=6
+int32 TIMED_OUT=7
+int32 CANCELED=8
+int32 INTERNAL_ERROR=9
+
+bool success
+int32 error_code
+string message
+
+# Reported in the configured base frame when it is available.
+geometry_msgs/PoseStamped final_pose
+---
+uint8 PHASE_UNKNOWN=0
+uint8 PHASE_VALIDATING=1
+uint8 PHASE_PLANNING=2
+uint8 PHASE_EXECUTING=3
+uint8 PHASE_CANCELING=4
+
+uint8 phase
+
+# Reported in the configured base frame when it is available.
+geometry_msgs/PoseStamped current_pose
+
+# Range [0.0, 1.0]. A negative value means progress is unavailable.
+float32 progress

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VisionGuidedPick · Teach Target</title><link rel="stylesheet" href="/style.css?v=sidebar-1">
+    <script src="/navigation.js" defer></script></head>
+<body class="app-shell"><nav class="app-navigation" aria-label="Workspace">
+    <button class="app-navigation-toggle" type="button" aria-label="Workspace navigation" aria-expanded="true" aria-controls="workspace-navigation-links" hidden>
+        <span aria-hidden="true"></span>
+    </button>
+    <div class="app-navigation-links" id="workspace-navigation-links">
+        <a href="/" aria-current="page">Teach Target</a>
+        <a href="/observe">Observe</a>
+        <a href="/auto-pick">Auto Pick</a>
+    </div>
+</nav>
+<main>
+<header class="page-header"><h1>Teach Target</h1><span id="connection-state">Connecting…</span></header>
+<section id="workspace"><aside><label>Target<select id="targets"></select></label><div class="new-target"><input id="name" aria-label="Target name" placeholder="New target name"><button id="new">Create</button></div><label class="upload">Training Image<input id="files" type="file" accept="image/png,image/jpeg" multiple></label>
+<label class="upload">Validation Source<input id="validation-files" type="file" accept="image/png,image/jpeg" multiple></label><p id="upload-result" class="hint" role="status" aria-live="polite"></p><p id="dataset-summary" class="hint"></p><div id="images" class="image-grid" aria-label="Training images"></div><div id="validation-images" class="image-grid" aria-label="Validation images"></div></aside>
+<article><div class="article-head"><h2 id="title">Select a target</h2><span id="image-state"></span></div><p id="instruction">Select an image and drag a loose box around the target.</p><div class="tools"><button id="auto" class="primary">Auto Contour</button><button id="save">Save Contour</button><button id="next">Next Image</button><button id="no-target">No Target</button><button id="remove-image">Remove Image</button><details id="adjust"><summary>Adjust</summary><div><button id="box">Redraw Box</button><button id="include">Include Point</button><button id="exclude">Exclude Point</button><button id="undo">Undo Point</button><button id="reset">Reset to Saved</button></div></details></div><div class="instance-tools"><label>Instance <select id="instance-select"></select></label><button id="add-instance">Add Instance</button><button id="remove-instance">Remove Instance</button><span id="image-origin" class="hint"></span></div><div id="remove-confirmation" class="remove-confirmation" hidden role="group" aria-label="Confirm image removal"><span id="remove-prompt"></span><button id="confirm-remove-image">Remove</button><button id="cancel-remove-image">Cancel</button></div><output id="message" role="status" aria-live="polite"></output><div id="picture"><canvas id="editor" aria-label="Target image and contour; drag to select a box"></canvas><span id="empty">Upload or select an image</span></div><div class="training"><div><strong>Training</strong><p class="hint">Uses config/teaching.yaml · no resume</p></div><div class="tools"><button id="train" class="primary">Train</button><button id="cancel">Cancel</button><button id="publish">Publish Model</button><a id="open-observe" href="/observe" hidden>Open Observe</a></div></div><pre id="job">No training job</pre><p id="result"></p><div id="training-charts"></div></article></section></main><script src="/app.js?v=20261119-teach-summary"></script></body></html>

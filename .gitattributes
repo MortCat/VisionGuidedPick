@@ -1,0 +1,46 @@
+* text=auto eol=lf
+*.usdc binary
+*.usd binary
+*.png binary
+*.jpg binary
+*.stl binary
+# SCM syntax highlighting & preventing 3-way merges
+pixi.lock merge=binary linguist-language=YAML linguist-generated=true -diff
+
+# Content-addressed synthetic assets must have identical bytes on Windows and Linux.
+ros2_ws/src/ptc_app/test/fixtures/synthetic_robot.urdf text eol=lf
+ros2_ws/src/ptc_app/test/fixtures/synthetic_model.fixture text eol=lf
+ros2_ws/src/ptc_app/test/fixtures/synthetic_scene.yaml text eol=lf
+
+# Live factory collision asset digests must survive platform checkout.
+config/factory_demo/assets/static_geometry.yaml text eol=lf
+config/factory_demo/assets/static_geometry.yaml.identity.yaml text eol=lf
+config/factory_demo/assets/**/*.dae text eol=lf
+config/factory_demo/assets/*.urdf text eol=lf
+config/factory_demo/assets/*.srdf text eol=lf
+config/factory_demo/assets/*.yaml text eol=lf
+config/factory_demo/assets/*.ply text eol=lf
+
+# Linux project entry must survive Windows checkout.
+/start.sh text eol=lf
+/setup.sh text eol=lf
+
+/deployment/linux/**/*.sh text eol=lf
+/deployment/linux/**/*.py text eol=lf
+/deployment/linux/sysctl/*.conf text eol=lf
+
+/stop.sh text eol=lf
+/deployment/runtime/**/*.json text eol=lf
+/deployment/runtime/*.xml text eol=lf
+/deployment/runtime/*.py text eol=lf
+
+# Variant identity digests require byte-stable robot/calibration assets.
+config/factory_demo/variants/**/*.urdf text eol=lf
+config/factory_demo/variants/**/*.srdf text eol=lf
+config/factory_demo/variants/**/*.yaml text eol=lf
+
+# Canonical Windows host entries.
+/start.ps1 text eol=lf
+/stop.ps1 text eol=lf
+/setup.ps1 text eol=lf
+/deployment/windows/*.ps1 text eol=lf

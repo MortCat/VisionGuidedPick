@@ -1,0 +1,8 @@
+# Optional inference runtime. Install into the ROS-compatible ML environment.
+# Prerequisite: install a matching CUDA-enabled torch/torchvision pair first.
+# Keep RF-DETR aligned with the Teach Target training backend.
+rfdetr==1.9.1
+numpy>=1.26,<3
+Pillow>=10
+PyYAML>=6
+opencv-python-headless>=4.10,<5

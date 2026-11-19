@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "host_role": "windows_simulator",
+  "project_root": "../../../",
+  "isaac_root": "C:/isaacsim",
+  "scene_path": "../../../deployment/factory_rabbit_20261005/scene/FactoryRabbitDemo.camera-bracket-v2.usda",
+  "wsl_distribution": "Ubuntu-24.04"
+}

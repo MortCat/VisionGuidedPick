@@ -1,0 +1,45 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const root=require('path').resolve(__dirname,'../..');
+const source=fs.readFileSync(root+'/tools/teach_target/web/app.js','utf8');
+const elements=new Map();
+function element(){return {disabled:false,hidden:false,value:'',dataset:{},style:{},children:[],classList:{toggle(){}},append(...items){this.children.push(...items);},replaceChildren(...items){this.children=items;},add(value){this.children.push(value);},getContext(){throw Error('No real canvas rendering in this contract test');}};}
+const puts=[];let revision=0;
+const profile={target_id:'t',name:'Target',latest_job_id:null,images:[{image_id:'i',width:32,height:24,purpose:'validation',source_label:'Gantry/session',original_filename:'frame.png',preview_url:'/preview',annotation_state:'reviewed'}]};
+const context={console,Uint8Array,structuredClone,FormData,setInterval(){},Option:function(text,value){return {text,value};},crypto:{getRandomValues(a){return a.fill(17);}},document:{getElementById(id){if(!elements.has(id))elements.set(id,element());return elements.get(id);},createElement(){return element();},createTextNode(text){return text;}},fetch:async(path,options={})=>{let data;
+ if(options.method==='PUT'){const body=JSON.parse(options.body);puts.push(body);data={annotation:{revision:++revision,instances:body.instances,width:32,height:24},draft_revision:revision};}
+ else if(path==='/api/teach/targets')data=[];
+ else if(path.endsWith('/dataset-summary'))data={train_count:12,validation_count:6,pending_count:0,validation_mode:'specified_validation'};
+ else if(path==='/api/teach/targets/t')data=profile;
+ else if(path==='/api/teach/training-jobs/failed')data={state:'failed',epoch:0,total_epochs:40,completed_epochs:0,elapsed_sec:1,message:'Training failed'};
+ else throw Error('Unexpected API path '+path);
+ return {ok:true,status:200,json:async()=>data};
+}};
+vm.createContext(context);
+vm.runInContext(source,context);
+(async()=>{
+ await Promise.resolve();await Promise.resolve();
+ vm.runInContext(`state.target={target_id:'t'};state.image={image_id:'i',width:32,height:24};state.annotation={revision:0,instances:[]};state.instances=[{instance_id:'first',mask:{size:[24,32],counts:[0,384,384]}}];state.instanceIndex=-1;state.mask={size:[24,32],counts:[384,384]};`,context);
+ await vm.runInContext(`$('save').onclick()`,context);
+ assert(puts.length,'Save failed: '+elements.get('message').textContent);
+ assert.strictEqual(puts[0].instances.length,2,'Save preserves both target instances');
+ assert.strictEqual(puts[0].instances[0].instance_id,'first');
+ assert.strictEqual(elements.get('dataset-summary').textContent,'Next run · Train: 12 · Validation: 6 · 0 to review · Specified validation');
+ await vm.runInContext(`$('no-target').onclick()`,context);
+ assert.deepStrictEqual(puts[1].instances,[],'No Target sends an explicit empty reviewed annotation');
+ assert.strictEqual(vm.runInContext('state.instances.length',context),0);
+ assert(puts[1].expected_revision===1,'No Target uses the latest server annotation revision');
+ const html=fs.readFileSync(root+'/tools/teach_target/web/index.html','utf8');
+ assert(html.indexOf('id="validation-files"')<html.indexOf('id="images"'),'Both upload controls appear before image grids');
+ assert(source.includes("data.append('purpose',purpose)"));
+ assert(!html.includes('id="training-source"')&&!html.includes('id="validation-source"'));
+ assert(!source.includes('sourceId')&&!source.includes("data.append('source_label'"));
+ assert(html.includes('>Training Image<input')&&html.includes('>Validation Source<input'));
+ vm.runInContext(`renderedJob='previous';$('result').textContent='Previous validation IoU';$('training-charts').dataset.job='previous';$('open-observe').hidden=false;state.job='failed';`,context);
+ await vm.runInContext('poll()',context);
+ assert.match(elements.get('job').textContent,/failed · epoch 0\/40/);
+ assert.strictEqual(elements.get('result').textContent,'');
+ assert.strictEqual(elements.get('training-charts').dataset.job,undefined,'Charts from the previous job are released');
+ assert(!html.includes('id="overlays"'),'The validation-prediction gallery stays removed');
+ assert.strictEqual(elements.get('open-observe').hidden,true);
+ console.log('Editor HTTP/DOM contract passed: annotation, split controls, and failed-job result isolation');
+})().catch(error=>{console.error(error);process.exitCode=1;});

@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.16)
+project(ptc_description_tools)
+find_package(ament_cmake REQUIRED)
+find_package(ptc_app REQUIRED)
+find_package(yaml-cpp CONFIG REQUIRED)
+# OpenUSD is explicitly optional and never linked by application/core packages.
+find_package(pxr CONFIG REQUIRED)
+add_executable(usd_extrinsics src/usd_extrinsics_main.cpp src/usd_extrinsics_runner.cpp)
+target_compile_features(usd_extrinsics PRIVATE cxx_std_17)
+target_include_directories(usd_extrinsics PRIVATE ${PXR_INCLUDE_DIRS} include)
+target_link_libraries(usd_extrinsics PRIVATE usd usdGeom gf sdf tf yaml-cpp::yaml-cpp ptc_app::ptc_settings)
+install(TARGETS usd_extrinsics RUNTIME DESTINATION lib/${PROJECT_NAME})
+ament_package()

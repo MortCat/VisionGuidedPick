@@ -1,0 +1,4 @@
+kind: model
+id: model_v1
+backend: rf_detr
+sha256: "c14c5b81cb332481cd290bcc8988998c6a5c295e24ac3c6c8430d06a51b1ddc4"

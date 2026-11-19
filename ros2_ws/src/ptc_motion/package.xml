@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>ptc_motion</name><version>0.1.0</version>
+  <description>Shared arm gateway Node and unique motion owner.</description>
+  <maintainer email="mortcj0@gmail.com">MortCat</maintainer><license>MIT</license>
+  <buildtool_depend>ament_cmake</buildtool_depend><depend>ptc_app</depend><depend>ptc_core</depend><depend>ptc_interfaces</depend>
+  <depend>rclcpp</depend><depend>rclcpp_action</depend><depend>std_srvs</depend><depend>tf2_ros</depend><depend>tf2_geometry_msgs</depend>
+  <export><build_type>ament_cmake</build_type></export>
+</package>

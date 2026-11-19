@@ -1,0 +1,30 @@
+ptc_interfaces/EventKey key
+uint8 phase
+uint8 inspection_phase
+uint8 motion_phase
+uint8 grasp_phase
+# Present only while a selected feasible grasp is being prepared or closed.
+geometry_msgs/PointStamped planned_grasp_center
+geometry_msgs/Point[2] planned_grasp_jaws
+uint8 POSSESSION_UNKNOWN=0
+uint8 POSSESSION_EMPTY=1
+uint8 POSSESSION_HOLDING=2
+uint8 grasp_possession
+uint8 HOME_NONE=0
+uint8 HOME_QUEUED=1
+uint8 HOME_RESETTING=2
+uint8 HOME_MOVING=3
+uint8 HOME_ARRIVED=4
+uint8 HOME_FAILED=5
+uint8 HOME_CANCELED=6
+uint8 home_state
+string<=256 home_message
+bool continuous_operation
+# Fresh wrist-depth estimate for the active cycle, in robot base coordinates.
+builtin_interfaces/Time bin_surface_stamp
+float64 bin_surface_z_m
+ptc_interfaces/EventKey last_completed_key
+uint8 last_outcome
+uint64 report_id
+string<=128 binding_revision
+string<=512 reason

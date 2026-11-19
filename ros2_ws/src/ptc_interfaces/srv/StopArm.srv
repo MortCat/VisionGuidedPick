@@ -1,0 +1,7 @@
+ptc_interfaces/EventKey key
+uint64 command_id
+bool reset_fault
+---
+# accepted is not proof of stopped; wait for ArmStatus.stopped.
+bool accepted
+string<=512 message

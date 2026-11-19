@@ -1,0 +1,237 @@
+# VisionGuidedPick application settings draft, schema v2.
+# NOT a ROS --params-file. settings_check rejects this unresolved draft.
+# null = unresolved REQUIRED value (unless its feature is disabled).
+# This draft must fail operational validation; never coerce null to zero.
+# Paths are relative to this file. Topic/Action names use launch remapping.
+schema_version: 2
+configuration_state: draft
+
+runtime:
+  namespace: cell_1
+  use_sim_time: true
+  motion_backend: unconfigured # unconfigured | mock | moveit
+
+# Relative names only; /clock, /tf and /tf_static remain ROS infrastructure names.
+ros:
+  endpoints:
+    rgb: camera/color/image_raw
+    depth: camera/depth/image_raw
+    rgb_intrinsics: camera/color/camera_info
+    depth_intrinsics: camera/depth/camera_info
+    joint_states: joint_states
+    tracks: vision/tracks
+    frame: vision/frame
+    detections: inference/detections
+    vision_status: vision/status
+    inference_status: inference/status
+    capture_grasp_surface: vision/capture_grasp_surface
+    arm_move: arm/move_to_pose
+    motion_check: arm/check_motion
+    grasp_evaluate: arm/evaluate_grasp_candidates
+    arm_follow: arm/follow_target
+    arm_target: arm/target_update
+    arm_stop: arm/stop
+    arm_status: arm/status
+    scene_sync: arm/sync_scene
+    gripper_command: gripper/command
+    gripper_status: gripper/status
+    controller_trajectory: arm_controller/follow_joint_trajectory
+    controller_gripper: gripper_controller/gripper_cmd
+    servo_twist: servo_node/delta_twist_cmds
+    servo_pause: servo_node/pause_servo
+    servo_command_type: servo_node/switch_command_type
+    servo_status: servo_node/status
+    task_command: task/command
+    task_status: task/status
+
+frames:
+  world: null
+  robot_base: null
+  tcp: null
+  color_optical: null
+  depth_optical: null
+
+calibration:
+  robot_description_path: null # authoritative fixed geometry/extrinsics
+  expected_calibration_id: null # identify the validated installation
+  hand_eye_path: null # known rigid TCP-to-optical transform, generated offline or supplied
+
+time:
+  sensor_future_tolerance_sec: null # allowed source timestamp lead, not clock correction
+
+vision:
+  rgb_depth_sync_tolerance_sec: null
+  frame_max_age_sec: null
+  tf_lookup_timeout_sec: null
+  max_buffered_frames: null
+  roi_margin_ratio: null
+  depth_min_m: null
+  depth_max_m: null
+  depth_registration: required # RGB/depth pixel correspondence must be known
+  min_valid_depth_points: null
+  min_laplacian_variance: null # image clarity in original RGB ROI
+  min_brightness: null # [0,255]
+  max_brightness: null
+  max_frame_megabytes: null # RGB + registered depth bytes per retained frame
+
+tracking:
+  min_confirmed_observations: null # >= 2 before a measured velocity is valid
+  observation_max_age_sec: null
+  temporary_loss_timeout_sec: null
+  max_prediction_horizon_sec: 0.0 # conservative: no blind extrapolation by default
+  association_distance_m: null
+  max_position_stddev_m: null
+  max_tracked_objects: null
+  velocity_min_samples: 3
+  velocity_max_samples: 8
+  velocity_window_sec: null
+  velocity_min_span_sec: null
+  max_velocity_fit_residual_m: null
+  max_velocity_uncertainty_mps: null
+  max_yaw_stddev_rad: null
+  yaw_ambiguity_margin_m: null # registration best-vs-distinct-yaw score margin
+
+task:
+  cycle_timeout_sec: null
+  preparing_pick_timeout_sec: null
+  transport_timeout_sec: null
+  place_timeout_sec: null
+  recovery_timeout_sec: null
+  max_cycle_retries: 0 # finite retries only after stopped + confirmed Empty
+  candidate_retry_interval_sec: null # monotonic backoff before rechecking a temporarily infeasible track
+  max_candidate_admission_attempts_per_observation: 2 # re-evaluate after a newer observation
+
+inspection:
+  acquisition_timeout_sec: null
+  evaluation_timeout_sec: null
+  view_target_position_tolerance_m: null
+  view_target_orientation_tolerance_rad: null
+  # Directions from object center toward camera, in canonical object frame.
+  # Acquisition order: four sides, then top; reachability still requires validation.
+  inference:
+    backend: rf_detr # schema 2 five-view jobs require RF-DETR
+    model_path: null
+    model_version: null
+    request_timeout_sec: null
+    max_pending_requests: null
+    model_class_names: null # checkpoint class-index order; training supplied by user
+    object_class_ids: [bunny]
+    defect_class_ids: null
+    object_confidence_threshold: null
+    candidate_confidence_threshold: null # <= both object and defect thresholds
+    device: null # cpu | cuda
+    rf_detr:
+      defect_confidence_threshold: null # [0, 1], only for rf_detr
+      min_positive_frames: null
+    efficient_ad:
+      anomaly_score_threshold: null # finite, model-specific scale, NOT probability
+      min_positive_frames: null
+  geometry:
+    enabled: true # mandatory real 3D surface analysis for schema 2 jobs
+    healthy_reference_path: null
+    registration_max_error_m: null
+    defect_distance_threshold_m: null
+    yaw_search_step_rad: null
+    registration:
+      coarse_voxel_size_m: null
+      fine_voxel_size_m: null
+      max_points: null
+      max_iterations: null
+      max_correspondence_distance_m: null
+      min_inlier_fraction: null
+      convergence_translation_m: null
+      convergence_yaw_rad: null
+      local_translation_limit_m: null
+      local_yaw_limit_rad: null
+    fusion:
+      evidence_voxel_size_m: null
+      max_points: null
+    min_registration_points: null
+    min_defect_points: null # spatial support, not one noisy depth sample
+    defect_merge_distance_m: null
+    min_observed_reference_fraction: null # unobserved surface remains unknown
+  report:
+    output_dir: ../artifacts/inspections
+    save_timeout_sec: null
+    max_frames: null
+    max_detections_per_frame: null
+    max_total_megabytes: null # report directory quota; no automatic deletion
+
+motion:
+  moveit:
+    planning_group: null
+    srdf_path: null
+    moveit_config_path: null # verified ROS parameter asset: move_group / servo / gateway
+    gripper_joint: null
+    touch_links: []
+    servo_position_gain: null
+    servo_orientation_gain: null
+    joint_stop_velocity: null
+    joint_position_tolerance_rad: null
+    gripper_width_factor: null
+  joint_state_max_age_sec: null
+  tcp_state_max_age_sec: null
+  planning_timeout_sec: null
+  execution_timeout_sec: null
+  stop_confirmation_timeout_sec: null
+  target_update_timeout_sec: null
+  max_velocity_scale: null # (0, 1]
+  max_acceleration_scale: null # (0, 1]
+  position_tolerance_m: null
+  orientation_tolerance_rad: null
+  max_follow_linear_speed_mps: null
+  max_follow_angular_speed_radps: null
+  workspace:
+    bounds_min_m: null # [x, y, z] in frames.world
+    bounds_max_m: null # [x, y, z] in frames.world
+  observation_pose:
+    position_m: null # [x, y, z] in frames.robot_base
+    orientation_xyzw: null
+
+grasp:
+  closing_axis_tcp: [null, null, null] # unit vector in TCP coordinates
+  finger_center_tcp_m: [null, null, null] # center between gripping fingertips
+  intercept_lead_sec: null
+  contact_band_fraction: null # vertical body band, (0,1]
+  min_contact_points: null
+  verification_probe_m: null # independent grasp evidence above the belt prediction
+  pregrasp_clearance_m: 0.04 # object-local vertical clearance before final descent
+  approach_timeout_sec: null
+  close_timeout_sec: null
+  verification_timeout_sec: null
+  release_timeout_sec: null
+  max_relative_linear_speed_mps: null
+  approach_tcp_in_object:
+    position_m: null # canonical object frame
+    orientation_xyzw: null
+  gripper:
+    open_width_m: null # total jaw separation, not per-finger displacement
+    close_width_m: null
+    max_effort_n: null # translated by backend adapter to actual controller
+  verification:
+    method: unconfigured # joint_and_visual | contact_and_visual (availability must be verified)
+    min_confirmations: null
+  lift_distance_m: null # along +Z of frames.world after confirmed Holding
+  bin_approach_pose:
+    position_m: null # frames.robot_base
+    orientation_xyzw: null
+  bin_release_pose:
+    position_m: null # frames.robot_base
+    orientation_xyzw: null
+
+scene:
+  static_geometry_path: null # fixed collision geometry, not moving-object ground truth
+  dynamic_object_max_age_sec: null
+  object_cloud:
+    enabled: false # optional per-track object-frame fusion
+    voxel_size_m: null
+    max_points_per_object: null
+  occupancy_map:
+    enabled: false # optional 3D environment map, not needed for core logic tests
+    resolution_m: null
+
+diagnostics:
+  event_queue_capacity: 256 # engineering buffer defaults, not measured timing limits
+  transition_history_capacity: 512
+  record_rgbd: false
+  recording_output_dir: ../artifacts/recordings

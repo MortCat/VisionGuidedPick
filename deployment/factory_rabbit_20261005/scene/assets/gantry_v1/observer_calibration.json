@@ -1,0 +1,36 @@
+{
+  "calibration_id": "factory_gantry_d455_20261012_v1",
+  "color_optical": "factory/observer_color_optical_frame",
+  "depth_optical": "factory/observer_depth_optical_frame",
+  "camera_world": {
+    "position_m": [
+      0.6,
+      -2.1200000000000006,
+      1.6999999999999995
+    ],
+    "orientation_xyzw": [
+      0.9532791912999499,
+      -2.8710487841470546e-48,
+      2.5860108468894404e-32,
+      -0.30209068743427614
+    ]
+  },
+  "depth_in_color": {
+    "position_m": [
+      0.03599999999999992,
+      0.0,
+      0.0
+    ],
+    "orientation_xyzw": [
+      0.0,
+      -2.4308653429145085e-63,
+      1.2154326714572542e-63,
+      1.0
+    ]
+  },
+  "color_prim": "/World/FactoryDemo/Sensors/StationD455/RSD455/Camera_OmniVision_OV9782_Color",
+  "depth_prim": "/World/FactoryDemo/Sensors/StationD455/RSD455/Camera_OmniVision_OV9782_Right",
+  "official_asset": "SdfReferenceListOp(Explicit Items: [SdfReference(https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/Sensors/RealSense/D455/rsd455.usd, , SdfLayerOffset(0, 1), {})])",
+  "purpose": "upstream discovery and first-arm handover; full dual-arm metric-depth coverage is not validated",
+  "observer_processed_depth_config_limit_m": 2.0
+}

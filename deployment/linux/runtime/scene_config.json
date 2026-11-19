@@ -1,0 +1,210 @@
+{
+  "robots": {
+    "arm_01": "/World/FactoryDemo/Robots/arm_01",
+    "arm_02": "/World/FactoryDemo/Robots/arm_02"
+  },
+  "bases": {
+    "arm_01": [
+      0.15,
+      -0.75,
+      0.65
+    ],
+    "arm_02": [
+      0.15,
+      0.75,
+      0.65
+    ]
+  },
+  "bins": {
+    "arm_01": {
+      "center": [
+        0.23,
+        -1.23,
+        0.75
+      ],
+      "inner_size": [
+        0.28,
+        0.28
+      ],
+      "floor_z": 0.77,
+      "rim_z": 0.89
+    },
+    "arm_02": {
+      "center": [
+        0.23,
+        0.27,
+        0.75
+      ],
+      "inner_size": [
+        0.28,
+        0.28
+      ],
+      "floor_z": 0.77,
+      "rim_z": 0.89
+    }
+  },
+  "objects": {},
+  "belt_speed": 0.06,
+  "belt_top": 0.75,
+  "conveyor_graph": "/World/FactoryDemo/Conveyor/Belt/ConveyorGraph",
+  "stage_saved": true,
+  "conveyor_length": 5.8,
+  "inlet_y": -2.7199999999999998,
+  "static_obstacles": [
+    {
+      "id": "cleanroom_ConveyorSupports_End_0_0",
+      "position": [
+        0.46,
+        -2.65,
+        0.34
+      ],
+      "size": [
+        0.05,
+        0.05,
+        0.68
+      ]
+    },
+    {
+      "id": "cleanroom_ConveyorSupports_End_0_1",
+      "position": [
+        0.74,
+        -2.65,
+        0.34
+      ],
+      "size": [
+        0.05,
+        0.05,
+        0.68
+      ]
+    },
+    {
+      "id": "cleanroom_ConveyorSupports_End_1_0",
+      "position": [
+        0.46,
+        2.65,
+        0.34
+      ],
+      "size": [
+        0.05,
+        0.05,
+        0.68
+      ]
+    },
+    {
+      "id": "cleanroom_ConveyorSupports_End_1_1",
+      "position": [
+        0.74,
+        2.65,
+        0.34
+      ],
+      "size": [
+        0.05,
+        0.05,
+        0.68
+      ]
+    },
+    {
+      "id": "cleanroom_Rear_Lower",
+      "position": [
+        -2.3,
+        0.0,
+        0.55
+      ],
+      "size": [
+        0.1,
+        9.0,
+        1.1
+      ]
+    },
+    {
+      "id": "cleanroom_Rear_Upper",
+      "position": [
+        -2.3,
+        0.0,
+        2.8
+      ],
+      "size": [
+        0.1,
+        9.0,
+        0.8
+      ]
+    },
+    {
+      "id": "cleanroom_Rear_Left",
+      "position": [
+        -2.3,
+        -3.0,
+        1.75
+      ],
+      "size": [
+        0.1,
+        3.0,
+        1.3
+      ]
+    },
+    {
+      "id": "cleanroom_Rear_Right",
+      "position": [
+        -2.3,
+        3.0,
+        1.75
+      ],
+      "size": [
+        0.1,
+        3.0,
+        1.3
+      ]
+    },
+    {
+      "id": "cleanroom_Rear_ObservationWindow",
+      "position": [
+        -2.3,
+        0.0,
+        1.75
+      ],
+      "size": [
+        0.025,
+        3.0,
+        1.3
+      ]
+    },
+    {
+      "id": "cleanroom_Far_Wall",
+      "position": [
+        0.45,
+        4.5,
+        1.6
+      ],
+      "size": [
+        5.5,
+        0.1,
+        3.2
+      ]
+    }
+  ],
+  "room_style": "cleanroom_cutaway",
+  "overview_eye": [
+    4.7,
+    -5.6,
+    2.8
+  ],
+  "overview_target": [
+    0.0,
+    0.5,
+    1.2
+  ],
+  "realistic_materials": true,
+  "conveyor_design": "industrial_v1",
+  "factory_revision": "industrial_rabbit_v3_robot_work_band",
+  "rabbit_good_variant": "stanford_good",
+  "l_extension_status": "planned_not_built",
+  "rabbit_work_center_x_range_m": [
+    0.55,
+    0.65
+  ],
+  "rabbit_work_footprint_x_range_m": [
+    0.49,
+    0.71
+  ],
+  "simulation_frame_hz": 30.0
+}

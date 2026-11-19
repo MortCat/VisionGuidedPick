@@ -1,0 +1,246 @@
+#usda 1.0
+
+over "World"
+{
+    over "FactoryDemo"
+    {
+        custom string feeder:source = "main"
+
+        over "Sensors"
+        {
+            over "ObservationGantry"
+            {
+                double3 xformOp:translate = (0.6, -1.82, 0)
+
+                over "Looks"
+                {
+                    double3 xformOp:translate:lowerBeam = (0, 0, -0.5)
+                    uniform token[] xformOpOrder = ["xformOp:translate:lowerBeam"]
+                }
+
+                over "Left_Column"
+                {
+                    float3 xformOp:scale:heightRevision = (1, 1, 0.7246696)
+                    double3 xformOp:translate = (-0.6, 0, 0.6819999999999999)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale:heightRevision"]
+                }
+
+                over "Left_TopCap"
+                {
+                    double3 xformOp:translate = (-0.6, 0, 1.423)
+                }
+
+                over "Left_Gusset_0"
+                {
+                    double3 xformOp:translate:lowerBeam = (0, 0, -0.5)
+                    uniform token[] xformOpOrder = ["xformOp:translate:lowerBeam"]
+                }
+
+                over "Left_GussetBolt_0_0"
+                {
+                    double3 xformOp:translate = (-0.6, -0.048, 1.2999999999999998)
+                }
+
+                over "Left_GussetBolt_0_1"
+                {
+                    double3 xformOp:translate = (-0.5, -0.048, 1.3599999999999999)
+                }
+
+                over "Left_Gusset_1"
+                {
+                    double3 xformOp:translate:lowerBeam = (0, 0, -0.5)
+                    uniform token[] xformOpOrder = ["xformOp:translate:lowerBeam"]
+                }
+
+                over "Left_GussetBolt_1_0"
+                {
+                    double3 xformOp:translate = (-0.6, 0.048, 1.2999999999999998)
+                }
+
+                over "Left_GussetBolt_1_1"
+                {
+                    double3 xformOp:translate = (-0.5, 0.048, 1.3599999999999999)
+                }
+
+                over "Right_Column"
+                {
+                    float3 xformOp:scale:heightRevision = (1, 1, 0.7246696)
+                    double3 xformOp:translate = (0.6, 0, 0.6819999999999999)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale:heightRevision"]
+                }
+
+                over "Right_TopCap"
+                {
+                    double3 xformOp:translate = (0.6, 0, 1.423)
+                }
+
+                over "Right_Gusset_0"
+                {
+                    double3 xformOp:translate:lowerBeam = (0, 0, -0.5)
+                    uniform token[] xformOpOrder = ["xformOp:translate:lowerBeam"]
+                }
+
+                over "Right_GussetBolt_0_0"
+                {
+                    double3 xformOp:translate = (0.6, -0.048, 1.2999999999999998)
+                }
+
+                over "Right_GussetBolt_0_1"
+                {
+                    double3 xformOp:translate = (0.5, -0.048, 1.3599999999999999)
+                }
+
+                over "Right_Gusset_1"
+                {
+                    double3 xformOp:translate:lowerBeam = (0, 0, -0.5)
+                    uniform token[] xformOpOrder = ["xformOp:translate:lowerBeam"]
+                }
+
+                over "Right_GussetBolt_1_0"
+                {
+                    double3 xformOp:translate = (0.6, 0.048, 1.2999999999999998)
+                }
+
+                over "Right_GussetBolt_1_1"
+                {
+                    double3 xformOp:translate = (0.5, 0.048, 1.3599999999999999)
+                }
+
+                over "CrossBeam"
+                {
+                    double3 xformOp:translate = (0, 0, 1.38)
+                }
+
+                over "CameraCarriage"
+                {
+                    double3 xformOp:translate = (0, 0, 1.3329999999999997)
+                }
+
+                over "CarriageBolt_0"
+                {
+                    double3 xformOp:translate = (-0.067, -0.038, 1.322)
+                }
+
+                over "CarriageBolt_1"
+                {
+                    double3 xformOp:translate = (0.067, -0.038, 1.322)
+                }
+
+                over "CameraMount"
+                {
+                    matrix4d xformOp:transform = ( (1, 1.1151168043087487e-16, 1.8780594109274196e-16, 0), (1.7558627516240855e-17, 0.9063077870366498, -0.4226182617406993, 0), (-4.406877377903812e-17, 0.42261826174069933, 0.9063077870366496, 0), (1.1102230246251565e-16, 0, 1.1999999999999993, 1) )
+                }
+
+                over "DropStem"
+                {
+                    double3 xformOp:translate = (-0.011499999999999955, -0.004719103136710423, 1.3065796783200367)
+                }
+
+                over "ForkHeader"
+                {
+                    double3 xformOp:translate = (-0.011499999999999955, -0.004719103136710423, 1.2831593566400734)
+                }
+
+                over "ForkEar_0"
+                {
+                    double3 xformOp:translate = (-0.08649999999999995, -0.004719103136710423, 1.2611593566400736)
+                }
+
+                over "PitchWasher_0"
+                {
+                    double3 xformOp:translate = (-0.08649999999999995, -0.004719103136710423, 1.2431593566400734)
+                }
+
+                over "ForkEar_1"
+                {
+                    double3 xformOp:translate = (0.06350000000000004, -0.004719103136710423, 1.2611593566400736)
+                }
+
+                over "PitchWasher_1"
+                {
+                    double3 xformOp:translate = (0.06350000000000004, -0.004719103136710423, 1.2431593566400734)
+                }
+
+                over "PitchAxle"
+                {
+                    double3 xformOp:translate = (-0.011499999999999955, -0.004719103136710423, 1.2431593566400734)
+                }
+
+                over "CableConduit"
+                {
+                    float3 xformOp:scale = (0.022, 0.029, 0.78999996)
+                    double3 xformOp:translate = (0.637, -0.005, 0.935)
+                }
+
+                over "CameraCable"
+                {
+                    point3f[] points = [(-0.075, -0.009215256, 1.2492965), (-0.075, -0.009215256, 1.2492965), (-0.14, -0.06, 1.2825), (-0.12, -0.065, 1.325), (0.15, -0.065, 1.325), (0.54, -0.065, 1.325), (0.65, -0.065, 1.265), (0.65, -0.065, 0.59), (0.65, -0.065, 0.59)]
+                }
+
+                over "LabelBacking"
+                {
+                    double3 xformOp:translate = (0.28, -0.044, 1.38)
+                }
+
+                over "IdentificationPlate"
+                {
+                    double3 xformOp:translate:lowerBeam = (0, 0, -0.5)
+                    uniform token[] xformOpOrder = ["xformOp:translate:lowerBeam"]
+                }
+            }
+
+            over "StationD455"
+            {
+                matrix4d xformOp:transform = ( (1.5509107624155374e-16, -0.4226182617406996, -0.9063077870366495, 0), (-1, 1.7308572390365014e-16, -3.205158902249655e-16, 0), (2.530725141106132e-16, 0.9063087053801934, -0.42261868997132696, 0), (0.5885000000000002, -1.8200000000000005, 1.1999999999999993, 1) )
+
+                over "RSD455"
+                {
+                    over "Camera_Pseudo_Depth"
+                    {
+                        float focalLength = 2.8
+                    }
+
+                    over "Camera_OmniVision_OV9782_Color"
+                    {
+                        float focalLength = 2.8
+                    }
+
+                    over "Camera_OmniVision_OV9782_Left"
+                    {
+                        float focalLength = 2.8
+                    }
+
+                    over "Camera_OmniVision_OV9782_Right"
+                    {
+                        float focalLength = 2.8
+                    }
+                }
+            }
+        }
+
+        over "ROS"
+        {
+            over "station_camera"
+            {
+                over "ColorTF"
+                {
+                    custom quatd inputs:rotation = (0.21643961393810282, 0.9762960071199334, -8.074688742842076e-18, 2.8965349911290204e-17)
+                    custom vector3d inputs:translation = (0.6000000000000002, -1.8200000000000005, 1.1999999999999993)
+                }
+            }
+        }
+
+        over "Conveyor"
+        {
+            over "Rail_0"
+            {
+                over "Geometry"
+                {
+                    bool physics:collisionEnabled = 1
+                    token visibility = "invisible"
+                }
+            }
+        }
+    }
+}
+

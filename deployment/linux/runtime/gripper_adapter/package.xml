@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>factory_gripper_adapter</name><version>0.1.0</version>
+  <description>Position-only Franka gripper adapter using the existing trajectory owner.</description>
+  <maintainer email="mortcj0@gmail.com">MortCat</maintainer><license>Apache-2.0</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend><depend>rclcpp_action</depend><depend>control_msgs</depend>
+  <depend>sensor_msgs</depend><depend>trajectory_msgs</depend>
+  <export><build_type>ament_cmake</build_type></export>
+</package>

@@ -1,0 +1,24 @@
+schema_version: 1
+device: cuda
+confidence_threshold: 0.5
+pick_confirmation_sec: 1.0
+inference_hz: 10.0
+wrist_idle_inference_hz: 2.0
+wrist_inference_lead_sec: 2.0  # camera-source seconds before the arm's selection region
+preview_hz: 10.0
+preview_height_px: 360
+frame_cache_size: 16
+stale_after_sec: 2.0
+# Empty support forces measured on the camera-bracket-v2 scene (newtons).
+bin_tare_n:
+  arm_01: 9.81
+  arm_02: 9.81
+# Camera bracket V2: walls top at 0.90 m world, arm bases at 0.65 m.
+bin_rim_height_m:
+  arm_01: 0.25
+  arm_02: 0.25
+bin_rim_margin_m: 0.025
+load_timeout_sec: 120
+stop_timeout_sec: 15
+max_depth_points: 120000
+max_object_points: 2000

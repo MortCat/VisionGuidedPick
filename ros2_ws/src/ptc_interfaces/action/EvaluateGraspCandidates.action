@@ -1,0 +1,21 @@
+ptc_interfaces/EventKey key
+uint64 command_id
+uint64 scene_revision
+uint64 surface_revision
+ptc_interfaces/GraspCandidate[<=16] candidates
+# Local obstacles translated to the same world snapshot as the candidate poses.
+geometry_msgs/Point32[<=384] neighbor_points_world
+float32 neighbor_capture_ms
+builtin_interfaces/Duration timeout
+---
+ptc_interfaces/EventKey key
+uint64 command_id
+uint64 scene_revision
+uint64 surface_revision
+builtin_interfaces/Time measured_joint_stamp
+bool complete
+string<=512 message
+ptc_interfaces/GraspFeasibility[<=16] results
+---
+uint32 evaluated_candidates
+uint32 current_candidate_id

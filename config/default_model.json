@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "name": "Stanford Bunny",
+  "model_version": "2cdd643429fb420e97dcd63141a23e11",
+  "target_id": "cc8931e971aa40aea77dd21604f3e0a8",
+  "checkpoint_sha256": "c07f7671eaf0d746d9a78f5d8f260f52a634833c0b838d95851d41ae3ac0e832",
+  "checkpoint_bytes": 133779698,
+  "contract_sha256": "aa7a3de94cdcddd762f8713277e15e2e0027970d72e5fff64a995ed835c4044d",
+  "archive_name": "stanford-bunny-2cdd6434.bundle.zip",
+  "archive_sha256": "e07c7289420a50c2facba7ec36d48d02e4a7421bb5f57db9456e4fd24868d2f9",
+  "archive_bytes": 133795101,
+  "asset_api_url": "https://api.github.com/repos/MortCat/VisionGuidedPick/releases/assets/767939425",
+  "release_url": "https://github.com/MortCat/VisionGuidedPick/releases/tag/demo-model-2cdd6434-r1"
+}

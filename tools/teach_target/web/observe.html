@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>VisionGuidedPick · Observe</title>
+    <link rel="stylesheet" href="/style.css?v=observe-layout-2">
+    <script src="/navigation.js" defer></script>
+</head>
+<body class="app-shell">
+<nav class="app-navigation" aria-label="Workspace">
+    <button class="app-navigation-toggle" type="button" aria-label="Workspace navigation" aria-expanded="true" aria-controls="workspace-navigation-links" hidden>
+        <span aria-hidden="true"></span>
+    </button>
+    <div class="app-navigation-links" id="workspace-navigation-links">
+        <a href="/">Teach Target</a>
+        <a href="/observe" aria-current="page">Observe</a>
+        <a href="/auto-pick">Auto Pick</a>
+    </div>
+</nav>
+<main class="observe-page">
+<header class="page-header"><h1>Observe</h1><span id="connection-state">Connecting…</span></header>
+<section>
+    <div class="observe-controls">
+        <label>Target<select id="observe-target"></select></label>
+        <label>Published Model<select id="observe-model"></select></label>
+        <div class="observe-actions">
+            <button id="observe-start" class="primary">Start Observe</button>
+            <button id="observe-stop" disabled>Stop Observe</button>
+            <label class="inline"><input id="show-mask" type="checkbox" checked>Mask</label>
+            <label class="inline" title="Dashed boxes use recent depth estimates"><input id="show-box" type="checkbox" checked>3D Box</label>
+        </div>
+    </div>
+    <output id="observe-message" role="status" aria-live="polite">Select a published model.</output>
+    <div class="observe-layout">
+        <div>
+            <div id="observe-picture">
+                <canvas id="observe-canvas" aria-label="Gantry RGB, instance masks and observed 3D bounds"></canvas>
+                <span id="observe-empty">Waiting for camera</span>
+            </div>
+            <p id="observe-stats" class="hint"></p>
+            <div id="observe-cloud" role="region" aria-labelledby="observe-cloud-title">
+                <div class="observe-cloud-header">
+                    <h2 id="observe-cloud-title">Gantry Point Cloud</h2>
+                    <button id="observe-cloud-latest" type="button" hidden>Follow Latest</button>
+                </div>
+                <output id="observe-cloud-status" class="hint" aria-live="polite">Waiting for a confirmed target.</output>
+                <canvas id="observe-cloud-canvas" width="640" height="360" aria-label="Motion-aligned gantry point cloud" hidden></canvas>
+            </div>
+        </div>
+        <div class="object-panel">
+            <h2>Recent Objects <span class="hint" id="object-count"></span></h2>
+            <div class="object-outcomes" aria-label="Placement totals for this Observe run">
+                <span id="object-placed">0 Placed</span>
+                <span id="object-failed">0 Failed</span>
+                <span id="object-unverified">0 Unverified</span>
+            </div>
+            <div class="object-scroll">
+                <table id="observe-objects">
+                    <thead><tr><th>ID</th><th>Target</th><th>Status</th><th>Arm</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+                <p id="object-empty" class="hint">No confirmed targets</p>
+            </div>
+        </div>
+    </div>
+    <details id="observe-details">
+        <summary>Diagnostics</summary>
+        <button id="preview-pick" type="button">Preview Pick</button>
+        <pre id="pick-preview-output" aria-live="polite"></pre>
+        <pre id="observe-diagnostics"></pre>
+    </details>
+</section></main>
+<script src="/gantry-cloud.js"></script>
+<script src="/observe.js?v=observe-layout-2"></script>
+</body>
+</html>

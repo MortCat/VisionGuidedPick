@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!-- Logic fixture only: no controllable arm or usable camera installation. -->
+<robot name="synthetic_robot">
+  <link name="base"/>
+  <link name="tcp"/>
+  <joint name="fixed_tcp" type="fixed"><parent link="base"/><child link="tcp"/></joint>
+</robot>

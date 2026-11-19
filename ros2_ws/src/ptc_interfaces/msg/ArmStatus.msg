@@ -1,0 +1,15 @@
+ptc_interfaces/EventKey key
+std_msgs/Header header
+geometry_msgs/PoseStamped tcp
+sensor_msgs/JointState joints
+bool ready
+bool command_ready
+uint8 phase
+bool stopped
+uint8 OWNER_NONE=0
+uint8 OWNER_PLANNER=1
+uint8 OWNER_SERVO=2
+uint8 OWNER_STOPPING=3
+uint8 owner
+uint64 command_id
+string<=512 message

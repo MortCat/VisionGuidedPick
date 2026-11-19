@@ -1,0 +1,61 @@
+# SYNTHETIC LOGIC TEST FIXTURE. Not a deployable robot/model configuration.
+schema_version: 1
+configuration_state: ready
+runtime: {namespace: cell_1, use_sim_time: true, motion_backend: mock}
+frames: {world: world, robot_base: base, tcp: tcp, color_optical: rgb_optical, depth_optical: depth_optical}
+calibration: {robot_description_path: synthetic_robot.urdf, expected_calibration_id: synthetic_calibration}
+time: {sensor_future_tolerance_sec: 0.01}
+vision: {rgb_depth_sync_tolerance_sec: 0.01, frame_max_age_sec: 0.5, tf_lookup_timeout_sec: 0.1, max_buffered_frames: 4, roi_margin_ratio: 0.1, depth_min_m: 0.1, depth_max_m: 5, depth_registration: required}
+tracking: {min_confirmed_observations: 2, observation_max_age_sec: 0.5, temporary_loss_timeout_sec: 1, max_prediction_horizon_sec: 0.2, association_distance_m: 0.5, max_position_stddev_m: 0.05, max_tracked_objects: 8, velocity_min_samples: 3, velocity_max_samples: 8, velocity_window_sec: 0.5, velocity_min_span_sec: 0.25, max_velocity_fit_residual_m: 0.02, max_velocity_uncertainty_mps: 0.08}
+task: {cycle_timeout_sec: 100, preparing_pick_timeout_sec: 10, transport_timeout_sec: 10, place_timeout_sec: 10, recovery_timeout_sec: 5, max_cycle_retries: 1, candidate_retry_interval_sec: 0.75, max_candidate_admission_attempts_per_observation: 2}
+inspection:
+  acquisition_timeout_sec: 20
+  evaluation_timeout_sec: 5
+  view_target_position_tolerance_m: 0.01
+  view_target_orientation_tolerance_rad: 0.05
+  inference:
+    backend: rf_detr
+    model_path: synthetic_model.fixture
+    model_version: model_v1
+    request_timeout_sec: 2
+    max_pending_requests: 2
+    rf_detr: {defect_confidence_threshold: 0.8, min_positive_frames: 1}
+    efficient_ad: {anomaly_score_threshold: null, min_positive_frames: null}
+  geometry: {enabled: false, healthy_reference_path: null, registration_max_error_m: null, defect_distance_threshold_m: null}
+motion:
+  joint_state_max_age_sec: 0.5
+  tcp_state_max_age_sec: 0.5
+  planning_timeout_sec: 2
+  execution_timeout_sec: 5
+  stop_confirmation_timeout_sec: 1
+  target_update_timeout_sec: 0.2
+  max_velocity_scale: 0.5
+  max_acceleration_scale: 0.5
+  position_tolerance_m: 0.01
+  orientation_tolerance_rad: 0.05
+  max_follow_linear_speed_mps: 1
+  max_follow_angular_speed_radps: 1
+  workspace: {bounds_min_m: [-2, -2, -2], bounds_max_m: [2, 2, 2]}
+  observation_pose: {position_m: [0, 0, 0], orientation_xyzw: [0, 0, 0, 1]}
+grasp:
+  approach_timeout_sec: 3
+  close_timeout_sec: 1
+  verification_timeout_sec: 2
+  release_timeout_sec: 1
+  max_relative_linear_speed_mps: 0.1
+  approach_tcp_in_object: {position_m: [0, 0, 0], orientation_xyzw: [0, 0, 0, 1]}
+  gripper: {open_width_m: 0.08, close_width_m: 0.02, max_effort_n: 10}
+  verification: {method: joint_and_visual, min_confirmations: 2}
+  lift_distance_m: 0.1
+  bin_approach_pose: {position_m: [0, 0, 0], orientation_xyzw: [0, 0, 0, 1]}
+  bin_release_pose: {position_m: [0, 0, 0], orientation_xyzw: [0, 0, 0, 1]}
+scene:
+  static_geometry_path: synthetic_scene.yaml
+  dynamic_object_max_age_sec: 0.5
+  object_cloud: {enabled: false, voxel_size_m: null, max_points_per_object: null}
+  occupancy_map: {enabled: false, resolution_m: null}
+diagnostics:
+  event_queue_capacity: 256
+  transition_history_capacity: 512
+  record_rgbd: false
+  recording_output_dir: null

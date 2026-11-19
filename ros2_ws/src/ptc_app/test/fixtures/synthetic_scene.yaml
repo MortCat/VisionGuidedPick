@@ -1,0 +1,3 @@
+# Synthetic fixed collision descriptor, not an Isaac Sim scene or ground truth.
+geometry:
+  - {id: floor, kind: box, frame: world, dimensions_m: [3, 3, 0.1], position_m: [0, 0, -0.05], orientation_xyzw: [0, 0, 0, 1]}

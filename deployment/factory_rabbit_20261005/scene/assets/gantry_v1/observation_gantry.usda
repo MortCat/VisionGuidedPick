@@ -1,0 +1,1001 @@
+#usda 1.0
+(
+    defaultPrim = "ObservationGantry"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "ObservationGantry" (
+    assetInfo = {
+        string name = "Upstream RGB-D observation gantry"
+        string version = "1.0"
+    }
+)
+{
+    custom string gantry:purpose = "upstream discovery and first-arm visual handover; no moving axes"
+    custom string gantry:revision = "fixed_portal_d455_v1_20261012"
+
+    def "Looks"
+    {
+        def Material "BrushedStainless"
+        {
+            token outputs:surface.connect = </ObservationGantry/Looks/BrushedStainless/Surface.outputs:surface>
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.56, 0.6, 0.64)
+                float inputs:metallic = 0.85
+                float inputs:roughness = 0.29
+                token outputs:surface
+            }
+        }
+
+        def Material "SatinMountingSteel"
+        {
+            token outputs:surface.connect = </ObservationGantry/Looks/SatinMountingSteel/Surface.outputs:surface>
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.37, 0.42, 0.47)
+                float inputs:metallic = 0.75
+                float inputs:roughness = 0.38
+                token outputs:surface
+            }
+        }
+
+        def Material "Fasteners"
+        {
+            token outputs:surface.connect = </ObservationGantry/Looks/Fasteners/Surface.outputs:surface>
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.22, 0.26, 0.29)
+                float inputs:metallic = 0.9
+                float inputs:roughness = 0.25
+                token outputs:surface
+            }
+        }
+
+        def Material "CableAndPads"
+        {
+            token outputs:surface.connect = </ObservationGantry/Looks/CableAndPads/Surface.outputs:surface>
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.019, 0.024, 0.029)
+                float inputs:metallic = 0.05
+                float inputs:roughness = 0.68
+                token outputs:surface
+            }
+        }
+
+        def Material "InstrumentBlue"
+        {
+            token outputs:surface.connect = </ObservationGantry/Looks/InstrumentBlue/Surface.outputs:surface>
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.025, 0.23, 0.33)
+                float inputs:metallic = 0.35
+                float inputs:roughness = 0.4
+                token outputs:surface
+            }
+        }
+
+        def Material "Label"
+        {
+            token outputs:surface.connect = </ObservationGantry/Looks/Label/Surface.outputs:surface>
+
+            def Shader "Surface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor.connect = </ObservationGantry/Looks/Label/Texture.outputs:rgb>
+                float inputs:roughness = 0.55
+                token outputs:surface
+            }
+
+            def Shader "Texture"
+            {
+                uniform token info:id = "UsdUVTexture"
+                asset inputs:file = @gantry_label.png@
+                token inputs:sourceColorSpace = "sRGB"
+                float2 inputs:st.connect = </ObservationGantry/Looks/Label/UV.outputs:result>
+                color3f outputs:rgb
+            }
+
+            def Shader "UV"
+            {
+                uniform token info:id = "UsdPrimvarReader_float2"
+                token inputs:varname = "st"
+                float2 outputs:result
+            }
+        }
+    }
+
+    def Cube "Left_IsolationPad" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </ObservationGantry/Looks/CableAndPads>
+        double size = 1
+        float3 xformOp:scale = (0.225, 0.285, 0.006)
+        double3 xformOp:translate = (-0.6, 0, 0.003)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Mesh "Left_BasePlate" (
+        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+    )
+    {
+        int[] faceVertexCounts = [8, 8, 4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [7, 6, 5, 4, 3, 2, 1, 0, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 9, 8, 1, 2, 10, 9, 2, 3, 11, 10, 3, 4, 12, 11, 4, 5, 13, 12, 5, 6, 14, 13, 6, 7, 15, 14, 7, 0, 8, 15]
+        rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+        uniform token physics:approximation = "convexHull"
+        point3f[] points = [(-0.1, -0.14, -0.009), (0.1, -0.14, -0.009), (0.11, -0.13, -0.009), (0.11, 0.13, -0.009), (0.1, 0.14, -0.009), (-0.1, 0.14, -0.009), (-0.11, 0.13, -0.009), (-0.11, -0.13, -0.009), (-0.1, -0.14, 0.009), (0.1, -0.14, 0.009), (0.11, -0.13, 0.009), (0.11, 0.13, 0.009), (0.1, 0.14, 0.009), (-0.1, 0.14, 0.009), (-0.11, 0.13, 0.009), (-0.11, -0.13, 0.009)]
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:translate = (-0.6, 0, 0.015)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Mesh "Left_Column" (
+        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+    )
+    {
+        int[] faceVertexCounts = [8, 8, 4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [7, 6, 5, 4, 3, 2, 1, 0, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 9, 8, 1, 2, 10, 9, 2, 3, 11, 10, 3, 4, 12, 11, 4, 5, 13, 12, 5, 6, 14, 13, 6, 7, 15, 14, 7, 0, 8, 15]
+        rel material:binding = </ObservationGantry/Looks/BrushedStainless>
+        uniform token physics:approximation = "convexHull"
+        point3f[] points = [(-0.027, -0.03, -0.908), (0.027, -0.03, -0.908), (0.03, -0.027, -0.908), (0.03, 0.027, -0.908), (0.027, 0.03, -0.908), (-0.027, 0.03, -0.908), (-0.03, 0.027, -0.908), (-0.03, -0.027, -0.908), (-0.027, -0.03, 0.908), (0.027, -0.03, 0.908), (0.03, -0.027, 0.908), (0.03, 0.027, 0.908), (0.027, 0.03, 0.908), (-0.027, 0.03, 0.908), (-0.03, 0.027, 0.908), (-0.03, -0.027, 0.908)]
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:translate = (-0.6, 0, 0.9319999999999999)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cube "Left_TopCap" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </ObservationGantry/Looks/CableAndPads>
+        double size = 1
+        float3 xformOp:scale = (0.064, 0.064, 0.006)
+        double3 xformOp:translate = (-0.6, 0, 1.923)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cylinder "Left_AnchorWasher_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.003
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.012
+        double3 xformOp:translate = (-0.6739999999999999, -0.096, 0.026)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Left_AnchorNut_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.01
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.008
+        double3 xformOp:translate = (-0.6739999999999999, -0.096, 0.032)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Left_AnchorStud_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.01
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.004
+        double3 xformOp:translate = (-0.6739999999999999, -0.096, 0.042)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Left_AnchorWasher_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.003
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.012
+        double3 xformOp:translate = (-0.526, -0.096, 0.026)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Left_AnchorNut_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.01
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.008
+        double3 xformOp:translate = (-0.526, -0.096, 0.032)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Left_AnchorStud_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.01
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.004
+        double3 xformOp:translate = (-0.526, -0.096, 0.042)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Left_AnchorWasher_2" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.003
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.012
+        double3 xformOp:translate = (-0.6739999999999999, 0.096, 0.026)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Left_AnchorNut_2" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.01
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.008
+        double3 xformOp:translate = (-0.6739999999999999, 0.096, 0.032)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Left_AnchorStud_2" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.01
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.004
+        double3 xformOp:translate = (-0.6739999999999999, 0.096, 0.042)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Left_AnchorWasher_3" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.003
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.012
+        double3 xformOp:translate = (-0.526, 0.096, 0.026)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Left_AnchorNut_3" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.01
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.008
+        double3 xformOp:translate = (-0.526, 0.096, 0.032)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Left_AnchorStud_3" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.01
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.004
+        double3 xformOp:translate = (-0.526, 0.096, 0.042)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Mesh "Left_Gusset_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform bool doubleSided = 1
+        int[] faceVertexCounts = [3, 3, 4, 4, 4]
+        int[] faceVertexIndices = [0, 2, 1, 3, 4, 5, 0, 1, 4, 3, 1, 2, 5, 4, 2, 0, 3, 5]
+        rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+        point3f[] points = [(-0.6, -0.0505, 1.8599999), (-0.43, -0.0505, 1.8599999), (-0.6, -0.0505, 1.68), (-0.6, -0.0455, 1.8599999), (-0.43, -0.0455, 1.8599999), (-0.6, -0.0455, 1.68)]
+        uniform token subdivisionScheme = "none"
+    }
+
+    def Cylinder "Left_GussetBolt_0_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.011
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.007
+        double3 xformOp:translate = (-0.6, -0.048, 1.7999999999999998)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Left_GussetBolt_0_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.011
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.007
+        double3 xformOp:translate = (-0.5, -0.048, 1.8599999999999999)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Mesh "Left_Gusset_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform bool doubleSided = 1
+        int[] faceVertexCounts = [3, 3, 4, 4, 4]
+        int[] faceVertexIndices = [0, 2, 1, 3, 4, 5, 0, 1, 4, 3, 1, 2, 5, 4, 2, 0, 3, 5]
+        rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+        point3f[] points = [(-0.6, 0.0455, 1.8599999), (-0.43, 0.0455, 1.8599999), (-0.6, 0.0455, 1.68), (-0.6, 0.0505, 1.8599999), (-0.43, 0.0505, 1.8599999), (-0.6, 0.0505, 1.68)]
+        uniform token subdivisionScheme = "none"
+    }
+
+    def Cylinder "Left_GussetBolt_1_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.011
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.007
+        double3 xformOp:translate = (-0.6, 0.048, 1.7999999999999998)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Left_GussetBolt_1_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.011
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.007
+        double3 xformOp:translate = (-0.5, 0.048, 1.8599999999999999)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cube "Right_IsolationPad" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </ObservationGantry/Looks/CableAndPads>
+        double size = 1
+        float3 xformOp:scale = (0.225, 0.285, 0.006)
+        double3 xformOp:translate = (0.6, 0, 0.003)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Mesh "Right_BasePlate" (
+        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+    )
+    {
+        int[] faceVertexCounts = [8, 8, 4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [7, 6, 5, 4, 3, 2, 1, 0, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 9, 8, 1, 2, 10, 9, 2, 3, 11, 10, 3, 4, 12, 11, 4, 5, 13, 12, 5, 6, 14, 13, 6, 7, 15, 14, 7, 0, 8, 15]
+        rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+        uniform token physics:approximation = "convexHull"
+        point3f[] points = [(-0.1, -0.14, -0.009), (0.1, -0.14, -0.009), (0.11, -0.13, -0.009), (0.11, 0.13, -0.009), (0.1, 0.14, -0.009), (-0.1, 0.14, -0.009), (-0.11, 0.13, -0.009), (-0.11, -0.13, -0.009), (-0.1, -0.14, 0.009), (0.1, -0.14, 0.009), (0.11, -0.13, 0.009), (0.11, 0.13, 0.009), (0.1, 0.14, 0.009), (-0.1, 0.14, 0.009), (-0.11, 0.13, 0.009), (-0.11, -0.13, 0.009)]
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:translate = (0.6, 0, 0.015)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Mesh "Right_Column" (
+        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+    )
+    {
+        int[] faceVertexCounts = [8, 8, 4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [7, 6, 5, 4, 3, 2, 1, 0, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 9, 8, 1, 2, 10, 9, 2, 3, 11, 10, 3, 4, 12, 11, 4, 5, 13, 12, 5, 6, 14, 13, 6, 7, 15, 14, 7, 0, 8, 15]
+        rel material:binding = </ObservationGantry/Looks/BrushedStainless>
+        uniform token physics:approximation = "convexHull"
+        point3f[] points = [(-0.027, -0.03, -0.908), (0.027, -0.03, -0.908), (0.03, -0.027, -0.908), (0.03, 0.027, -0.908), (0.027, 0.03, -0.908), (-0.027, 0.03, -0.908), (-0.03, 0.027, -0.908), (-0.03, -0.027, -0.908), (-0.027, -0.03, 0.908), (0.027, -0.03, 0.908), (0.03, -0.027, 0.908), (0.03, 0.027, 0.908), (0.027, 0.03, 0.908), (-0.027, 0.03, 0.908), (-0.03, 0.027, 0.908), (-0.03, -0.027, 0.908)]
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:translate = (0.6, 0, 0.9319999999999999)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cube "Right_TopCap" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </ObservationGantry/Looks/CableAndPads>
+        double size = 1
+        float3 xformOp:scale = (0.064, 0.064, 0.006)
+        double3 xformOp:translate = (0.6, 0, 1.923)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cylinder "Right_AnchorWasher_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.003
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.012
+        double3 xformOp:translate = (0.526, -0.096, 0.026)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Right_AnchorNut_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.01
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.008
+        double3 xformOp:translate = (0.526, -0.096, 0.032)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Right_AnchorStud_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.01
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.004
+        double3 xformOp:translate = (0.526, -0.096, 0.042)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Right_AnchorWasher_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.003
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.012
+        double3 xformOp:translate = (0.6739999999999999, -0.096, 0.026)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Right_AnchorNut_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.01
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.008
+        double3 xformOp:translate = (0.6739999999999999, -0.096, 0.032)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Right_AnchorStud_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.01
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.004
+        double3 xformOp:translate = (0.6739999999999999, -0.096, 0.042)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Right_AnchorWasher_2" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.003
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.012
+        double3 xformOp:translate = (0.526, 0.096, 0.026)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Right_AnchorNut_2" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.01
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.008
+        double3 xformOp:translate = (0.526, 0.096, 0.032)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Right_AnchorStud_2" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.01
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.004
+        double3 xformOp:translate = (0.526, 0.096, 0.042)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Right_AnchorWasher_3" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.003
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.012
+        double3 xformOp:translate = (0.6739999999999999, 0.096, 0.026)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Right_AnchorNut_3" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.01
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.008
+        double3 xformOp:translate = (0.6739999999999999, 0.096, 0.032)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Right_AnchorStud_3" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.01
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.004
+        double3 xformOp:translate = (0.6739999999999999, 0.096, 0.042)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Mesh "Right_Gusset_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform bool doubleSided = 1
+        int[] faceVertexCounts = [3, 3, 4, 4, 4]
+        int[] faceVertexIndices = [0, 2, 1, 3, 4, 5, 0, 1, 4, 3, 1, 2, 5, 4, 2, 0, 3, 5]
+        rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+        point3f[] points = [(0.6, -0.0505, 1.8599999), (0.43, -0.0505, 1.8599999), (0.6, -0.0505, 1.68), (0.6, -0.0455, 1.8599999), (0.43, -0.0455, 1.8599999), (0.6, -0.0455, 1.68)]
+        uniform token subdivisionScheme = "none"
+    }
+
+    def Cylinder "Right_GussetBolt_0_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.011
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.007
+        double3 xformOp:translate = (0.6, -0.048, 1.7999999999999998)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Right_GussetBolt_0_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.011
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.007
+        double3 xformOp:translate = (0.5, -0.048, 1.8599999999999999)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Mesh "Right_Gusset_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform bool doubleSided = 1
+        int[] faceVertexCounts = [3, 3, 4, 4, 4]
+        int[] faceVertexIndices = [0, 2, 1, 3, 4, 5, 0, 1, 4, 3, 1, 2, 5, 4, 2, 0, 3, 5]
+        rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+        point3f[] points = [(0.6, 0.0455, 1.8599999), (0.43, 0.0455, 1.8599999), (0.6, 0.0455, 1.68), (0.6, 0.0505, 1.8599999), (0.43, 0.0505, 1.8599999), (0.6, 0.0505, 1.68)]
+        uniform token subdivisionScheme = "none"
+    }
+
+    def Cylinder "Right_GussetBolt_1_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.011
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.007
+        double3 xformOp:translate = (0.6, 0.048, 1.7999999999999998)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "Right_GussetBolt_1_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.011
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.007
+        double3 xformOp:translate = (0.5, 0.048, 1.8599999999999999)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Mesh "CrossBeam" (
+        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+    )
+    {
+        int[] faceVertexCounts = [8, 8, 4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [7, 6, 5, 4, 3, 2, 1, 0, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 9, 8, 1, 2, 10, 9, 2, 3, 11, 10, 3, 4, 12, 11, 4, 5, 13, 12, 5, 6, 14, 13, 6, 7, 15, 14, 7, 0, 8, 15]
+        rel material:binding = </ObservationGantry/Looks/BrushedStainless>
+        uniform token physics:approximation = "convexHull"
+        point3f[] points = [(-0.636, -0.04, -0.04), (0.636, -0.04, -0.04), (0.64, -0.036, -0.04), (0.64, 0.036, -0.04), (0.636, 0.04, -0.04), (-0.636, 0.04, -0.04), (-0.64, 0.036, -0.04), (-0.64, -0.036, -0.04), (-0.636, -0.04, 0.04), (0.636, -0.04, 0.04), (0.64, -0.036, 0.04), (0.64, 0.036, 0.04), (0.636, 0.04, 0.04), (-0.636, 0.04, 0.04), (-0.64, 0.036, 0.04), (-0.64, -0.036, 0.04)]
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:translate = (0, 0, 1.88)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cube "CameraCarriage" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+        double size = 1
+        float3 xformOp:scale = (0.18, 0.11, 0.014)
+        double3 xformOp:translate = (0, 0, 1.8329999999999997)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cylinder "CarriageBolt_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.012
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.007
+        double3 xformOp:translate = (-0.067, -0.038, 1.822)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "CarriageBolt_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Z"
+        double height = 0.012
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.007
+        double3 xformOp:translate = (0.067, -0.038, 1.822)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Xform "CameraMount"
+    {
+        matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 0.8174824331309727, 0.5759535324331855, 0), (0, -0.5759535324331855, 0.8174824331309727, 0), (0, 0, 1.6999999999999997, 1) )
+        uniform token[] xformOpOrder = ["xformOp:transform"]
+
+        def Cube "Backplate" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+            double size = 1
+            float3 xformOp:scale = (0.132, 0.036, 0.005)
+            double3 xformOp:translate = (-0.0115, 0, 0.0285)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "LowerCradle" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+            double size = 1
+            float3 xformOp:scale = (0.132, 0.006, 0.033)
+            double3 xformOp:translate = (-0.0115, -0.0175, 0.014)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "SideClamp_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+            double size = 1
+            float3 xformOp:scale = (0.006, 0.038, 0.03)
+            double3 xformOp:translate = (-0.077, 0, 0.015)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cylinder "ClampBolt_0" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.008
+            rel material:binding = </ObservationGantry/Looks/Fasteners>
+            double radius = 0.003
+            double3 xformOp:translate = (-0.077, 0.008, 0.034)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cube "SideClamp_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+            double size = 1
+            float3 xformOp:scale = (0.006, 0.038, 0.03)
+            double3 xformOp:translate = (0.054, 0, 0.015)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cylinder "ClampBolt_1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.008
+            rel material:binding = </ObservationGantry/Looks/Fasteners>
+            double radius = 0.003
+            double3 xformOp:translate = (0.054, 0.008, 0.034)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cube "PitchLug" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+            double size = 1
+            float3 xformOp:scale = (0.12, 0.018, 0.018)
+            double3 xformOp:translate = (-0.0115, 0.021, 0.036)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+
+        def Cube "CameraCollisionEnvelope" (
+            prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+            double size = 1
+            token visibility = "invisible"
+            float3 xformOp:scale = (0.155, 0.06, 0.05)
+            double3 xformOp:translate = (-0.0115, 0, 0.025)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+    }
+
+    def Cube "DropStem" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+        double size = 1
+        float3 xformOp:scale = (0.03, 0.027, 0.038840644)
+        double3 xformOp:translate = (-0.011499999999999955, -0.004719103136710423, 1.8065796783200367)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cube "ForkHeader" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+        double size = 1
+        float3 xformOp:scale = (0.176, 0.03, 0.012)
+        double3 xformOp:translate = (-0.011499999999999955, -0.004719103136710423, 1.7831593566400736)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cube "ForkEar_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+        double size = 1
+        float3 xformOp:scale = (0.008, 0.028, 0.046)
+        double3 xformOp:translate = (-0.08649999999999995, -0.004719103136710423, 1.7611593566400736)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cylinder "PitchWasher_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "X"
+        double height = 0.013
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.011
+        double3 xformOp:translate = (-0.08649999999999995, -0.004719103136710423, 1.7431593566400736)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cube "ForkEar_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+        double size = 1
+        float3 xformOp:scale = (0.008, 0.028, 0.046)
+        double3 xformOp:translate = (0.06350000000000004, -0.004719103136710423, 1.7611593566400736)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cylinder "PitchWasher_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "X"
+        double height = 0.013
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.011
+        double3 xformOp:translate = (0.06350000000000004, -0.004719103136710423, 1.7431593566400736)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "PitchAxle" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "X"
+        double height = 0.18
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.005
+        double3 xformOp:translate = (-0.011499999999999955, -0.004719103136710423, 1.7431593566400736)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cube "CableConduit" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </ObservationGantry/Looks/CableAndPads>
+        double size = 1
+        float3 xformOp:scale = (0.022, 0.029, 1.29)
+        double3 xformOp:translate = (0.637, -0.005, 1.185)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Mesh "JunctionBox" (
+        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+    )
+    {
+        int[] faceVertexCounts = [8, 8, 4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [7, 6, 5, 4, 3, 2, 1, 0, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 9, 8, 1, 2, 10, 9, 2, 3, 11, 10, 3, 4, 12, 11, 4, 5, 13, 12, 5, 6, 14, 13, 6, 7, 15, 14, 7, 0, 8, 15]
+        rel material:binding = </ObservationGantry/Looks/InstrumentBlue>
+        uniform token physics:approximation = "convexHull"
+        point3f[] points = [(-0.052, -0.05, -0.085), (0.052, -0.05, -0.085), (0.06, -0.042, -0.085), (0.06, 0.042, -0.085), (0.052, 0.05, -0.085), (-0.052, 0.05, -0.085), (-0.06, 0.042, -0.085), (-0.06, -0.042, -0.085), (-0.052, -0.05, 0.085), (0.052, -0.05, 0.085), (0.06, -0.042, 0.085), (0.06, 0.042, 0.085), (0.052, 0.05, 0.085), (-0.052, 0.05, 0.085), (-0.06, 0.042, 0.085), (-0.06, -0.042, 0.085)]
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:translate = (0.626, -0.08, 0.51)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cube "JunctionLid" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+        double size = 1
+        float3 xformOp:scale = (0.098, 0.009, 0.145)
+        double3 xformOp:translate = (0.626, -0.134, 0.51)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cylinder "JunctionScrew_0_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.007
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.003
+        double3 xformOp:translate = (0.588, -0.142, 0.454)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "JunctionScrew_0_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.007
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.003
+        double3 xformOp:translate = (0.588, -0.142, 0.566)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "JunctionScrew_1_0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.007
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.003
+        double3 xformOp:translate = (0.664, -0.142, 0.454)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Cylinder "JunctionScrew_1_1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token axis = "Y"
+        double height = 0.007
+        rel material:binding = </ObservationGantry/Looks/Fasteners>
+        double radius = 0.003
+        double3 xformOp:translate = (0.664, -0.142, 0.566)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def BasisCurves "CameraCable" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform token basis = "bspline"
+        int[] curveVertexCounts = [9]
+        rel material:binding = </ObservationGantry/Looks/CableAndPads>
+        point3f[] points = [(-0.075, -0.009215256, 1.7130797), (-0.075, -0.009215256, 1.7130797), (-0.14, -0.06, 1.77), (-0.12, -0.065, 1.825), (0.15, -0.065, 1.825), (0.54, -0.065, 1.825), (0.65, -0.065, 1.74), (0.65, -0.065, 0.59), (0.65, -0.065, 0.59)]
+        uniform token type = "cubic"
+        float[] widths = [0.008] (
+            interpolation = "constant"
+        )
+        uniform token wrap = "nonperiodic"
+    }
+
+    def Cube "LabelBacking" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </ObservationGantry/Looks/SatinMountingSteel>
+        double size = 1
+        float3 xformOp:scale = (0.35, 0.006, 0.067)
+        double3 xformOp:translate = (0.28, -0.044, 1.88)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Mesh "IdentificationPlate" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        int[] faceVertexCounts = [4]
+        int[] faceVertexIndices = [0, 1, 2, 3]
+        rel material:binding = </ObservationGantry/Looks/Label>
+        point3f[] points = [(0.105, -0.048, 1.848), (0.455, -0.048, 1.848), (0.455, -0.048, 1.912), (0.105, -0.048, 1.912)]
+        texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1)] (
+            interpolation = "vertex"
+        )
+        uniform token subdivisionScheme = "none"
+    }
+}

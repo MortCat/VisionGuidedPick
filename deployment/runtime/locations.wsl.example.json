@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "host_role": "wsl_application",
+  "project_root": "../../..",
+  "ros_prefix": "/opt/ros/jazzy"
+}

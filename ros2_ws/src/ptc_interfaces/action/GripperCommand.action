@@ -1,0 +1,13 @@
+ptc_interfaces/EventKey key
+uint64 command_id
+bool open
+float64 width_m
+float64 max_effort_n
+builtin_interfaces/Duration timeout
+---
+ptc_interfaces/EventKey key
+uint64 command_id
+bool success
+string<=512 message
+---
+float64 width_m

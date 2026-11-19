@@ -1,0 +1,345 @@
+#include "state_test_support.hpp"
+#include <algorithm>
+using namespace ptc_core;
+using namespace ptc_test;
+
+TaskState preparing_pick(const SettingsSnapshot & cfg)
+{
+  TaskState s; auto e = task_event(TaskEventKind::kStartRequested,s,1); auto d = advance_task(s,e,cfg,time()); CHECK(d.state.phase == TaskPhase::kObserving); s = d.state;
+  e = task_event(TaskEventKind::kMotionFinished,s,2); e.motion_succeeded = true; s = advance_task(s,e,cfg,time()).state;
+  s.phase=TaskPhase::kPreparingPick;s.context.key.track_id=track().context.key.track_id;s.selected_track=track();return s;
+}
+void fixed_bin_transfer_readiness()
+{
+  const auto cfg=settings();auto carried=preparing_pick(cfg);
+  carried.phase=TaskPhase::kTransporting;carried.grasp.phase=GraspPhase::kHolding;
+  carried.grasp.possession=Possession::kHolding;carried.grasp.lifted=true;
+  auto gap=task_event(TaskEventKind::kReadinessChanged,carried,4);
+  gap.readiness.vision_ready=false;gap.readiness.inference_ready=false;
+  gap.gripper.empty_confirmed=false;gap.gripper.contact_confirmed=true;gap.gripper.width_m=.03;
+  CHECK(!system_ready(gap,cfg,time())); // New acquisition still requires perception.
+  CHECK(system_ready(gap,cfg,time(),TaskPhase::kTransporting));
+  const auto continued=advance_task(carried,gap,cfg,time());
+  CHECK(continued.state.phase==TaskPhase::kTransporting);CHECK(continued.commands.empty());
+  auto arrived=gap;arrived.kind=TaskEventKind::kMotionFinished;arrived.motion_succeeded=true;
+  const auto placing=advance_task(carried,arrived,cfg,time());
+  CHECK(placing.state.phase==TaskPhase::kPlacing);
+  CHECK(placing.commands.size()==1 && placing.commands[0].kind==CommandKind::kMoveBinRelease);
+  // Refine height only after validating the frozen approach target.
+  auto adaptive_data=settings_data();
+  adaptive_data.grasp.bin_height=BinHeightConfig{{-.1,-.7,0},{.3,-.2,.65},.04};
+  const auto adaptive_cfg=settings(adaptive_data);
+  auto higher_arrival=arrived;higher_arrival.bin_height_offset_m=.12;
+  const auto raised_release=advance_task(carried,higher_arrival,adaptive_cfg,time());
+  CHECK(raised_release.state.phase==TaskPhase::kPlacing);
+  CHECK(std::abs(raised_release.state.grasp.bin_height_offset_m-.12)<1e-8);
+  CHECK(raised_release.commands.size()==1 && raised_release.commands[0].kind==CommandKind::kMoveBinRelease);
+  CHECK(std::abs(raised_release.commands[0].target.position.z_m-adaptive_data.grasp.bin_release_pose.position.z_m-.12)<1e-8);
+  auto descent_tick=task_event(TaskEventKind::kTick,raised_release.state,5);
+  descent_tick.bin_height_offset_m=.25;descent_tick.gripper=gap.gripper;
+  const auto frozen=advance_task(raised_release.state,descent_tick,adaptive_cfg,time());
+  CHECK(std::abs(frozen.state.grasp.bin_height_offset_m-.12)<1e-8 && frozen.commands.empty());
+  auto lost=arrived;lost.kind=TaskEventKind::kTick;
+  lost.gripper.contact_confirmed=false;
+  lost.gripper.empty_confirmed=true;
+  lost.gripper.width_m=cfg.get().grasp.close_width_m;
+  auto unconfirmed=lost;unconfirmed.gripper.empty_confirmed=false;
+  CHECK(advance_task(carried,unconfirmed,cfg,time()).state.phase==TaskPhase::kTransporting);
+  const auto recovery=advance_task(carried,lost,cfg,time());
+  CHECK(recovery.state.phase==TaskPhase::kRecovering);
+  CHECK(recovery.state.grasp.possession==Possession::kEmpty);
+  CHECK(recovery.state.outcome==CycleOutcome::kFailed && !recovery.state.terminal_fault);
+  CHECK(recovery.commands.size()==3 && recovery.commands.front().kind==CommandKind::kStopArm);
+  CHECK(advance_task(recovery.state,arrived,cfg,time()).commands.empty());
+
+  auto at_release=task_event(TaskEventKind::kMotionFinished,placing.state,5);
+  at_release.motion_succeeded=true;
+  at_release.gripper=lost.gripper;
+  const auto skipped_release=advance_task(placing.state,at_release,cfg,time());
+  CHECK(skipped_release.state.phase==TaskPhase::kRecovering);
+  CHECK(std::none_of(skipped_release.commands.begin(),skipped_release.commands.end(),[](const auto & c){
+    return c.kind==CommandKind::kOpenGripper;
+  }));
+
+  auto stale=carried;
+  stale.grasp.evidence_sequence=lost.gripper.evidence_sequence;
+  stale.grasp.evidence_timestamp=lost.gripper.timestamp;
+  CHECK(advance_task(stale,lost,cfg,time()).commands.empty());
+  auto ambiguous=lost;
+  ambiguous.gripper.width_m+=.005;
+  ambiguous.gripper.empty_confirmed=false;
+  CHECK(advance_task(carried,ambiguous,cfg,time()).commands.empty());
+  ambiguous=lost;
+  ambiguous.gripper.contact_confirmed=true;
+  CHECK(advance_task(carried,ambiguous,cfg,time()).commands.empty());
+
+  auto released=placing.state;released.grasp.phase=GraspPhase::kEmpty;released.grasp.possession=Possession::kEmpty;
+  auto placed=task_event(TaskEventKind::kPlaceConfirmed,released,5);
+  placed.readiness.vision_ready=false;placed.readiness.inference_ready=false;
+  const auto completed=advance_task(released,placed,cfg,time());
+  CHECK(completed.state.phase==TaskPhase::kReporting);CHECK(completed.state.outcome==CycleOutcome::kDefectPicked);
+  auto acquiring=carried;acquiring.phase=TaskPhase::kPicking;acquiring.grasp.possession=Possession::kUnknown;
+  CHECK(advance_task(acquiring,gap,cfg,time()).state.phase==TaskPhase::kRecovering);
+  const auto stopped=[&](TaskEvent invalid,TimeContext clock){
+    const auto d=advance_task(carried,invalid,cfg,clock);
+    CHECK(d.state.phase==TaskPhase::kRecovering || d.state.phase==TaskPhase::kFaulted);
+    CHECK(std::any_of(d.commands.begin(),d.commands.end(),[](const auto & c){return c.kind==CommandKind::kStopArm;}));
+  };
+  auto invalid=gap;invalid.gripper.timestamp=Nanoseconds{0};stopped(invalid,time());
+  invalid=gap;invalid.scene.coherent=false;stopped(invalid,time());
+  invalid=gap;invalid.readiness.motion_revision="other";stopped(invalid,time());
+  invalid=gap;invalid.gripper.empty_confirmed=true;invalid.gripper.contact_confirmed=false;stopped(invalid,time());
+  invalid=gap;invalid.kind=TaskEventKind::kCancelRequested;stopped(invalid,time());
+  invalid=gap;invalid.kind=TaskEventKind::kFaultRaised;stopped(invalid,time());
+  auto paused=time();paused.paused=true;stopped(gap,paused);
+}
+void semantic_observation_wait_for_target()
+{
+  auto data=settings_data();
+  data.runtime.operation_mode="assumed_ng_demo";
+  data.inspection.inference.backend="assumed_ng";
+  data.grasp.moving_intercept=true;
+  data.vision.tracking_camera.role="external";
+  const auto cfg=settings(data);
+  TaskState initial;
+  auto start=task_event(TaskEventKind::kStartRequested,initial,1);
+  start.readiness.vision_ready=false;
+  CHECK(advance_task(initial,start,cfg,time()).commands.empty());
+  start.readiness.vision_ready=true;
+  auto observing=advance_task(initial,start,cfg,time()).state;
+  CHECK(observing.phase==TaskPhase::kObserving);
+  auto gap=task_event(TaskEventKind::kReadinessChanged,observing,2);
+  gap.readiness.vision_ready=false;
+  gap.readiness.inference_ready=false;
+  const auto during_move=advance_task(observing,gap,cfg,time());
+  CHECK(during_move.state.phase==TaskPhase::kObserving);
+  CHECK(during_move.commands.empty());
+  auto arrival=task_event(TaskEventKind::kMotionFinished,observing,3);
+  arrival.motion_succeeded=true;
+  observing=advance_task(observing,arrival,cfg,time()).state;
+  CHECK(observing.observation_arrived);
+  gap=task_event(TaskEventKind::kReadinessChanged,observing,4);
+  gap.readiness.vision_ready=false;
+  gap.readiness.inference_ready=false;
+  const auto waiting=advance_task(observing,gap,cfg,time());
+  CHECK(waiting.state.phase==TaskPhase::kObserving);
+  CHECK(waiting.commands.empty());
+  // Background scene expiry and motion-owner gaps also wait at Home.
+  auto background=gap;background.scene.coherent=false;background.readiness.motion_revision="";
+  CHECK(!system_ready(background,cfg,time(),TaskPhase::kObserving));
+  CHECK(unassigned_observation_wait(observing,background,cfg,time()));
+  const auto background_wait=advance_task(observing,background,cfg,time());
+  CHECK(background_wait.state.phase==TaskPhase::kObserving && background_wait.commands.empty());
+  auto moving_background=task_event(TaskEventKind::kReadinessChanged,during_move.state,3);
+  moving_background.scene.coherent=false;moving_background.readiness.motion_revision="";
+  CHECK(!unassigned_observation_wait(during_move.state,moving_background,cfg,time()));
+  CHECK(advance_task(during_move.state,moving_background,cfg,time()).state.phase==TaskPhase::kRecovering);
+  auto moving_arm=background;moving_arm.arm.stopped=false;
+  CHECK(advance_task(observing,moving_arm,cfg,time()).state.phase==TaskPhase::kRecovering);
+  auto incoherent_select=task_event(TaskEventKind::kGraspTrialRequested,observing,5);
+  incoherent_select.scene.coherent=false;
+  CHECK(advance_task(observing,incoherent_select,cfg,time()).status.disposition==Disposition::kRejected);
+  auto select=task_event(TaskEventKind::kGraspTrialRequested,observing,5);
+  select.readiness.vision_ready=false;
+  CHECK(advance_task(observing,select,cfg,time()).status.disposition==Disposition::kRejected);
+  select.readiness.vision_ready=true;
+  select.readiness.inference_ready=false;
+  CHECK(advance_task(observing,select,cfg,time()).status.disposition==Disposition::kRejected);
+  select.readiness.inference_ready=true;
+  CHECK(advance_task(observing,select,cfg,time()).state.phase==TaskPhase::kPreparingPick);
+  auto bad=gap;bad.arm.joint_timestamp=Nanoseconds{0};
+  CHECK(advance_task(observing,bad,cfg,time()).state.phase==TaskPhase::kRecovering);
+  bad=gap;bad.kind=TaskEventKind::kCancelRequested;
+  CHECK(advance_task(observing,bad,cfg,time()).state.phase==TaskPhase::kRecovering);
+}
+void tests()
+{
+  fixed_bin_transfer_readiness();
+  semantic_observation_wait_for_target();
+  const auto cfg = settings(); TaskState initial; auto e = task_event(TaskEventKind::kStartRequested,initial,1);
+  e.gripper.empty_confirmed = false; CHECK(advance_task(initial,e,cfg,time()).commands.empty());
+  e.gripper.empty_confirmed = true; e.readiness.inference_revision = "other"; CHECK(advance_task(initial,e,cfg,time()).status.disposition == Disposition::kRejected);
+  auto s = preparing_pick(cfg);
+  auto stale=task_event(TaskEventKind::kMotionFinished,s,5);stale.motion_succeeded=true;
+  auto lost=task_event(TaskEventKind::kTargetLost,s,6);
+  auto d=dispatch_task_batch(s,{stale,lost},cfg,time());
+  CHECK(d.state.phase==TaskPhase::kRecovering);
+  CHECK(advance_task(d.state,stale,cfg,time()).commands.empty());
+  auto small=settings_data();small.diagnostics.event_queue_capacity=1;auto bounded=settings(small);
+  d=dispatch_task_batch(s,{stale,lost},bounded,time());
+  CHECK(d.state.phase==TaskPhase::kFaulted);CHECK(d.state.context.inhibited);CHECK(d.commands.size()==3);
+
+  auto ready = preparing_pick(cfg); e = task_event(TaskEventKind::kCancelRequested,ready,4); d = advance_task(ready,e,cfg,time()); CHECK(d.state.phase == TaskPhase::kRecovering);
+  e = task_event(TaskEventKind::kRecoveryConfirmed,d.state,5); e.gripper.stopped = false;
+  CHECK(advance_task(d.state,e,cfg,time()).state.phase == TaskPhase::kRecovering); e.gripper.stopped = true;
+  CHECK(advance_task(d.state,e,cfg,time()).state.phase == TaskPhase::kReporting);
+  CHECK(advance_task(d.state,e,cfg,time(1,6)).state.phase == TaskPhase::kFaulted);
+  auto return_settings=settings_data();return_settings.task.max_cycle_retries=0;const auto home_cfg=settings(return_settings);
+  auto lost_target=preparing_pick(home_cfg);auto loss=task_event(TaskEventKind::kTargetLost,lost_target,4);
+  auto returning=advance_task(lost_target,loss,home_cfg,time());
+  auto stopped_away=task_event(TaskEventKind::kRecoveryConfirmed,returning.state,5);
+  stopped_away.arm.state.tcp_pose=home_cfg.get().motion.observation_pose;stopped_away.arm.state.tcp_pose.position.x_m+=.1;
+  returning=advance_task(returning.state,stopped_away,home_cfg,time());CHECK(returning.state.phase==TaskPhase::kRecovering);
+  CHECK(std::count_if(returning.commands.begin(),returning.commands.end(),[](const auto & command){return command.kind==CommandKind::kMoveObservation;})==1);
+  CHECK(std::none_of(returning.commands.begin(),returning.commands.end(),[](const auto & command){return command.kind==CommandKind::kReport;}));
+  auto home_done=task_event(TaskEventKind::kMotionFinished,returning.state,6);home_done.motion_succeeded=true;
+  home_done.arm.state.tcp_pose=home_cfg.get().motion.observation_pose;
+  CHECK(advance_task(returning.state,home_done,home_cfg,time()).state.phase==TaskPhase::kReporting);
+  home_done.motion_succeeded=false;const auto interrupted_home=advance_task(returning.state,home_done,home_cfg,time());
+  CHECK(interrupted_home.state.phase==TaskPhase::kRecovering);CHECK(interrupted_home.state.recovery_home_command_id==0);
+  CHECK(interrupted_home.state.context.deadline==returning.state.context.deadline);
+  const auto expired_home=advance_task(interrupted_home.state,task_event(TaskEventKind::kTick,interrupted_home.state,7),home_cfg,time(1,6));
+  CHECK(expired_home.state.phase==TaskPhase::kFaulted);
+  CHECK(std::any_of(expired_home.commands.begin(),expired_home.commands.end(),[](const auto & command){return command.kind==CommandKind::kStopArm;}));
+  CHECK(std::any_of(expired_home.commands.begin(),expired_home.commands.end(),[](const auto & command){return command.kind==CommandKind::kStopGripper;}));
+  home_done.motion_succeeded=true;home_done.arm.state.tcp_pose.position.x_m+=.1;
+  CHECK(advance_task(returning.state,home_done,home_cfg,time()).state.phase==TaskPhase::kRecovering);
+  auto held = ready; held.phase = TaskPhase::kPicking; held.grasp.phase = GraspPhase::kVerifying; held.grasp.possession = Possession::kUnknown;
+  e = task_event(TaskEventKind::kCancelRequested,held,4); d = advance_task(held,e,cfg,time()); CHECK(d.state.grasp.possession == Possession::kUnknown);
+  e = task_event(TaskEventKind::kRecoveryConfirmed,d.state,5); d = advance_task(d.state,e,cfg,time()); CHECK(d.state.phase == TaskPhase::kFaulted); CHECK(d.state.grasp.possession == Possession::kUnknown);
+  e = task_event(TaskEventKind::kResetRequested,d.state,6); e.gripper.empty_confirmed = false;
+  CHECK(advance_task(d.state,e,cfg,time()).state.phase == TaskPhase::kFaulted); e.gripper.empty_confirmed = true;
+  d = advance_task(d.state,e,cfg,time()); CHECK(d.state.phase == TaskPhase::kWaitingReady); CHECK(d.state.grasp.possession == Possession::kEmpty); CHECK(d.commands.empty());
+  auto retry = ready; e = task_event(TaskEventKind::kReadinessChanged,retry,4); e.readiness.vision_ready = false; retry = advance_task(retry,e,cfg,time()).state;
+  e = task_event(TaskEventKind::kRecoveryConfirmed,retry,5); retry = advance_task(retry,e,cfg,time()).state; CHECK(retry.phase == TaskPhase::kObserving); CHECK(retry.retries == 1); CHECK(retry.context.key.track_id == 0);
+  e = task_event(TaskEventKind::kReadinessChanged,retry,6); e.readiness.vision_ready = false; retry = advance_task(retry,e,cfg,time()).state;
+  e = task_event(TaskEventKind::kRecoveryConfirmed,retry,7); retry = advance_task(retry,e,cfg,time()).state; CHECK(retry.phase == TaskPhase::kReporting); CHECK(retry.retries == 1);
+  const auto report_timeout = advance_task(retry,task_event(TaskEventKind::kReportAcknowledged,retry,8),cfg,time(1,6)).state;
+  CHECK(report_timeout.phase == TaskPhase::kWaitingReady); CHECK(report_timeout.retired_track_id == retry.context.key.track_id);
+  CHECK(!report_timeout.context.inhibited);
+  // Demo preparation may keep the same follow owner through a bounded image gap.
+  auto follow_data=settings_data();follow_data.runtime.operation_mode="assumed_ng_demo";
+  follow_data.inspection.inference.backend="assumed_ng";follow_data.grasp.moving_intercept=true;
+  const auto follow_cfg=settings(follow_data);auto preparing=preparing_pick(follow_cfg);preparing.phase=TaskPhase::kPreparingPick;
+  auto prepared=task_event(TaskEventKind::kGraspPrepared,preparing,4);
+  prepared.arm.stopped=false;prepared.arm.state.motion_state=ArmMotionState::kFollowing;
+  prepared.readiness.vision_ready=prepared.readiness.inference_ready=false;
+  prepared.grasp_event.grasp_window_valid=true;prepared.grasp_event.grasp_tcp_in_object=Pose3d{};
+  const auto follow_pick=advance_task(preparing,prepared,follow_cfg,time());CHECK(follow_pick.state.phase==TaskPhase::kPicking);
+  CHECK(std::any_of(follow_pick.commands.begin(),follow_pick.commands.end(),[](const auto & command){return command.kind==CommandKind::kStartFollow;}));
+  CHECK(std::none_of(follow_pick.commands.begin(),follow_pick.commands.end(),[](const auto & command){return command.kind==CommandKind::kCloseGripper || command.kind==CommandKind::kStopArm;}));
+  auto invalid_prepared=prepared;invalid_prepared.arm.state.motion_state=ArmMotionState::kIdle;
+  CHECK(advance_task(preparing,invalid_prepared,follow_cfg,time()).state.phase==TaskPhase::kRecovering);
+  invalid_prepared=prepared;invalid_prepared.readiness.motion_revision="wrong";
+  CHECK(advance_task(preparing,invalid_prepared,follow_cfg,time()).state.phase==TaskPhase::kRecovering);
+  CHECK(advance_task(preparing,prepared,cfg,time()).state.phase!=TaskPhase::kPicking);
+  auto trial=TaskState{};auto trial_event=task_event(TaskEventKind::kStartRequested,trial,1);
+  trial=advance_task(trial,trial_event,follow_cfg,time()).state;
+  trial_event=task_event(TaskEventKind::kMotionFinished,trial,2);trial_event.motion_succeeded=true;
+  trial=advance_task(trial,trial_event,follow_cfg,time()).state;
+  trial_event=task_event(TaskEventKind::kGraspTrialRequested,trial,3);
+  const auto pick_trial=advance_task(trial,trial_event,follow_cfg,time());
+  CHECK(pick_trial.status.disposition==Disposition::kApplied);CHECK(pick_trial.state.phase==TaskPhase::kPreparingPick);
+  CHECK(pick_trial.commands.empty());CHECK(pick_trial.state.selected_track.context.key.track_id==trial_event.track.context.key.track_id);
+  CHECK(advance_task(trial,trial_event,cfg,time()).status.disposition==Disposition::kRejected);
+  auto no_home=trial;no_home.observation_arrived=false;
+  CHECK(advance_task(no_home,trial_event,follow_cfg,time()).status.disposition==Disposition::kRejected);
+  trial_event.gripper.empty_confirmed=false;
+  CHECK(advance_task(trial,trial_event,follow_cfg,time()).status.disposition==Disposition::kRejected);
+  // Stale Holding does not survive an independently measured release and
+  // acknowledged detached scene; the ordinary new cycle still starts at Home.
+  auto stranded=preparing_pick(follow_cfg);stranded.phase=TaskPhase::kFaulted;
+  stranded.context.inhibited=true;stranded.grasp.phase=GraspPhase::kHolding;
+  stranded.grasp.possession=Possession::kHolding;stranded.grasp.scene_attached=true;
+  auto released=task_event(TaskEventKind::kResetRequested,stranded,20);released.scene=scene();
+  const auto reset_held=advance_task(stranded,released,follow_cfg,time());
+  CHECK(reset_held.status.disposition==Disposition::kApplied);
+  CHECK(reset_held.state.phase==TaskPhase::kWaitingReady);
+  CHECK(reset_held.state.grasp.possession==Possession::kEmpty);
+  CHECK(!reset_held.state.grasp.scene_attached);
+  released.gripper.empty_confirmed=false;
+  CHECK(advance_task(stranded,released,follow_cfg,time()).status.disposition==Disposition::kRejected);
+  // A rewound cycle is retired with current measured Empty and a new scene,
+  // even if its previous recovery deadline has not yet produced Faulted.
+  auto rewound_time=time(.2,2.);
+  rewound_time.epoch=2;
+  auto rewound=advance_task(trial,task_event(TaskEventKind::kClockReset,trial,20),follow_cfg,rewound_time).state;
+  CHECK(rewound.phase==TaskPhase::kRecovering);
+  auto rebase=task_event(TaskEventKind::kResetRequested,rewound,21,.2);
+  rebase.key.epoch=rebase.arm.epoch=rebase.gripper.epoch=rebase.scene.context.key.epoch=2;
+  rebase.key.track_id=0;
+  rebase.scene.dynamic_objects.clear();
+  const auto rebased=advance_task(rewound,rebase,follow_cfg,rewound_time);
+  CHECK(rebased.status.disposition==Disposition::kApplied);
+  CHECK(rebased.state.phase==TaskPhase::kWaitingReady);
+  CHECK(rebased.state.context.key.epoch==2 && !rebased.state.context.key.track_id);
+  CHECK(!rebased.state.terminal_fault && rebased.commands.empty());
+  auto stale_gripper=rebase;stale_gripper.gripper.epoch=1;
+  CHECK(advance_task(rewound,stale_gripper,follow_cfg,rewound_time).status.disposition==Disposition::kRejected);
+  auto uncertain=rebase;uncertain.gripper.empty_confirmed=false;
+  CHECK(advance_task(rewound,uncertain,follow_cfg,rewound_time).status.disposition==Disposition::kRejected);
+  auto same_epoch=rewound;same_epoch.context.key.epoch=2;
+  const auto still_recovering=advance_task(same_epoch,rebase,follow_cfg,rewound_time);
+  CHECK(still_recovering.status.disposition!=Disposition::kApplied);
+  CHECK(still_recovering.state.phase==TaskPhase::kRecovering && still_recovering.commands.empty());
+  auto rewound_fault=rewound;rewound_fault.phase=TaskPhase::kFaulted;rewound_fault.context.inhibited=true;
+  CHECK(advance_task(rewound_fault,rebase,follow_cfg,rewound_time).state.phase==TaskPhase::kWaitingReady);
+  // A commissioning task fault may recover only from actual Idle/Empty,
+  // coherent detach and child reset. Home precedes report and the next cycle.
+  auto demo_fault=preparing_pick(follow_cfg);demo_fault.phase=TaskPhase::kFaulted;
+  demo_fault.outcome=CycleOutcome::kFailed;demo_fault.terminal_fault=true;demo_fault.context.inhibited=true;
+  demo_fault.grasp.phase=GraspPhase::kUnknown;demo_fault.grasp.possession=Possession::kUnknown;
+  auto empty_recovery=task_event(TaskEventKind::kRecoveryConfirmed,demo_fault,30);
+  empty_recovery.scene=scene();empty_recovery.arm.state.motion_state=ArmMotionState::kIdle;
+  empty_recovery.arm.state.tcp_pose=follow_cfg.get().motion.observation_pose;
+  empty_recovery.arm.state.tcp_pose.position.x_m+=.1;
+  const auto demo_home=advance_task(demo_fault,empty_recovery,follow_cfg,time());
+  CHECK(demo_home.state.phase==TaskPhase::kRecovering);CHECK(!demo_home.state.context.inhibited);
+  CHECK(demo_home.state.grasp.possession==Possession::kEmpty);CHECK(demo_home.state.recovery_home_command_id!=0);
+  CHECK(std::count_if(demo_home.commands.begin(),demo_home.commands.end(),[](const auto & c){return c.kind==CommandKind::kMoveObservation;})==1);
+  CHECK(std::none_of(demo_home.commands.begin(),demo_home.commands.end(),[](const auto & c){return c.kind==CommandKind::kReport;}));
+  auto demo_arrived=task_event(TaskEventKind::kMotionFinished,demo_home.state,31);
+  demo_arrived.motion_succeeded=true;demo_arrived.arm.state.tcp_pose=follow_cfg.get().motion.observation_pose;
+  const auto recovered_report=advance_task(demo_home.state,demo_arrived,follow_cfg,time());
+  CHECK(recovered_report.state.phase==TaskPhase::kReporting);
+  auto report_ack=task_event(TaskEventKind::kReportAcknowledged,recovered_report.state,32);
+  const auto recovered_ready=advance_task(recovered_report.state,report_ack,follow_cfg,time());
+  CHECK(recovered_ready.state.phase==TaskPhase::kWaitingReady);
+  auto restart=task_event(TaskEventKind::kStartRequested,recovered_ready.state,33);
+  ++restart.key.cycle_id;
+  restart.key.track_id=0;
+  restart.arm.state.motion_state=ArmMotionState::kIdle;
+  restart.arm.state.tcp_pose=follow_cfg.get().motion.observation_pose;
+  const auto next=advance_task(recovered_ready.state,restart,follow_cfg,time());
+  CHECK(next.state.phase==TaskPhase::kObserving && next.state.observation_arrived);
+  CHECK(next.state.expected_operation_id==0 && next.commands.empty());
+  restart.arm.state.tcp_pose.position.x_m+=.1;
+  const auto away=advance_task(recovered_ready.state,restart,follow_cfg,time());
+  CHECK(away.state.phase==TaskPhase::kObserving && !away.state.observation_arrived);
+  CHECK(away.commands.size()==1 && away.commands.front().kind==CommandKind::kMoveObservation);
+  // A consumed or timed-out Home command must not block later measured recovery.
+  auto failed_demo_home=demo_arrived;failed_demo_home.motion_succeeded=false;
+  failed_demo_home.gripper.empty_confirmed=false;
+  const auto failed_home_fault=advance_task(demo_home.state,failed_demo_home,follow_cfg,time());
+  CHECK(failed_home_fault.state.phase==TaskPhase::kFaulted);
+  CHECK(failed_home_fault.state.recovery_home_command_id==0);
+  auto fresh_home=task_event(TaskEventKind::kRecoveryConfirmed,failed_home_fault.state,32);
+  fresh_home.scene=scene();fresh_home.arm.state.motion_state=ArmMotionState::kIdle;
+  fresh_home.arm.state.tcp_pose=follow_cfg.get().motion.observation_pose;
+  const auto reconciled_home=advance_task(failed_home_fault.state,fresh_home,follow_cfg,time());
+  CHECK(reconciled_home.status.disposition==Disposition::kApplied);
+  CHECK(reconciled_home.state.phase==TaskPhase::kReporting);
+  const auto timed_home=advance_task(demo_home.state,task_event(TaskEventKind::kTick,demo_home.state,32),follow_cfg,time(1,6));
+  CHECK(timed_home.state.phase==TaskPhase::kFaulted);CHECK(timed_home.state.recovery_home_command_id==0);
+  auto not_empty=empty_recovery;not_empty.gripper.empty_confirmed=false;
+  CHECK(advance_task(demo_fault,not_empty,follow_cfg,time()).state.phase==TaskPhase::kFaulted);
+  auto device_fault=empty_recovery;device_fault.arm.state.motion_state=ArmMotionState::kFault;
+  CHECK(advance_task(demo_fault,device_fault,follow_cfg,time()).state.phase==TaskPhase::kFaulted);
+  CHECK(advance_task(demo_fault,empty_recovery,cfg,time()).state.phase==TaskPhase::kFaulted);
+  auto operator_cancel=task_event(TaskEventKind::kCancelRequested,demo_home.state,32);
+  const auto canceled_home=advance_task(demo_home.state,operator_cancel,follow_cfg,time());
+  CHECK(canceled_home.state.outcome==CycleOutcome::kCanceled);CHECK(canceled_home.state.recovery_home_command_id==0);
+  CHECK(std::any_of(canceled_home.commands.begin(),canceled_home.commands.end(),[](const auto & c){return c.kind==CommandKind::kStopArm;}));
+  CHECK(advance_task(canceled_home.state,demo_arrived,follow_cfg,time()).status.disposition==Disposition::kRejected);
+  auto cancel_fault=task_event(TaskEventKind::kCancelRequested,demo_fault,40);
+  const auto canceled_fault=advance_task(demo_fault,cancel_fault,follow_cfg,time());
+  CHECK(canceled_fault.state.outcome==CycleOutcome::kCanceled);
+  CHECK(canceled_fault.state.phase==TaskPhase::kFaulted);
+  CHECK(std::count_if(canceled_fault.commands.begin(),canceled_fault.commands.end(),[](const auto & c){return c.kind==CommandKind::kStopArm || c.kind==CommandKind::kStopGripper;})==2);
+  auto after_cancel=task_event(TaskEventKind::kRecoveryConfirmed,canceled_fault.state,41);after_cancel.scene=scene();
+  CHECK(advance_task(canceled_fault.state,after_cancel,follow_cfg,time()).state.phase==TaskPhase::kFaulted);
+  FrameBuffer buffer; auto fcfg = settings_data(); fcfg.vision.max_buffered_frames = 1; const auto one = settings(fcfg);
+  CHECK(buffer.push(frame(),one,time()).disposition == Disposition::kApplied); CHECK(buffer.push(frame(),one,time()).disposition == Disposition::kRejected);
+  CHECK(buffer.push(frame(2),one,time()).disposition == Disposition::kRejected); CHECK(buffer.take(1)); CHECK(!buffer.take(1)); CHECK(buffer.frames.empty());
+}
+int main() {return run(tests);}

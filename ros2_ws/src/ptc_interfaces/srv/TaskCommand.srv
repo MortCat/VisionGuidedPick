@@ -1,0 +1,10 @@
+uint8 START=0
+uint8 CANCEL=1
+uint8 RESET=2
+uint8 RETURN_HOME=3
+uint8 START_CONTINUOUS=4
+uint8 PAUSE_CONTINUOUS=5
+uint8 command
+---
+bool accepted
+string<=512 message

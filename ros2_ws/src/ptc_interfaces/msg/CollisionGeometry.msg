@@ -1,0 +1,10 @@
+uint8 BOX=0
+uint8 SPHERE=1
+uint8 MESH=2
+string<=128 id
+string<=128 reference_frame
+uint8 kind
+geometry_msgs/Pose pose
+geometry_msgs/Vector3 dimensions_m
+string<=1024 mesh_path
+string<=128 asset_digest

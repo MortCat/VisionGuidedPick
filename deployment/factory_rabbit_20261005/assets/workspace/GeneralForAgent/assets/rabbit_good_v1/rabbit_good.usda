@@ -1,0 +1,32 @@
+#usda 1.0
+(
+    defaultPrim = "RabbitGood"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "RabbitGood" (
+    assetInfo = {
+        string name = "RabbitGood_v1"
+        string version = "1.0"
+    }
+)
+{
+    custom bool graspValidated = 0
+    custom string nominalForwardAxis = "-Y"
+    custom string referenceStatus = "Project-defined repaired good shape"
+
+    def Xform "Visual" (
+        prepend references = @rabbit_good_visual.usdc@</RabbitGood>
+    )
+    {
+    }
+
+    def Xform "CollisionSource" (
+        active = false
+        prepend references = @rabbit_good_collision.usdc@</RabbitGoodCollision>
+    )
+    {
+        uniform token purpose = "guide"
+    }
+}

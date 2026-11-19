@@ -1,0 +1,6 @@
+uint32 candidate_id
+bool evaluated
+bool feasible
+string<=256 failure_reason
+float64 minimum_joint_margin_rad
+float64 pregrasp_time_lower_bound_sec

@@ -1,0 +1,380 @@
+#usda 1.0
+(
+    defaultPrim = "Blocks"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Scope "Blocks"
+{
+    def Xform "DustyRose"
+    {
+        def Mesh "Geometry" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3]
+            int[] faceVertexIndices = [6, 0, 3, 9, 15, 12, 18, 21, 4, 1, 13, 16, 19, 7, 10, 22, 14, 2, 8, 20, 11, 5, 17, 23, 3, 0, 1, 4, 7, 6, 9, 10, 13, 12, 15, 16, 21, 18, 19, 22, 2, 0, 6, 8, 9, 3, 5, 11, 18, 12, 14, 20, 17, 15, 21, 23, 13, 1, 2, 14, 5, 4, 16, 17, 8, 7, 19, 20, 22, 10, 11, 23, 1, 0, 2, 5, 3, 4, 8, 6, 7, 10, 9, 11, 14, 12, 13, 16, 15, 17, 19, 18, 20, 23, 21, 22]
+            rel material:binding = </Blocks/DustyRose/Looks/Material>
+            rel material:binding:physics = </Blocks/DustyRose/Looks/Material>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(-0.5, -0.465, -0.465), (-0.465, -0.5, -0.465), (-0.465, -0.465, -0.5), (-0.5, -0.465, 0.465), (-0.465, -0.5, 0.465), (-0.465, -0.465, 0.5), (-0.5, 0.465, -0.465), (-0.465, 0.5, -0.465), (-0.465, 0.465, -0.5), (-0.5, 0.465, 0.465), (-0.465, 0.5, 0.465), (-0.465, 0.465, 0.5), (0.5, -0.465, -0.465), (0.465, -0.5, -0.465), (0.465, -0.465, -0.5), (0.5, -0.465, 0.465), (0.465, -0.5, 0.465), (0.465, -0.465, 0.5), (0.5, 0.465, -0.465), (0.465, 0.5, -0.465), (0.465, 0.465, -0.5), (0.5, 0.465, 0.465), (0.465, 0.5, 0.465), (0.465, 0.465, 0.5)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def "Looks"
+        {
+            def Material "Material" (
+                prepend apiSchemas = ["PhysicsMaterialAPI"]
+            )
+            {
+                token outputs:surface.connect = </Blocks/DustyRose/Looks/Material/Shader.outputs:surface>
+                float physics:dynamicFriction = 0.7
+                float physics:staticFriction = 0.85
+
+                def Shader "Shader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0.52099556, 0.33716363, 0.33716363)
+                    float inputs:metallic = 0
+                    float inputs:roughness = 0.56
+                    token outputs:surface
+                }
+            }
+        }
+    }
+
+    def Xform "Sage"
+    {
+        def Mesh "Geometry" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3]
+            int[] faceVertexIndices = [6, 0, 3, 9, 15, 12, 18, 21, 4, 1, 13, 16, 19, 7, 10, 22, 14, 2, 8, 20, 11, 5, 17, 23, 3, 0, 1, 4, 7, 6, 9, 10, 13, 12, 15, 16, 21, 18, 19, 22, 2, 0, 6, 8, 9, 3, 5, 11, 18, 12, 14, 20, 17, 15, 21, 23, 13, 1, 2, 14, 5, 4, 16, 17, 8, 7, 19, 20, 22, 10, 11, 23, 1, 0, 2, 5, 3, 4, 8, 6, 7, 10, 9, 11, 14, 12, 13, 16, 15, 17, 19, 18, 20, 23, 21, 22]
+            rel material:binding = </Blocks/Sage/Looks/Material>
+            rel material:binding:physics = </Blocks/Sage/Looks/Material>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(-0.5, -0.465, -0.465), (-0.465, -0.5, -0.465), (-0.465, -0.465, -0.5), (-0.5, -0.465, 0.465), (-0.465, -0.5, 0.465), (-0.465, -0.465, 0.5), (-0.5, 0.465, -0.465), (-0.465, 0.5, -0.465), (-0.465, 0.465, -0.5), (-0.5, 0.465, 0.465), (-0.465, 0.5, 0.465), (-0.465, 0.465, 0.5), (0.5, -0.465, -0.465), (0.465, -0.5, -0.465), (0.465, -0.465, -0.5), (0.5, -0.465, 0.465), (0.465, -0.5, 0.465), (0.465, -0.465, 0.5), (0.5, 0.465, -0.465), (0.465, 0.5, -0.465), (0.465, 0.465, -0.5), (0.5, 0.465, 0.465), (0.465, 0.5, 0.465), (0.465, 0.465, 0.5)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def "Looks"
+        {
+            def Material "Material" (
+                prepend apiSchemas = ["PhysicsMaterialAPI"]
+            )
+            {
+                token outputs:surface.connect = </Blocks/Sage/Looks/Material/Shader.outputs:surface>
+                float physics:dynamicFriction = 0.7
+                float physics:staticFriction = 0.85
+
+                def Shader "Shader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0.3712377, 0.41788507, 0.3277781)
+                    float inputs:metallic = 0
+                    float inputs:roughness = 0.56
+                    token outputs:surface
+                }
+            }
+        }
+    }
+
+    def Xform "MistBlue"
+    {
+        def Mesh "Geometry" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3]
+            int[] faceVertexIndices = [6, 0, 3, 9, 15, 12, 18, 21, 4, 1, 13, 16, 19, 7, 10, 22, 14, 2, 8, 20, 11, 5, 17, 23, 3, 0, 1, 4, 7, 6, 9, 10, 13, 12, 15, 16, 21, 18, 19, 22, 2, 0, 6, 8, 9, 3, 5, 11, 18, 12, 14, 20, 17, 15, 21, 23, 13, 1, 2, 14, 5, 4, 16, 17, 8, 7, 19, 20, 22, 10, 11, 23, 1, 0, 2, 5, 3, 4, 8, 6, 7, 10, 9, 11, 14, 12, 13, 16, 15, 17, 19, 18, 20, 23, 21, 22]
+            rel material:binding = </Blocks/MistBlue/Looks/Material>
+            rel material:binding:physics = </Blocks/MistBlue/Looks/Material>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(-0.5, -0.465, -0.465), (-0.465, -0.5, -0.465), (-0.465, -0.465, -0.5), (-0.5, -0.465, 0.465), (-0.465, -0.5, 0.465), (-0.465, -0.465, 0.5), (-0.5, 0.465, -0.465), (-0.465, 0.5, -0.465), (-0.465, 0.465, -0.5), (-0.5, 0.465, 0.465), (-0.465, 0.5, 0.465), (-0.465, 0.465, 0.5), (0.5, -0.465, -0.465), (0.465, -0.5, -0.465), (0.465, -0.465, -0.5), (0.5, -0.465, 0.465), (0.465, -0.5, 0.465), (0.465, -0.465, 0.5), (0.5, 0.465, -0.465), (0.465, 0.5, -0.465), (0.465, 0.465, -0.5), (0.5, 0.465, 0.465), (0.465, 0.5, 0.465), (0.465, 0.465, 0.5)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def "Looks"
+        {
+            def Material "Material" (
+                prepend apiSchemas = ["PhysicsMaterialAPI"]
+            )
+            {
+                token outputs:surface.connect = </Blocks/MistBlue/Looks/Material/Shader.outputs:surface>
+                float physics:dynamicFriction = 0.7
+                float physics:staticFriction = 0.85
+
+                def Shader "Shader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0.2663556, 0.34670407, 0.39157248)
+                    float inputs:metallic = 0
+                    float inputs:roughness = 0.56
+                    token outputs:surface
+                }
+            }
+        }
+    }
+
+    def Xform "Sand"
+    {
+        def Mesh "Geometry" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3]
+            int[] faceVertexIndices = [6, 0, 3, 9, 15, 12, 18, 21, 4, 1, 13, 16, 19, 7, 10, 22, 14, 2, 8, 20, 11, 5, 17, 23, 3, 0, 1, 4, 7, 6, 9, 10, 13, 12, 15, 16, 21, 18, 19, 22, 2, 0, 6, 8, 9, 3, 5, 11, 18, 12, 14, 20, 17, 15, 21, 23, 13, 1, 2, 14, 5, 4, 16, 17, 8, 7, 19, 20, 22, 10, 11, 23, 1, 0, 2, 5, 3, 4, 8, 6, 7, 10, 9, 11, 14, 12, 13, 16, 15, 17, 19, 18, 20, 23, 21, 22]
+            rel material:binding = </Blocks/Sand/Looks/Material>
+            rel material:binding:physics = </Blocks/Sand/Looks/Material>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(-0.5, -0.465, -0.465), (-0.465, -0.5, -0.465), (-0.465, -0.465, -0.5), (-0.5, -0.465, 0.465), (-0.465, -0.5, 0.465), (-0.465, -0.465, 0.5), (-0.5, 0.465, -0.465), (-0.465, 0.5, -0.465), (-0.465, 0.465, -0.5), (-0.5, 0.465, 0.465), (-0.465, 0.5, 0.465), (-0.465, 0.465, 0.5), (0.5, -0.465, -0.465), (0.465, -0.5, -0.465), (0.465, -0.465, -0.5), (0.5, -0.465, 0.465), (0.465, -0.5, 0.465), (0.465, -0.465, 0.5), (0.5, 0.465, -0.465), (0.465, 0.5, -0.465), (0.465, 0.465, -0.5), (0.5, 0.465, 0.465), (0.465, 0.5, 0.465), (0.465, 0.465, 0.5)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def "Looks"
+        {
+            def Material "Material" (
+                prepend apiSchemas = ["PhysicsMaterialAPI"]
+            )
+            {
+                token outputs:surface.connect = </Blocks/Sand/Looks/Material/Shader.outputs:surface>
+                float physics:dynamicFriction = 0.7
+                float physics:staticFriction = 0.85
+
+                def Shader "Shader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0.57758045, 0.50888133, 0.39157248)
+                    float inputs:metallic = 0
+                    float inputs:roughness = 0.56
+                    token outputs:surface
+                }
+            }
+        }
+    }
+
+    def Xform "Lavender"
+    {
+        def Mesh "Geometry" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3]
+            int[] faceVertexIndices = [6, 0, 3, 9, 15, 12, 18, 21, 4, 1, 13, 16, 19, 7, 10, 22, 14, 2, 8, 20, 11, 5, 17, 23, 3, 0, 1, 4, 7, 6, 9, 10, 13, 12, 15, 16, 21, 18, 19, 22, 2, 0, 6, 8, 9, 3, 5, 11, 18, 12, 14, 20, 17, 15, 21, 23, 13, 1, 2, 14, 5, 4, 16, 17, 8, 7, 19, 20, 22, 10, 11, 23, 1, 0, 2, 5, 3, 4, 8, 6, 7, 10, 9, 11, 14, 12, 13, 16, 15, 17, 19, 18, 20, 23, 21, 22]
+            rel material:binding = </Blocks/Lavender/Looks/Material>
+            rel material:binding:physics = </Blocks/Lavender/Looks/Material>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(-0.5, -0.465, -0.465), (-0.465, -0.5, -0.465), (-0.465, -0.465, -0.5), (-0.5, -0.465, 0.465), (-0.465, -0.5, 0.465), (-0.465, -0.465, 0.5), (-0.5, 0.465, -0.465), (-0.465, 0.5, -0.465), (-0.465, 0.465, -0.5), (-0.5, 0.465, 0.465), (-0.465, 0.5, 0.465), (-0.465, 0.465, 0.5), (0.5, -0.465, -0.465), (0.465, -0.5, -0.465), (0.465, -0.465, -0.5), (0.5, -0.465, 0.465), (0.465, -0.5, 0.465), (0.465, -0.465, 0.5), (0.5, 0.465, -0.465), (0.465, 0.5, -0.465), (0.465, 0.465, -0.5), (0.5, 0.465, 0.465), (0.465, 0.5, 0.465), (0.465, 0.465, 0.5)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def "Looks"
+        {
+            def Material "Material" (
+                prepend apiSchemas = ["PhysicsMaterialAPI"]
+            )
+            {
+                token outputs:surface.connect = </Blocks/Lavender/Looks/Material/Shader.outputs:surface>
+                float physics:dynamicFriction = 0.7
+                float physics:staticFriction = 0.85
+
+                def Shader "Shader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0.4072402, 0.3515326, 0.45641103)
+                    float inputs:metallic = 0
+                    float inputs:roughness = 0.56
+                    token outputs:surface
+                }
+            }
+        }
+    }
+
+    def Xform "Ochre"
+    {
+        def Mesh "Geometry" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3]
+            int[] faceVertexIndices = [6, 0, 3, 9, 15, 12, 18, 21, 4, 1, 13, 16, 19, 7, 10, 22, 14, 2, 8, 20, 11, 5, 17, 23, 3, 0, 1, 4, 7, 6, 9, 10, 13, 12, 15, 16, 21, 18, 19, 22, 2, 0, 6, 8, 9, 3, 5, 11, 18, 12, 14, 20, 17, 15, 21, 23, 13, 1, 2, 14, 5, 4, 16, 17, 8, 7, 19, 20, 22, 10, 11, 23, 1, 0, 2, 5, 3, 4, 8, 6, 7, 10, 9, 11, 14, 12, 13, 16, 15, 17, 19, 18, 20, 23, 21, 22]
+            rel material:binding = </Blocks/Ochre/Looks/Material>
+            rel material:binding:physics = </Blocks/Ochre/Looks/Material>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(-0.5, -0.465, -0.465), (-0.465, -0.5, -0.465), (-0.465, -0.465, -0.5), (-0.5, -0.465, 0.465), (-0.465, -0.5, 0.465), (-0.465, -0.465, 0.5), (-0.5, 0.465, -0.465), (-0.465, 0.5, -0.465), (-0.465, 0.465, -0.5), (-0.5, 0.465, 0.465), (-0.465, 0.5, 0.465), (-0.465, 0.465, 0.5), (0.5, -0.465, -0.465), (0.465, -0.5, -0.465), (0.465, -0.465, -0.5), (0.5, -0.465, 0.465), (0.465, -0.5, 0.465), (0.465, -0.465, 0.5), (0.5, 0.465, -0.465), (0.465, 0.5, -0.465), (0.465, 0.465, -0.5), (0.5, 0.465, 0.465), (0.465, 0.5, 0.465), (0.465, 0.465, 0.5)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def "Looks"
+        {
+            def Material "Material" (
+                prepend apiSchemas = ["PhysicsMaterialAPI"]
+            )
+            {
+                token outputs:surface.connect = </Blocks/Ochre/Looks/Material/Shader.outputs:surface>
+                float physics:dynamicFriction = 0.7
+                float physics:staticFriction = 0.85
+
+                def Shader "Shader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0.54572445, 0.41788507, 0.23455058)
+                    float inputs:metallic = 0
+                    float inputs:roughness = 0.56
+                    token outputs:surface
+                }
+            }
+        }
+    }
+
+    def Xform "SoftTeal"
+    {
+        def Mesh "Geometry" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3]
+            int[] faceVertexIndices = [6, 0, 3, 9, 15, 12, 18, 21, 4, 1, 13, 16, 19, 7, 10, 22, 14, 2, 8, 20, 11, 5, 17, 23, 3, 0, 1, 4, 7, 6, 9, 10, 13, 12, 15, 16, 21, 18, 19, 22, 2, 0, 6, 8, 9, 3, 5, 11, 18, 12, 14, 20, 17, 15, 21, 23, 13, 1, 2, 14, 5, 4, 16, 17, 8, 7, 19, 20, 22, 10, 11, 23, 1, 0, 2, 5, 3, 4, 8, 6, 7, 10, 9, 11, 14, 12, 13, 16, 15, 17, 19, 18, 20, 23, 21, 22]
+            rel material:binding = </Blocks/SoftTeal/Looks/Material>
+            rel material:binding:physics = </Blocks/SoftTeal/Looks/Material>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(-0.5, -0.465, -0.465), (-0.465, -0.5, -0.465), (-0.465, -0.465, -0.5), (-0.5, -0.465, 0.465), (-0.465, -0.5, 0.465), (-0.465, -0.465, 0.5), (-0.5, 0.465, -0.465), (-0.465, 0.5, -0.465), (-0.465, 0.465, -0.5), (-0.5, 0.465, 0.465), (-0.465, 0.5, 0.465), (-0.465, 0.465, 0.5), (0.5, -0.465, -0.465), (0.465, -0.5, -0.465), (0.465, -0.465, -0.5), (0.5, -0.465, 0.465), (0.465, -0.5, 0.465), (0.465, -0.465, 0.5), (0.5, 0.465, -0.465), (0.465, 0.5, -0.465), (0.465, 0.465, -0.5), (0.5, 0.465, 0.465), (0.465, 0.5, 0.465), (0.465, 0.465, 0.5)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def "Looks"
+        {
+            def Material "Material" (
+                prepend apiSchemas = ["PhysicsMaterialAPI"]
+            )
+            {
+                token outputs:surface.connect = </Blocks/SoftTeal/Looks/Material/Shader.outputs:surface>
+                float physics:dynamicFriction = 0.7
+                float physics:staticFriction = 0.85
+
+                def Shader "Shader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0.2746773, 0.39675522, 0.3515326)
+                    float inputs:metallic = 0
+                    float inputs:roughness = 0.56
+                    token outputs:surface
+                }
+            }
+        }
+    }
+
+    def Xform "Blush"
+    {
+        def Mesh "Geometry" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3]
+            int[] faceVertexIndices = [6, 0, 3, 9, 15, 12, 18, 21, 4, 1, 13, 16, 19, 7, 10, 22, 14, 2, 8, 20, 11, 5, 17, 23, 3, 0, 1, 4, 7, 6, 9, 10, 13, 12, 15, 16, 21, 18, 19, 22, 2, 0, 6, 8, 9, 3, 5, 11, 18, 12, 14, 20, 17, 15, 21, 23, 13, 1, 2, 14, 5, 4, 16, 17, 8, 7, 19, 20, 22, 10, 11, 23, 1, 0, 2, 5, 3, 4, 8, 6, 7, 10, 9, 11, 14, 12, 13, 16, 15, 17, 19, 18, 20, 23, 21, 22]
+            rel material:binding = </Blocks/Blush/Looks/Material>
+            rel material:binding:physics = </Blocks/Blush/Looks/Material>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(-0.5, -0.465, -0.465), (-0.465, -0.5, -0.465), (-0.465, -0.465, -0.5), (-0.5, -0.465, 0.465), (-0.465, -0.5, 0.465), (-0.465, -0.465, 0.5), (-0.5, 0.465, -0.465), (-0.465, 0.5, -0.465), (-0.465, 0.465, -0.5), (-0.5, 0.465, 0.465), (-0.465, 0.5, 0.465), (-0.465, 0.465, 0.5), (0.5, -0.465, -0.465), (0.465, -0.5, -0.465), (0.465, -0.465, -0.5), (0.5, -0.465, 0.465), (0.465, -0.5, 0.465), (0.465, -0.465, 0.5), (0.5, 0.465, -0.465), (0.465, 0.5, -0.465), (0.465, 0.465, -0.5), (0.5, 0.465, 0.465), (0.465, 0.5, 0.465), (0.465, 0.465, 0.5)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def "Looks"
+        {
+            def Material "Material" (
+                prepend apiSchemas = ["PhysicsMaterialAPI"]
+            )
+            {
+                token outputs:surface.connect = </Blocks/Blush/Looks/Material/Shader.outputs:surface>
+                float physics:dynamicFriction = 0.7
+                float physics:staticFriction = 0.85
+
+                def Shader "Shader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0.6172066, 0.43415365, 0.38132602)
+                    float inputs:metallic = 0
+                    float inputs:roughness = 0.56
+                    token outputs:surface
+                }
+            }
+        }
+    }
+
+    def Xform "Slate"
+    {
+        def Mesh "Geometry" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3]
+            int[] faceVertexIndices = [6, 0, 3, 9, 15, 12, 18, 21, 4, 1, 13, 16, 19, 7, 10, 22, 14, 2, 8, 20, 11, 5, 17, 23, 3, 0, 1, 4, 7, 6, 9, 10, 13, 12, 15, 16, 21, 18, 19, 22, 2, 0, 6, 8, 9, 3, 5, 11, 18, 12, 14, 20, 17, 15, 21, 23, 13, 1, 2, 14, 5, 4, 16, 17, 8, 7, 19, 20, 22, 10, 11, 23, 1, 0, 2, 5, 3, 4, 8, 6, 7, 10, 9, 11, 14, 12, 13, 16, 15, 17, 19, 18, 20, 23, 21, 22]
+            rel material:binding = </Blocks/Slate/Looks/Material>
+            rel material:binding:physics = </Blocks/Slate/Looks/Material>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(-0.5, -0.465, -0.465), (-0.465, -0.5, -0.465), (-0.465, -0.465, -0.5), (-0.5, -0.465, 0.465), (-0.465, -0.5, 0.465), (-0.465, -0.465, 0.5), (-0.5, 0.465, -0.465), (-0.465, 0.5, -0.465), (-0.465, 0.465, -0.5), (-0.5, 0.465, 0.465), (-0.465, 0.5, 0.465), (-0.465, 0.465, 0.5), (0.5, -0.465, -0.465), (0.465, -0.5, -0.465), (0.465, -0.465, -0.5), (0.5, -0.465, 0.465), (0.465, -0.5, 0.465), (0.465, -0.465, 0.5), (0.5, 0.465, -0.465), (0.465, 0.5, -0.465), (0.465, 0.465, -0.5), (0.5, 0.465, 0.465), (0.465, 0.5, 0.465), (0.465, 0.465, 0.5)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def "Looks"
+        {
+            def Material "Material" (
+                prepend apiSchemas = ["PhysicsMaterialAPI"]
+            )
+            {
+                token outputs:surface.connect = </Blocks/Slate/Looks/Material/Shader.outputs:surface>
+                float physics:dynamicFriction = 0.7
+                float physics:staticFriction = 0.85
+
+                def Shader "Shader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0.3049873, 0.33716363, 0.37626213)
+                    float inputs:metallic = 0
+                    float inputs:roughness = 0.56
+                    token outputs:surface
+                }
+            }
+        }
+    }
+
+    def Xform "Clay"
+    {
+        def Mesh "Geometry" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+        )
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3]
+            int[] faceVertexIndices = [6, 0, 3, 9, 15, 12, 18, 21, 4, 1, 13, 16, 19, 7, 10, 22, 14, 2, 8, 20, 11, 5, 17, 23, 3, 0, 1, 4, 7, 6, 9, 10, 13, 12, 15, 16, 21, 18, 19, 22, 2, 0, 6, 8, 9, 3, 5, 11, 18, 12, 14, 20, 17, 15, 21, 23, 13, 1, 2, 14, 5, 4, 16, 17, 8, 7, 19, 20, 22, 10, 11, 23, 1, 0, 2, 5, 3, 4, 8, 6, 7, 10, 9, 11, 14, 12, 13, 16, 15, 17, 19, 18, 20, 23, 21, 22]
+            rel material:binding = </Blocks/Clay/Looks/Material>
+            rel material:binding:physics = </Blocks/Clay/Looks/Material>
+            uniform token physics:approximation = "convexHull"
+            point3f[] points = [(-0.5, -0.465, -0.465), (-0.465, -0.5, -0.465), (-0.465, -0.465, -0.5), (-0.5, -0.465, 0.465), (-0.465, -0.5, 0.465), (-0.465, -0.465, 0.5), (-0.5, 0.465, -0.465), (-0.465, 0.5, -0.465), (-0.465, 0.465, -0.5), (-0.5, 0.465, 0.465), (-0.465, 0.5, 0.465), (-0.465, 0.465, 0.5), (0.5, -0.465, -0.465), (0.465, -0.5, -0.465), (0.465, -0.465, -0.5), (0.5, -0.465, 0.465), (0.465, -0.5, 0.465), (0.465, -0.465, 0.5), (0.5, 0.465, -0.465), (0.465, 0.5, -0.465), (0.465, 0.465, -0.5), (0.5, 0.465, 0.465), (0.465, 0.5, 0.465), (0.465, 0.465, 0.5)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def "Looks"
+        {
+            def Material "Material" (
+                prepend apiSchemas = ["PhysicsMaterialAPI"]
+            )
+            {
+                token outputs:surface.connect = </Blocks/Clay/Looks/Material/Shader.outputs:surface>
+                float physics:dynamicFriction = 0.7
+                float physics:staticFriction = 0.85
+
+                def Shader "Shader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0.49102086, 0.2541521, 0.21223076)
+                    float inputs:metallic = 0
+                    float inputs:roughness = 0.56
+                    token outputs:surface
+                }
+            }
+        }
+    }
+}
+
